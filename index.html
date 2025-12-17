@@ -1,11 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Giriş Sayfası</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <h1>Hello ANKARA BİLİM !!!!</h1>
+
+    <div id="auth-container">
+        <!-- Giriş Formu -->
+        <div id="login-view">
+            <h2>Giriş Yap</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="E-posta" required>
+                <input type="password" id="login-password" placeholder="Şifre" required>
+                <button type="submit">Giriş Yap</button>
+            </form>
+            <p>Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
+        </div>
+
+        <!-- Kayıt Formu -->
+        <div id="signup-view" class="hidden">
+            <h2>Kayıt Ol</h2>
+            <form id="signup-form">
+                <input type="text" id="signup-fullname" placeholder="Ad Soyad" required>
+                <input type="email" id="signup-email" placeholder="E-posta" required>
+                <input type="password" id="signup-password" placeholder="Şifre" required>
+                <div class="role-selection">
+                    <label><input type="radio" name="role" value="ogrenci" checked> Öğrenci</label>
+                    <label><input type="radio" name="role" value="ogretmen"> Öğretmen</label>
+                </div>
+                <button type="submit">Kayıt Ol</button>
+            </form>
+            <p>Zaten bir hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
+        </div>
+    </div>
+
+   
+
+    <script src="app.js"></script>
 </body>
 </html>
