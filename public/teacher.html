@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğretmen Paneli - LearnENG</title>
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <!-- BURAYA GELECEK: Teacher panele özel stil dosyası -->
+    <link rel="stylesheet" href="assets/css/teacher.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- SOL MENÜ -->
+        <aside class="sidebar">
+            <div class="logo"><a href="/teacher.html">LearnENG</a></div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="/teacher.html">Anasayfa</a></li>
+                    <li><a href="/pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
+                    <li><a href="/pages/teacher/student-report.html">Öğrenci Raporları</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ANA İÇERİK -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h2>Öğretmen Özeti</h2>
+                <div class="user-info">
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+            <main class="content-area">
+                <h3>Genel Bakış</h3>
+                <div class="stats-grid">
+                    <div class="card">
+                        <h4>Aktif Sınıflarım</h4>
+                        <p id="total-classes" class="stat-value">0</p>
+                    </div>
+                    <div class="card">
+                        <h4>Toplam Öğrencim</h4>
+                        <p id="total-students" class="stat-value">0</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- JavaScript Dosyası -->
+    <script type="module" src="assets/js/teacher/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sınıf Yönetimi - LearnENG</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/teacher.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="logo"><a href="/teacher.html">LearnENG</a></div>
+            <nav>
+                <ul>
+                    <li><a href="/teacher.html">Anasayfa</a></li>
+                    <li class="active"><a href="/pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
+                    <li><a href="/pages/teacher/student-report.html">Öğrenci Raporları</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <main class="content-area">
+                <section class="card">
+                    <h3>Yeni Sınıf Oluştur</h3>
+                    <p style="font-size: 0.8rem; color: #666;">Öğrenciler bu kod ile sınıfınıza katılabilir.</p>
+                    <form id="create-class-form" style="display:flex; gap:10px; margin-top:10px;">
+                        <input type="text" id="class-name" placeholder="Sınıf Adı (Örn: 11-B)" required>
+                        <button type="submit" style="width: auto;">Sınıfı Aç</button>
+                    </form>
+                </section>
+
+                <section class="card" style="margin-top:20px;">
+                    <h3>Ödev Ata</h3>
+                    <form id="assign-homework-form">
+                        <label>Sınıf Seçin:</label>
+                        <select id="select-class" required></select>
+                        
+                        <label>Okuma Parçası Seçin (İsteğe bağlı):</label>
+                        <select id="select-content"></select>
+                        
+                        <input type="text" id="hw-title" placeholder="Ödev Başlığı" required>
+                        <label>Teslim Tarihi:</label>
+                        <input type="date" id="hw-due-date" required>
+                        
+                        <button type="submit">Ödevi Yayınla</button>
+                    </form>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script type="module" src="../../assets/js/teacher/class-management.js"></script>
+</body>
+</html>

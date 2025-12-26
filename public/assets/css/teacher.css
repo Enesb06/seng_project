@@ -1,0 +1,55 @@
+/* Teacher Dashboard Specific Styles (teacher.css) */
+
+/* Dashboard'a özgü bazı küçük düzenlemeler */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.stats-grid .card h4 {
+    color: #555;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.stats-grid .card .stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary-color); /* Varsayılan yeşil tonu */
+    margin: 0;
+}
+
+/* Form elemanları için genel öğretmen paneli düzenlemesi */
+select, input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+/* class-management.html'deki form düzenlemesi */
+#assign-homework-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Öğrenci rapor tablosu */
+.student-report-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.student-report-table th, .student-report-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.student-report-table th {
+    background-color: #f4f7fa;
+    font-weight: 600;
+    color: #333;
+}
