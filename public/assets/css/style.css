@@ -1,28 +1,220 @@
-/* ==========================================================================
-   1. GLOBAL STYLES & VARIABLES
-   ========================================================================== */
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+}
+
+#auth-container, #user-dashboard {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 360px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+p {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+.role-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1rem;
+}
 
 /* Google Fonts'tan modern bir font import edelim */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+/* Değişkenler ile renk paletini yönetmek daha kolay */
+:root {
+--primary-color: #007bff;
+--primary-color-hover: #0056b3;
+--background-color: #f0f2f5;
+--form-background: #ffffff;
+--text-color: #333;
+--border-color: #ddd;
+--box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+body {
+font-family: 'Poppins', sans-serif;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 100vh;
+background-color: var(--background-color);
+margin: 0;
+transition: background-color 0.3s;
+}
+#auth-container {
+background: var(--form-background);
+padding: 2.5rem 3rem;
+border-radius: 12px;
+box-shadow: var(--box-shadow);
+width: 100%;
+max-width: 400px;
+box-sizing: border-box;
+/* Geçiş animasyonu için */
+overflow: hidden;
+}
+/* Formlar arası geçiş animasyonu için */
+#login-view, #signup-view {
+transition: opacity 0.4s, transform 0.4s;
+}
+#login-view.hidden, #signup-view.hidden {
+display: block; /* Animasyon için block kalmalı /
+opacity: 0;
+transform: translateX(20px);
+pointer-events: none; / Gizliyken tıklanamaz olsun /
+position: absolute; / Akıştan çıksın */
+}
+h2 {
+text-align: center;
+margin-bottom: 2rem;
+color: var(--text-color);
+font-weight: 600;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+width: 100%;
+padding: 12px 15px;
+margin-bottom: 1rem;
+border: 1px solid var(--border-color);
+border-radius: 8px;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+transition: border-color 0.3s, box-shadow 0.3s;
+}
+input:focus {
+outline: none;
+border-color: var(--primary-color);
+box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+}
+button {
+width: 100%;
+padding: 12px;
+border: none;
+border-radius: 8px;
+background-color: var(--primary-color);
+color: white;
+font-size: 1rem;
+font-weight: 500;
+cursor: pointer;
+transition: background-color 0.3s, transform 0.2s;
+}
+button:hover {
+background-color: var(--primary-color-hover);
+transform: translateY(-2px);
+}
+p {
+text-align: center;
+margin-top: 1.5rem;
+color: #666;
+}
+a {
+color: var(--primary-color);
+text-decoration: none;
+font-weight: 500;
+}
+a:hover {
+text-decoration: underline;
+}
+.role-selection {
+display: flex;
+justify-content: space-evenly;
+margin-bottom: 1.5rem;
+padding: 0.5rem 0;
+}
+.role-selection label {
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+.role-selection input[type="radio"] {
+margin-right: 8px;
+}
+/* Dashboard için ek stiller */
+#user-dashboard {
+max-width: 800px;
+width: 100%;
+background: white;
+padding: 2rem;
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+.header h2 {
+margin: 0;
+}
+hr {
+margin: 1.5rem 0;
+border: none;
+border-top: 1px solid #f0f2f5;
+}
+
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* Değişkenler ile renk paletini ve genel ayarları yönetmek daha kolay */
 :root {
-    --primary-color: #0d6efd;
-    --primary-color-hover: #0b5ed7;
-    --secondary-color: #28a745;
+    --primary-color: #0d6efd; /* Daha canlı bir mavi */
+    --secondary-color: #28a745; /* Yeşil CTA butonu için */
     --secondary-color-hover: #218838;
-    
     --text-light: #ffffff;
     --text-dark: #343a40;
-    --text-muted: #6c757d;
-
-    --highlight-color: #f8e71c;
-    --background-dark-overlay: rgba(0, 0, 0, 0.65);
-    --background-light: #f8f9fa;
-    --background-white: #ffffff;
-    
-    --border-color: #dee2e6;
-    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --highlight-color: #f8e71c; /* Vurgu rengi - sarı */
+    --background-dark: rgba(0, 0, 0, 0.6); /* Arka plan karartması */
 }
 
 * {
@@ -33,14 +225,9 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    color: var(--text-dark);
-    background-color: var(--background-light);
+    color: var(--text-light);
+    overflow: hidden; /* Sayfa kaydırmasını engelle */
 }
-
-
-/* ==========================================================================
-   2. LANDING PAGE STYLES (ANA SAYFA)
-   ========================================================================== */
 
 #landing-page {
     position: relative;
@@ -51,16 +238,15 @@ body {
     align-items: center;
     padding: 2rem;
     background: url('https://images.pexels.com/photos/265076/pexels-photo-265076.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center/cover;
-    overflow: hidden; /* Body scroll'unu engellemek için */
 }
 
-#landing-page .overlay {
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-dark-overlay);
+    background-color: var(--background-dark);
     z-index: 1;
 }
 
@@ -79,7 +265,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 50px;
     backdrop-filter: blur(10px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .logo a {
@@ -127,7 +313,6 @@ body {
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    color: var(--text-light);
 }
 
 .hero-content h1 {
@@ -142,18 +327,10 @@ body {
     font-size: 1.2rem;
     max-width: 650px;
     margin: 1.5rem auto 0;
-    color: rgba(255, 255, 255, 0.95);
+    color: rgba(255, 255, 255, 0.9);
 }
 
-
-/* ==========================================================================
-   3. AUTHENTICATION MODAL STYLES (GİRİŞ/KAYIT MODALI)
-   ========================================================================== */
-
-/* Modal'ı ve formu gizlemek/göstermek için anahtar sınıf */
-.hidden {
-    display: none !important;
-}
+/* --- MODAL STYLES --- */
 
 #modal-overlay {
     position: fixed;
@@ -164,216 +341,13 @@ body {
     background: rgba(0, 0, 0, 0.7);
     z-index: 998;
     backdrop-filter: blur(5px);
-    transition: opacity 0.3s ease;
-    opacity: 1;
-}
-
-#modal-overlay.hidden {
-    opacity: 0;
-    pointer-events: none; /* Gizliyken tıklanamaz olsun */
 }
 
 #auth-container {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%);
     z-index: 999;
-    background: var(--background-white);
+    background: white;
     padding: 2.5rem 3rem;
-    border-radius: 12px;
-    box-shadow: var(--box-shadow);
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    opacity: 1;
-}
-
-#auth-container.hidden {
-    transform: translate(-50%, -50%) scale(0.95);
-    opacity: 0;
-    pointer-events: none;
-}
-
-/* 
-   !!! BURASI DÜZELTİLDİ !!!
-   KAPATMA BUTONU İÇİN ÖZEL STİLLER
-*/
-.close-button {
-    /* Konumlandırma */
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    z-index: 10;
-
-    /* Genel 'button' stilini ezen kurallar */
-    width: auto; /* Tam genişlik olmasın */
-    background: transparent !important; /* Arka planı şeffaf yap */
-    border: none;
-    padding: 8px; /* Tıklama alanını ayarla */
-    
-    /* Görünüm */
-    color: #aaaaaa; /* Beyaz yerine gri tonu */
-    font-size: 2rem;
-    font-weight: 400;
-    line-height: 1;
-    
-    /* Davranış */
-    cursor: pointer;
-    transition: color 0.2s;
-}
-
-.close-button:hover {
-    color: var(--text-dark);
-    /* Genel :hover efektlerini sıfırla */
-    background-color: transparent !important;
-    transform: none !important;
-}
-
-
-#auth-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: var(--text-dark);
-    font-weight: 600;
-}
-
-#auth-container input[type="text"],
-#auth-container input[type="email"],
-#auth-container input[type="password"] {
-    width: 100%;
-    padding: 12px 15px;
-    margin-bottom: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-#auth-container input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
-}
-
-/* Sadece form içindeki ana butonları (submit) hedef alalım */
-#auth-container form button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    background-color: var(--primary-color);
-    color: white;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-#auth-container form button:hover {
-    background-color: var(--primary-color-hover);
-    transform: translateY(-2px);
-}
-
-#auth-container p {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: var(--text-muted);
-}
-
-#auth-container a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-#auth-container a:hover {
-    text-decoration: underline;
-}
-
-.role-selection {
-    display: flex;
-    justify-content: space-evenly;
-    margin-bottom: 1.5rem;
-    padding: 0.5rem 0;
-}
-
-.role-selection label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    color: var(--text-dark);
-}
-
-.role-selection input[type="radio"] {
-    margin-right: 8px;
-}
-
-
-/* ==========================================================================
-   4. DASHBOARD STYLES (KONTROL PANELİ)
-   ========================================================================== */
-
-/* Dashboard sayfası için body'e özel stil */
-body.dashboard-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    color: var(--text-dark); /* Dashboard'da varsayılan metin rengini koyu yap */
-    overflow: auto; /* Dashboard scroll edilebilir olsun */
-}
-
-#user-dashboard {
-    max-width: 800px;
-    width: 100%;
-    background: var(--background-white);
-    padding: 2.5rem;
-    border-radius: 12px;
-    box-shadow: var(--box-shadow);
-    margin: 2rem;
-}
-
-#user-dashboard .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-#user-dashboard .header h2 {
-    margin: 0;
-    font-size: 1.75rem;
-}
-
-#user-dashboard #logout-button {
-    background-color: #dc3545; /* Çıkış butonu rengi */
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-    font-weight: 500;
-    width: auto; /* Tam genişlik olmasın */
-    color: var(--text-light);
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-#user-dashboard #logout-button:hover {
-    background-color: #c82333;
-}
-
-#user-dashboard hr {
-    margin: 1.5rem 0;
-    border: none;
-    border-top: 1px solid #f1f1f1;
-}
-
-#user-dashboard h3 {
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 0.5rem;
-    display: inline-block;
-}

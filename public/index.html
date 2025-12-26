@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LearnEnglish.com - İngilizce Öğrenmenin Keyifli Yolu</title>
-    <!-- CSS dosyalarınızı buraya ekleyin -->
-    <link rel="stylesheet" href="assets/css/style.css"> 
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -35,25 +34,21 @@
         </section>
     </main>
 
-    <!-- Modal açıldığında arkayı karartmak için overlay -->
-    <div id="modal-overlay" class="hidden"></div>
-
-    <!-- GİRİŞ VE KAYIT FORMLARI (MODAL) -->
+    <!-- GİRİŞ VE KAYIT FORMLARI (MODAL) - Başlangıçta gizli -->
     <div id="auth-container" class="hidden">
         <button id="close-auth-btn" class="close-button">&times;</button>
-        
-        <!-- Giriş Formu (Başlangıçta gizli) -->
-        <div id="login-view" class="hidden">
+        <!-- Giriş Formu -->
+        <div id="login-view">
             <h2>Giriş Yap</h2>
             <form id="login-form">
                 <input type="email" id="login-email" placeholder="E-posta" required>
                 <input type="password" id="login-password" placeholder="Şifre" required>
                 <button type="submit">Giriş Yap</button>
             </form>
-            <p>Hesabın yok mu? <a href="#" id="show-signup-link">Kayıt Ol</a></p>
+            <p>Hesabın yok mu? <a href="#" id="show-signup">Kayıt Ol</a></p>
         </div>
 
-        <!-- Kayıt Formu (Başlangıçta gizli) -->
+        <!-- Kayıt Formu -->
         <div id="signup-view" class="hidden">
             <h2>Kayıt Ol</h2>
             <form id="signup-form">
@@ -66,10 +61,14 @@
                 </div>
                 <button type="submit">Kayıt Ol</button>
             </form>
-            <p>Zaten bir hesabın var mı? <a href="#" id="show-login-link">Giriş Yap</a></p>
+            <p>Zaten bir hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
         </div>
     </div>
     
+    <!-- Modal açıldığında arkayı karartmak için overlay -->
+    <div id="modal-overlay" class="hidden"></div>
+
+
     <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
