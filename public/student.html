@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Paneli - LearnEnglish.com</title>
+    
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/student.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- SOL MENÜ (SIDEBAR) -->
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="/student.html">LearnEnglish</a>
+            </div>
+            <nav>
+                <ul>
+                    <li class="active"><a href="/student.html">Ana Sayfa</a></li>
+                    <li><a href="/pages/student/reading.html">Okuma Materyalleri</a></li>
+                    <li><a href="/pages/student/wordlist.html">Kelime Listem</a></li>
+                    <li><a href="/pages/student/quiz.html">Quiz'lerim</a></li>
+                    <li><a href="/pages/student/profile.html">Profilim & İstatistikler</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ANA İÇERİK BÖLÜMÜ -->
+        <div class="main-content">
+            <!-- ÜST BAR (HEADER) -->
+            <header class="dashboard-header">
+                <h2>Ana Sayfa</h2>
+                <div class="user-info">
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
+            <!-- İÇERİK -->
+            <main class="content-area">
+                <h3>Genel Bakış</h3>
+                <div class="stats-grid">
+                    <div class="card">
+                        <h4>Okunan Materyal</h4>
+                        <p id="total-readings-stat" class="stat-value">0</p>
+                    </div>
+                    <div class="card">
+                        <h4>Öğrenilen Kelime</h4>
+                        <p id="learned-words-stat" class="stat-value">0</p>
+                    </div>
+                    <div class="card">
+                        <h4>Quiz Başarısı</h4>
+                        <p id="quiz-success-stat" class="stat-value">%0</p>
+                    </div>
+                </div>
+
+                <h3>Kazanılan Rozetler</h3>
+                <div class="badges-container card">
+                    <div id="badge-list" class="badge-list">
+                        <p>Henüz hiç rozet kazanmadın.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- JavaScript Dosyaları -->
+    <script type="module" src="assets/js/router.js"></script>
+    <script type="module" src="assets/js/student/dashboard.js"></script>
+</body>
+</html>

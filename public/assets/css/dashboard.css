@@ -1,0 +1,136 @@
+/* Tüm Paneller İçin Ortak Stiller */
+body {
+    background-color: #f4f7fa;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sol Menü (Sidebar) */
+.sidebar {
+    width: 260px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sidebar .logo a {
+    color: #ecf0f1;
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+    display: block;
+    padding: 12px 15px;
+    color: #bdc3c7;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #34495e;
+    color: #ffffff;
+}
+
+.sidebar nav ul li.active a {
+    background-color: #4CAF50;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Ana İçerik */
+.main-content {
+    flex-grow: 1;
+    margin-left: 260px; /* Sidebar genişliği kadar boşluk */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Üst Bar (Header) */
+.dashboard-header {
+    background-color: #ffffff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.dashboard-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.dashboard-header .user-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+#welcome-message {
+    font-weight: 500;
+}
+
+#logout-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+    width: auto;
+}
+
+#logout-button:hover {
+    background-color: #c0392b;
+}
+
+/* Asıl İçerik Alanı */
+.content-area {
+    padding: 30px;
+    flex-grow: 1;
+}
+
+.content-area h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+}
+
+.card {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    border: 1px solid #e0e0e0;
+}

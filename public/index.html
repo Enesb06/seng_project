@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LearnEnglish.com - İngilizce Öğrenmenin Keyifli Yolu</title>
-    <!-- CSS dosyalarınızı buraya ekleyin -->
-    <link rel="stylesheet" href="assets/css/style.css"> 
+
+    <!-- CSS Dosyaları -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/landing.css">
+    <link rel="stylesheet" href="assets/css/auth-modal.css">
+    
+    <!-- Supabase Kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -42,18 +47,19 @@
     <div id="auth-container" class="hidden">
         <button id="close-auth-btn" class="close-button">&times;</button>
         
-        <!-- Giriş Formu (Başlangıçta gizli) -->
+        <!-- Giriş Formu -->
         <div id="login-view" class="hidden">
             <h2>Giriş Yap</h2>
             <form id="login-form">
                 <input type="email" id="login-email" placeholder="E-posta" required>
                 <input type="password" id="login-password" placeholder="Şifre" required>
                 <button type="submit">Giriş Yap</button>
+                <p class="forgot-password"><a href="#" id="show-forgot-password-link">Şifremi Unuttum</a></p>
             </form>
             <p>Hesabın yok mu? <a href="#" id="show-signup-link">Kayıt Ol</a></p>
         </div>
 
-        <!-- Kayıt Formu (Başlangıçta gizli) -->
+        <!-- Kayıt Formu -->
         <div id="signup-view" class="hidden">
             <h2>Kayıt Ol</h2>
             <form id="signup-form">
@@ -61,15 +67,26 @@
                 <input type="email" id="signup-email" placeholder="E-posta" required>
                 <input type="password" id="signup-password" placeholder="Şifre" required>
                 <div class="role-selection">
-                    <label><input type="radio" name="role" value="ogrenci" checked> Öğrenci</label>
-                    <label><input type="radio" name="role" value="ogretmen"> Öğretmen</label>
+                    <label><input type="radio" name="role" value="student" checked> Öğrenci</label>
+                    <label><input type="radio" name="role" value="teacher"> Öğretmen</label>
                 </div>
                 <button type="submit">Kayıt Ol</button>
             </form>
             <p>Zaten bir hesabın var mı? <a href="#" id="show-login-link">Giriş Yap</a></p>
         </div>
+
+        <!-- Şifre Sıfırlama Formu -->
+        <div id="forgot-password-view" class="hidden">
+            <h2>Şifremi Sıfırla</h2>
+            <form id="forgot-password-form">
+                <input type="email" id="forgot-email" placeholder="E-posta adresiniz" required>
+                <button type="submit">Sıfırlama Bağlantısı Gönder</button>
+            </form>
+            <p><a href="#" id="back-to-login-link">Giriş Yap sayfasına dön</a></p>
+        </div>
     </div>
     
-    <script type="module" src="assets/js/app.js"></script>
+    <!-- JavaScript Dosyası -->
+    <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>

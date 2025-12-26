@@ -1,0 +1,187 @@
+/* Genel Sayfa Ayarları */
+:root {
+    --primary-color: #4CAF50; /* Yeşil tonları */
+    --primary-dark: #388E3C;
+    --secondary-color: #FFC107; /* Sarı tonları */
+    --text-color: #333;
+    --light-text-color: #f4f4f4;
+    --bg-light: #ffffff;
+    --bg-dark: #2c3e50; /* Koyu arka plan */
+    --border-color: #ddd;
+    --error-color: #f44336;
+    --success-color: #4CAF50;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-light);
+    overflow-x: hidden; /* Yatay kaydırmayı engelle */
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-dark);
+}
+
+ul {
+    list-style: none;
+}
+
+button, input[type="submit"] {
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+button:active, input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Genel Başlık Stilleri */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--bg-dark); /* Koyu renk başlıklar */
+    margin-bottom: 0.8em;
+}
+
+/* Yardımcı Sınıflar */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.cta-button {
+    background-color: var(--secondary-color);
+    color: var(--bg-dark);
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #fbc02d; /* slightly darker yellow */
+    color: var(--bg-dark);
+}
+
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.message.error {
+    background-color: rgba(244, 67, 54, 0.1);
+    color: var(--error-color);
+    border: 1px solid var(--error-color);
+}
+
+.message.success {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+/* Header (Tüm panellerde ortak olacağı için buraya da eklenebilir veya dashboard.css'e taşınabilir) */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: rgba(0, 0, 0, 0.6); /* Şeffaf arka plan */
+    color: var(--light-text-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.main-header .logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--light-text-color);
+}
+
+.main-nav ul {
+    display: flex;
+    gap: 20px;
+}
+
+.main-nav a {
+    color: var(--light-text-color);
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.main-nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--light-text-color);
+}
+
+/* Scrollbar styling (opsiyonel) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
