@@ -1,4 +1,4 @@
-import { _supabase } from './supabaseClient.js';
+import { _supabase } from '../supabaseClient.js';
 
 // HTML elementlerini seçme
 const welcomeMessage = document.getElementById('welcome-message');
