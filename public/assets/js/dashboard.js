@@ -1,20 +1,19 @@
-// Supabase istemcisini başlatma
-const { createClient } = supabase;
-const supabaseUrl = 'https://infmglbngspopnxrjnfv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImluZm1nbGJuZ3Nwb3BueHJqbmZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5NzM5MjQsImV4cCI6MjA4MTU0OTkyNH0.GBzIbFNM6ezxtDAlWpCIMSabhTmXAXOALNrVkpEgS2c';
-const _supabase = createClient(supabaseUrl, supabaseKey);
+import { _supabase } from './supabaseClient.js';
 
 // HTML elementlerini seçme
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
+const studentPanel = document.getElementById('student-panel');
+const teacherPanel = document.getElementById('teacher-panel');
+const adminPanel = document.getElementById('admin-panel');
 
-// Kullanıcı bilgilerini alıp ekrana yazdıran fonksiyon
-const loadUserData = async () => {
+// Kullanıcı bilgilerini alıp ekrana yazdıran ve paneli gösteren fonksiyon
+const loadDashboard = async () => {
     // Aktif oturumu (session) kontrol et
     const { data: { session } } = await _supabase.auth.getSession();
 
     if (session) {
-        // Eğer kullanıcı giriş yapmışsa, 'profiles' tablosundan bilgilerini çek
+        // 'profiles' tablosundan kullanıcının bilgilerini çek
         const { data: profile, error } = await _supabase
             .from('profiles')
             .select('full_name, role')
@@ -26,10 +25,19 @@ const loadUserData = async () => {
             welcomeMessage.innerText = 'Profil bilgileri alınamadı.';
         } else if (profile) {
             // Bilgileri ekrana yazdır
-            welcomeMessage.innerText = `Hoş geldin, ${profile.full_name}! Rolünüz: ${profile.role}`;
+            welcomeMessage.innerText = `Hoş geldin, ${profile.full_name}!`;
+
+            // Role göre ilgili paneli göster
+            if (profile.role === 'ogrenci') {
+                studentPanel.classList.remove('hidden');
+            } else if (profile.role === 'ogretmen') {
+                teacherPanel.classList.remove('hidden');
+            } else if (profile.role === 'admin') {
+                adminPanel.classList.remove('hidden');
+            }
         }
     } else {
-        // Eğer kullanıcı giriş yapmamışsa, onu giriş sayfasına geri yönlendir
+        // Kullanıcı giriş yapmamışsa, giriş sayfasına yönlendir
         window.location.href = 'index.html';
     }
 };
@@ -45,7 +53,7 @@ logoutButton.addEventListener('click', async () => {
     }
 });
 
-// Sayfa yüklendiğinde kullanıcı bilgilerini yükle
+// Sayfa yüklendiğinde paneli yükle
 document.addEventListener('DOMContentLoaded', () => {
-    loadUserData();
+    loadDashboard();
 });

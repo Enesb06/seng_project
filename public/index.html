@@ -3,13 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Sayfası</title>
-    <link rel="stylesheet" href="style.css">
+    <title>LearnEnglish.com - İngilizce Öğrenmenin Keyifli Yolu</title>
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <div id="auth-container">
+    <!-- Arka plan ve ana içerik için ana sarmalayıcı -->
+    <main id="landing-page">
+        <div class="overlay"></div>
+
+        <header class="main-header">
+            <div class="logo">
+                <a href="#">LearnEnglish.com</a>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" id="show-login-btn">Giriş Yap</a></li>
+                    <li><a href="#" id="show-signup-btn" class="cta-button">Kayıt Ol</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <section class="hero-content">
+            <h1>Yapay Zeka ile<br>İngilizce'ni Geliştir.</h1>
+            <p>
+                Kişiselleştirilmiş okuma materyalleri, interaktif kelime listeleri ve akıllı quizler ile 
+                kelime hazineni zenginleştir. LearnEnglish ile öğrenmek artık daha kolay ve eğlenceli!
+            </p>
+        </section>
+    </main>
+
+    <!-- GİRİŞ VE KAYIT FORMLARI (MODAL) - Başlangıçta gizli -->
+    <div id="auth-container" class="hidden">
+        <button id="close-auth-btn" class="close-button">&times;</button>
         <!-- Giriş Formu -->
         <div id="login-view">
             <h2>Giriş Yap</h2>
@@ -37,9 +64,11 @@
             <p>Zaten bir hesabın var mı? <a href="#" id="show-login">Giriş Yap</a></p>
         </div>
     </div>
+    
+    <!-- Modal açıldığında arkayı karartmak için overlay -->
+    <div id="modal-overlay" class="hidden"></div>
 
-   
 
-    <script src="app.js"></script>
+    <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
