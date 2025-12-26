@@ -1,6 +1,7 @@
 import { _supabase } from './supabaseClient.js';
 
-// --- ELEMENT SEÇİMİ ---
+// --- ELEMENT SEÇİMİ (Değişiklik yok) ---
+// ... (element seçim kodlarınız olduğu gibi kalıyor)
 const showLoginBtn = document.getElementById('show-login-btn');
 const showSignupBtn = document.getElementById('show-signup-btn');
 const closeAuthBtn = document.getElementById('close-auth-btn');
@@ -17,7 +18,9 @@ const showLoginLink = document.getElementById('show-login-link');
 const showForgotPasswordLink = document.getElementById('show-forgot-password-link');
 const backToLoginLink = document.getElementById('back-to-login-link');
 
-// --- MODAL YÖNETİM FONKSİYONLARI ---
+
+// --- MODAL YÖNETİM FONKSİYONLARI (Değişiklik yok) ---
+// ... (modal fonksiyonlarınız olduğu gibi kalıyor)
 const hideAllAuthViews = () => {
     loginView.classList.add('hidden');
     signupView.classList.add('hidden');
@@ -44,13 +47,18 @@ const displaySignupView = () => {
     signupView.classList.remove('hidden');
     openModal();
 };
+// Şifremi unuttum özelliği artık çalışmayacak
 const displayForgotPasswordView = () => {
-    hideAllAuthViews();
-    forgotPasswordView.classList.remove('hidden');
-    openModal();
+    alert("Bu özellik şu anda devre dışıdır.");
+    // Veya formu yine de gösterebilirsiniz, ancak işlevsiz olacaktır.
+    // hideAllAuthViews();
+    // forgotPasswordView.classList.remove('hidden');
+    // openModal();
 };
 
-// --- OLAY DİNLEYİCİLERİ ---
+
+// --- OLAY DİNLEYİCİLERİ (Değişiklik yok) ---
+// ... (olay dinleyicileriniz olduğu gibi kalıyor)
 showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
 showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); displaySignupView(); });
 closeAuthBtn.addEventListener('click', closeModal);
@@ -60,9 +68,10 @@ showLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLogi
 showForgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); displayForgotPasswordView(); });
 backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
 
-// --- SUPABASE İŞLEMLERİ ---
 
-// 1. Kayıt Olma Formu
+// --- YENİ VERİTABANI İŞLEMLERİ (AUTH OLMADAN) ---
+
+// 1. Kayıt Olma Formu -> 'profiles' tablosuna direkt ekleme
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fullName = document.getElementById('signup-fullname').value;
@@ -70,82 +79,81 @@ signupForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('signup-password').value;
     const role = document.querySelector('input[name="role"]:checked').value;
 
-    const { data, error } = await _supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-            data: { 
+    const { data, error } = await _supabase
+        .from('profiles')
+        .insert([
+            { 
                 full_name: fullName, 
+                email: email, 
+                password: password, // UYARI: Şifre açık metin olarak kaydediliyor!
                 role: role 
             }
-        }
-    });
+        ])
+        .select()
+        .single();
+
 
     if (error) {
-        alert('Kayıt hatası: ' + error.message);
+        if (error.code === '23505') { // Benzersizlik kısıtlaması hatası (email zaten var)
+            alert('Bu e-posta adresi zaten kayıtlı.');
+        } else {
+            alert('Kayıt hatası: ' + error.message);
+        }
     } else {
-        alert('Kayıt başarılı! Hesabınızı doğrulamak için e-postanızı kontrol edin.');
-        closeModal();
+        alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+        displayLoginView(); // Kullanıcıyı giriş formuna yönlendir
         signupForm.reset();
     }
 });
 
-// 2. Giriş Yapma Formu (!!! DEĞİŞTİRİLDİ !!!)
+// 2. Giriş Yapma Formu -> 'profiles' tablosundan kontrol
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    const { error } = await _supabase.auth.signInWithPassword({ email, password });
+    // E-posta ve şifre ile kullanıcıyı veritabanında ara
+    const { data: user, error } = await _supabase
+        .from('profiles')
+        .select('*')
+        .eq('email', email)
+        .eq('password', password) // UYARI: Şifre açık metin olarak karşılaştırılıyor!
+        .single(); // Sadece bir sonuç bekliyoruz
 
-    if (error) {
-        alert('Giriş hatası: ' + error.message);
+    if (error || !user) {
+        alert('Giriş hatası: E-posta veya şifre yanlış.');
     } else {
-        // Giriş başarılı! Profil kontrolü yapmadan
-        // kullanıcıyı doğrudan öğrenci paneline yönlendir.
-        // Profil kontrolü o sayfanın kendi JS dosyasında yapılacak.
-        window.location.href = '/student.html';
+        // Kullanıcı bulundu! Oturum bilgisini localStorage'a kaydet
+        localStorage.setItem('user', JSON.stringify(user));
+        // Sayfayı yeniden yükle, aşağıdaki DOMContentLoaded yönlendirmeyi yapacak
+        window.location.reload(); 
     }
 });
 
-// 3. Şifre Sıfırlama Formu
-forgotPasswordForm.addEventListener('submit', async (e) => {
+// 3. Şifre Sıfırlama Formu (Artık işlevsiz)
+forgotPasswordForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const email = document.getElementById('forgot-email').value;
-    const { error } = await _supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/pages/common/password-reset.html`,
-    });
-    if (error) {
-        alert('Hata: ' + error.message);
-    } else {
-        alert('Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.');
-        closeModal();
-        forgotPasswordForm.reset();
-    }
+    alert('Bu özellik şu anda devre dışıdır.');
+    closeModal();
 });
 
 // 4. Sayfa Yüklendiğinde Oturum Kontrolü ve Yönlendirme
-document.addEventListener('DOMContentLoaded', async () => {
-    const { data: { session } } = await _supabase.auth.getSession();
-
-    if (session) {
-        const { data: profile, error } = await _supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single();
-
-        if (error || !profile) {
-            console.error("Profil alınamadı veya hata oluştu, çıkış yapılıyor.", error);
-            await _supabase.auth.signOut();
-            return;
-        }
-
-        switch (profile.role) {
-            case 'student': window.location.href = '/student.html'; break;
-            case 'teacher': window.location.href = '/teacher.html'; break;
-            case 'admin': window.location.href = '/admin.html'; break;
-            default: await _supabase.auth.signOut(); break;
+document.addEventListener('DOMContentLoaded', () => {
+    // Supabase session yerine localStorage'ı kontrol et
+    const userString = localStorage.getItem('user');
+    
+    if (userString) {
+        const user = JSON.parse(userString);
+        
+        // Kullanıcının rolüne göre yönlendirme yap
+        switch (user.role) {
+            case 'student': window.location.href = 'student.html'; break;
+            case 'teacher': window.location.href = 'teacher.html'; break;
+            case 'admin': window.location.href = 'admin.html'; break;
+            default: 
+                // Tanımsız bir rol varsa güvenlik için oturumu kapat
+                localStorage.removeItem('user');
+                break;
         }
     }
 });
