@@ -1,74 +1,83 @@
 import { _supabase } from './supabaseClient.js';
 
 // --- ELEMENT SEÇİMİ ---
-// Ana Sayfa Butonları
 const showLoginBtn = document.getElementById('show-login-btn');
 const showSignupBtn = document.getElementById('show-signup-btn');
 const closeAuthBtn = document.getElementById('close-auth-btn');
 
-// Modal ve Formlar
 const authContainer = document.getElementById('auth-container');
 const modalOverlay = document.getElementById('modal-overlay');
+
 const loginView = document.getElementById('login-view');
 const signupView = document.getElementById('signup-view');
+
 const loginForm = document.getElementById('login-form');
 const signupForm = document.getElementById('signup-form');
 
-// Form İçi Linkler
-const showSignupLink = document.getElementById('show-signup');
-const showLoginLink = document.getElementById('show-login');
+const showSignupLink = document.getElementById('show-signup-link');
+const showLoginLink = document.getElementById('show-login-link');
 
-// --- MODAL FONKSİYONLARI ---
+// --- MODAL YÖNETİM FONKSİYONLARI ---
+
+// Modal'ı ve arka planı gösterir
 const openModal = () => {
     authContainer.classList.remove('hidden');
     modalOverlay.classList.remove('hidden');
 };
 
+// Modal'ı ve arka planı gizler
 const closeModal = () => {
     authContainer.classList.add('hidden');
     modalOverlay.classList.add('hidden');
 };
 
-const showLoginView = () => {
+// Sadece giriş yapma formunu gösterir
+const displayLoginView = () => {
     loginView.classList.remove('hidden');
     signupView.classList.add('hidden');
     openModal();
 };
 
-const showSignupView = () => {
+// Sadece kayıt olma formunu gösterir
+const displaySignupView = () => {
     signupView.classList.remove('hidden');
     loginView.classList.add('hidden');
     openModal();
 };
 
-// --- EVENT LISTENERS (OLAY DİNLEYİCİLERİ) ---
+
+// --- OLAY DİNLEYİCİLERİ (EVENT LISTENERS) ---
+
+// Ana sayfadaki butonlar
 showLoginBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    showLoginView();
+    displayLoginView();
 });
 
 showSignupBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    showSignupView();
+    displaySignupView();
 });
 
+// Modal kapatma butonları
 closeAuthBtn.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', closeModal);
 
-// Form içindeki linkler için
+// Formlar arası geçiş linkleri
 showSignupLink.addEventListener('click', (e) => {
     e.preventDefault();
-    showSignupView();
+    displaySignupView();
 });
 
 showLoginLink.addEventListener('click', (e) => {
     e.preventDefault();
-    showLoginView();
+    displayLoginView();
 });
+
 
 // --- SUPABASE İŞLEMLERİ ---
 
-// Kayıt olma
+// 1. Kayıt Olma Formu
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fullName = document.getElementById('signup-fullname').value;
@@ -79,18 +88,24 @@ signupForm.addEventListener('submit', async (e) => {
     const { error } = await _supabase.auth.signUp({
         email: email,
         password: password,
-        options: { data: { full_name: fullName, role: role } }
+        options: {
+            data: { 
+                full_name: fullName, 
+                role: role 
+            }
+        }
     });
 
     if (error) {
-        alert('Hata: ' + error.message);
+        alert('Kayıt hatası: ' + error.message);
     } else {
         alert('Kayıt başarılı! Hesabınızı doğrulamak için e-postanızı kontrol edin.');
         closeModal();
+        signupForm.reset(); // Formu temizle
     }
 });
 
-// Giriş yapma
+// 2. Giriş Yapma Formu
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
@@ -101,14 +116,17 @@ loginForm.addEventListener('submit', async (e) => {
     if (error) {
         alert('Giriş hatası: ' + error.message);
     } else {
+        // Başarılı girişte dashboard'a yönlendir
         window.location.href = 'dashboard.html';
     }
 });
 
-// Oturum kontrolü
+// 3. Sayfa Yüklendiğinde Oturum Kontrolü
 document.addEventListener('DOMContentLoaded', async () => {
+    // Aktif bir oturum var mı kontrol et
     const { data: { session } } = await _supabase.auth.getSession();
     if (session) {
+        // Eğer kullanıcı zaten giriş yapmışsa, doğrudan dashboard'a yönlendir
         window.location.href = 'dashboard.html';
     }
 });
