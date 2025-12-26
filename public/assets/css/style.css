@@ -50,7 +50,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 2rem;
-    background: url('https://images.pexels.com/photos/265076/pexels-photo-265076.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center/cover;
+    background: url('images/BACKGROUND_IMG.png') no-repeat center center/cover;
     overflow: hidden; /* Body scroll'unu engellemek için */
 }
 
