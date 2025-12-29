@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Listem - LearnEnglish.com</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/wordlist.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo"><a href="../../student.html">LearnEnglish</a></div>
+            <nav>
+                <ul>
+                    <li><a href="../../student.html">Ana Sayfa</a></li>
+                    <li><a href="reading.html">Okuma Materyalleri</a></li>
+                    <li class="active"><a href="wordlist.html">Kelime Listem</a></li>
+                    <li><a href="quiz.html">Quiz'lerim</a></li>
+                    <li><a href="profile.html">Profilim & İstatistikler</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h2>Kelime Listem</h2>
+                <div class="user-info">
+                    <span id="welcome-message"></span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="wordlist-controls card">
+                    <input type="text" id="search-word" placeholder="Kelime ara...">
+                    <select id="filter-status">
+                        <option value="all">Tüm Kelimeler</option>
+                        <option value="learning">Öğreniyorum</option>
+                        <option value="learned">Öğrenildi</option>
+                    </select>
+                </div>
+
+                <div class="wordlist-container card">
+                    <table class="word-table">
+                        <thead>
+                            <tr>
+                                <th>Kelime</th>
+                                <th>Anlamı</th>
+                                <th>Durum</th>
+                                <th>Eklenme Tarihi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="word-list-body">
+                            <!-- Kelimeler JS ile buraya gelecek -->
+                        </tbody>
+                    </table>
+                    <div id="no-words" class="hidden">Henüz kelime eklemedin.</div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="../../assets/js/student/wordlist.js"></script>
+</body>
+</html>
