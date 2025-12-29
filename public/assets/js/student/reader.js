@@ -13,9 +13,8 @@ const closeModalBtn = document.getElementById('close-modal-btn');
 const preferencesForm = document.getElementById('preferences-form');
 const loader = document.getElementById('loader');
 
-// --- API BİLGİLERİ (OPENROUTER İÇİN AYARLANDI) ---
-const AI_API_URL = 'https://openrouter.ai/api/v1/chat/completions'; 
-const AI_API_KEY = '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'; // Lütfen kendi anahtarınızın burada olduğundan emin olun
+// --- GÜVENLİ API BİLGİSİ ---
+const AI_FUNCTION_URL = 'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-reading-material'; 
 
 // --- KULLANICI BİLGİLERİNİ ALMA ---
 const getUser = () => JSON.parse(localStorage.getItem('user'));
@@ -76,12 +75,25 @@ const displayMaterial = async (contentId) => {
     readingBody.textContent = data.body;
 };
 
-// --- YENİ MATERYAL OLUŞTURMA SÜRECİ (MODEL ADI GÜNCELLENDİ) ---
+// --- YARDIMCI FONKSİYON: JSON TEMİZLEME ---
+// Gemini bazen yanıtı ```json { ... } ``` blokları içinde verir, bu fonksiyon onu ayıklar.
+const parseGeminiJSON = (text) => {
+    try {
+        const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        return JSON.parse(cleaned);
+    } catch (e) {
+        console.error("JSON Parse Hatası. Gelen Metin:", text);
+        throw new Error("AI yanıtı geçerli bir JSON formatında değil.");
+    }
+};
+
+// --- YENİ MATERYAL OLUŞTURMA SÜRECİ ---
 const handleGenerateNewMaterial = async (e) => {
     e.preventDefault();
     const user = getUser();
     if (!user) return;
 
+    // Arayüz hazırlığı
     readingTitle.classList.add('hidden');
     readingBody.classList.add('hidden');
     loader.classList.remove('hidden');
@@ -91,48 +103,40 @@ const handleGenerateNewMaterial = async (e) => {
     const difficulty = document.getElementById('difficulty-level').value;
     const length = document.getElementById('content-length').value;
 
-    const requestBody = {
-        // --- EN ÖNEMLİ DEĞİŞİKLİK BURADA ---
-        model: "mistralai/mistral-7b-instruct:free", // İSTEDİĞİNİZ YENİ MODEL
-        // ------------------------------------
-        messages: [
-            {
-                role: "user",
-                content: `Write a ${length} reading text in English for an ${difficulty} level student about ${category}. The text should be engaging and educational. IMPORTANT: Your response must be ONLY a valid JSON object with a "title" field and a "body" field. Do not include any other text, explanations, or markdown formatting like \`\`\`json.`
-            }
-        ],
-        response_format: { "type": "json_object" }
-    };
-
+    const promptDetails = `Write a ${length} reading text in English for an ${difficulty} level student about ${category}. The text should be engaging and educational. IMPORTANT: Your response must be ONLY a valid JSON object with a "title" field and a "body" field. Do not include any other text, explanations, or markdown formatting like \`\`\`json.`;
+    
     try {
-        const response = await fetch(AI_API_URL, {
+        const response = await fetch(AI_FUNCTION_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${AI_API_KEY}`,
-                'HTTP-Referer': window.location.href,
-                'X-Title': 'LearnEnglish.com'
-            },
-            body: JSON.stringify(requestBody)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ promptDetails })
         });
         
+        // Yanıtın JSON olup olmadığını kontrol ederek parse et (Unexpected end of JSON hatasını önlemek için)
+        const textResponse = await response.text();
+        let responseData;
+        try {
+            responseData = JSON.parse(textResponse);
+        } catch (parseErr) {
+            console.error("Sunucu yanıtı JSON değil:", textResponse);
+            throw new Error("Sunucudan geçersiz bir yanıt alındı (400/500 Hatası olabilir).");
+        }
+
         if (!response.ok) {
-            const errorData = await response.json();
-            console.error('API Error Response:', errorData);
-            throw new Error('AI API Hatası: ' + (errorData.error?.message || response.statusText));
+            throw new Error(responseData.error || `Sunucu hatası: ${response.status}`);
         }
         
-        const responseData = await response.json();
-        
-        if (!responseData.choices || !responseData.choices[0].message.content) {
-            console.error("Beklenmedik API yanıt formatı:", responseData);
-            throw new Error("API'den geçerli bir formatta yanıt alınamadı.");
+        // Gemini API hiyerarşisini kontrol et
+        if (!responseData.candidates || !responseData.candidates[0].content?.parts[0]?.text) {
+            console.error("API Yanıt Yapısı Bozuk:", responseData);
+            throw new Error("AI'den beklenen içerik formatı alınamadı.");
         }
 
-        const contentText = responseData.choices[0].message.content;
-        const contentData = JSON.parse(contentText);
+        const rawText = responseData.candidates[0].content.parts[0].text;
+        const contentData = parseGeminiJSON(rawText);
 
-        const { data: newContent, error } = await _supabase
+        // Supabase'e kaydet
+        const { data: newContent, error: dbError } = await _supabase
             .from('contents')
             .insert({
                 title: contentData.title,
@@ -142,15 +146,16 @@ const handleGenerateNewMaterial = async (e) => {
                 difficulty_level: difficulty,
             }).select('id').single();
 
-        if (error) throw error;
+        if (dbError) throw dbError;
 
+        // UI Güncelle
         await loadUserMaterials();
         displayMaterial(newContent.id);
 
     } catch (error) {
         console.error("Materyal oluşturma hatası:", error);
         readingTitle.textContent = 'Hata';
-        readingBody.textContent = 'Materyal oluşturulurken bir sorun yaşandı. Detaylar için F12 ile konsolu kontrol edin.';
+        readingBody.textContent = `Hata oluştu: ${error.message}. Lütfen Edge Function loglarını ve API anahtarınızı kontrol edin.`;
     } finally {
         loader.classList.add('hidden');
         readingTitle.classList.remove('hidden');
