@@ -15,7 +15,7 @@ const loader = document.getElementById('loader');
 
 // --- API BİLGİLERİ (OPENROUTER İÇİN AYARLANDI) ---
 const AI_API_URL = 'https://openrouter.ai/api/v1/chat/completions'; 
-const AI_API_KEY = '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'; // Lütfen kendi anahtarınızı buraya yapıştırın
+const AI_API_KEY = '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'; // Lütfen kendi anahtarınızın burada olduğundan emin olun
 
 // --- KULLANICI BİLGİLERİNİ ALMA ---
 const getUser = () => JSON.parse(localStorage.getItem('user'));
@@ -93,7 +93,7 @@ const handleGenerateNewMaterial = async (e) => {
 
     const requestBody = {
         // --- EN ÖNEMLİ DEĞİŞİKLİK BURADA ---
-        model: "mistralai/devstral-2512:free", // İSTEDİĞİNİZ YENİ MODEL
+        model: "mistralai/mistral-7b-instruct:free", // İSTEDİĞİNİZ YENİ MODEL
         // ------------------------------------
         messages: [
             {
