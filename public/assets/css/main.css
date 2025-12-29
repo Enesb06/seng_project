@@ -154,6 +154,7 @@ h1, h2, h3, h4, h5, h6 {
 .main-nav ul {
     display: flex;
     gap: 20px;
+    align-items: center; /* Butonları dikeyde ortalar */
 }
 
 .main-nav a {
