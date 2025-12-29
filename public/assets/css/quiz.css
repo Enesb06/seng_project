@@ -1,0 +1,71 @@
+/* assets/css/quiz.css */
+
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Soru Metni */
+#question-text {
+    font-size: 1.4rem;
+    color: #1e293b; /* Koyu lacivert/siyah tonu */
+    margin-bottom: 25px;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+/* Seçenekler Izgarası */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+/* Seçenek Butonları */
+.option-btn {
+    padding: 18px;
+    background-color: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #334155; /* Net okunur koyu gri/mavi */
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    text-align: left;
+}
+
+/* Butonun üzerine gelince */
+.option-btn:hover {
+    border-color: #3b82f6;
+    background-color: #f0f7ff;
+    color: #1d4ed8; /* Üzerine gelince biraz daha belirgin mavi yazı */
+}
+
+/* Soru İlerleme Yazısı */
+#quiz-progress {
+    margin-top: 20px;
+    color: #64748b;
+    font-size: 0.95rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Sonuç Ekranı Yazıları */
+#result-area h3 {
+    color: #1e293b;
+    margin-bottom: 15px;
+}
+
+#score-text {
+    color: #0f172a;
+    font-weight: bold;
+}
+
+/* Mobilde butonlar alt alta gelsin */
+@media (max-width: 600px) {
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+}
