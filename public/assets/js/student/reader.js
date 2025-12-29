@@ -15,7 +15,7 @@ const loader = document.getElementById('loader');
 
 // --- API BİLGİLERİ (OPENROUTER İÇİN AYARLANDI) ---
 const AI_API_URL = 'https://openrouter.ai/api/v1/chat/completions'; 
-const AI_API_KEY = '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'; // Lütfen kendi anahtarınızın burada olduğundan emin olun
+const AI_API_KEY = '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'; // Lütfen kendi anahtarınızın burada olduğundan emin olun
 
 // --- KULLANICI BİLGİLERİNİ ALMA ---
 const getUser = () => JSON.parse(localStorage.getItem('user'));
