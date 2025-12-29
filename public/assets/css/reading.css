@@ -102,3 +102,56 @@
 .modal-content select, .modal-content button { padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; }
 .modal-content button { background-color: var(--primary-color); color: white; cursor: pointer; border: none; margin-top: 10px; }
 .close-button { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 2rem; cursor: pointer; color: #aaa; }
+
+/* Tıklanabilir kelime stili */
+.word {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 3px;
+    padding: 0 2px;
+}
+
+.word:hover {
+    background-color: #e0f2fe;
+    color: #0284c7;
+    text-decoration: underline;
+}
+
+/* Tooltip (Çeviri Kutusu) */
+#translation-tooltip {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    z-index: 1000;
+    min-width: 150px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#translation-tooltip strong {
+    color: #1e293b;
+    font-size: 1.1em;
+}
+
+#translation-tooltip .meaning {
+    color: #475569;
+    font-style: italic;
+}
+
+#translation-tooltip .add-btn {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+}
+
+#translation-tooltip .add-btn:hover {
+    background: #16a34a;
+}
