@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okuma Materyalleri - LearnEnglish.com</title>
+    
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/reading.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <!-- Tercih ve Yeni Materyal Oluşturma Modalı -->
+    <div id="preferences-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal-btn" class="close-button">&times;</button>
+            <h2>Yeni Materyal Oluştur</h2>
+            <p>Sana özel bir okuma materyali oluşturalım.</p>
+            <form id="preferences-form">
+                <label for="interest-category">Hangi Konu İlgini Çekiyor?</label>
+                <select id="interest-category" required>
+                    <option value="" disabled selected>-- Bir kategori seç --</option>
+                    <option value="technology">Teknoloji</option>
+                    <option value="science">Bilim</option>
+                    <option value="history">Tarih</option>
+                    <option value="art and culture">Sanat ve Kültür</option>
+                    <option value="travel">Seyahat</option>
+                    <option value="daily life">Günlük Yaşam</option>
+                </select>
+                <label for="difficulty-level">İngilizce Seviyen Nedir?</label>
+                <select id="difficulty-level" required>
+                    <option value="A1">A1 (Beginner)</option>
+                    <option value="A2">A2 (Elementary)</option>
+                    <option value="B1">B1 (Intermediate)</option>
+                    <option value="B2">B2 (Upper-Intermediate)</option>
+                    <option value="C1">C1 (Advanced)</option>
+                </select>
+                <label for="content-length">Materyal Uzunluğu Nasıl Olsun?</label>
+                <select id="content-length" required>
+                    <option value="short">Kısa (~150 kelime)</option>
+                    <option value="medium">Orta (~300 kelime)</option>
+                    <option value="long">Uzun (~500+ kelime)</option>
+                </select>
+                <button type="submit" id="generate-content-btn">Oluştur</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+        <!-- SOL MENÜ (SIDEBAR) -->
+        <aside class="sidebar">
+            <div class="logo"><a href="/student.html">LearnEnglish</a></div>
+            <nav>
+                <ul>
+                     <!-- İki klasör yukarı çıkıp student.html'i bul -->
+        <li><a href="../../student.html">Ana Sayfa</a></li>
+        <!-- Bu dosya zaten aynı klasörde olduğu için direkt adını yaz -->
+        <li class="active"><a href="reading.html">Okuma Materyalleri</a></li>
+        <li><a href="wordlist.html">Kelime Listem</a></li>
+        <li><a href="quiz.html">Quiz'lerim</a></li>
+        <li><a href="profile.html">Profilim & İstatistikler</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ANA İÇERİK BÖLÜMÜ -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h2>Okuma Materyalleri</h2>
+                <div class="user-info">
+                    <span id="welcome-message"></span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <div class="reading-layout">
+                    <!-- SOL SÜTUN: MATERYAL LİSTESİ -->
+                    <div class="materials-list-column card">
+                        <div class="list-header">
+                            <h3>Materyallerim</h3>
+                            <button id="new-material-btn" class="cta-button">+ Yeni Oluştur</button>
+                        </div>
+                        <div id="materials-list">
+                            <p>Yükleniyor...</p>
+                        </div>
+                    </div>
+                    <!-- SAĞ SÜTUN: İÇERİK GÖRÜNTÜLEYİCİ -->
+                    <div class="content-view-column card">
+                        <div id="reading-container">
+                            <h1 id="reading-title">Bir materyal seçin</h1>
+                            <div id="reading-body">
+                                <p>Okumak için soldaki listeden bir materyal seçin veya yeni bir tane oluşturun.</p>
+                            </div>
+                            <div id="loader" class="hidden">
+                                <div class="loader-animation"></div>
+                                <p>Yapay zeka senin için yazıyor...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script type="module" src="../../assets/js/router.js"></script>
+    <script type="module" src="../../assets/js/student/reader.js"></script>
+</body>
+</html>

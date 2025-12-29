@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Panel - LearnENG.com</title>
+    <title>Öğrenci Paneli - LearnEnglish.com</title>
     
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
@@ -12,64 +12,64 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-
     <div class="dashboard-container">
-        <!-- LEFT MENU (SIDEBAR) -->
+        <!-- SOL MENÜ (SIDEBAR) -->
         <aside class="sidebar">
             <div class="logo">
                 <a href="/student.html">LearnEnglish</a>
             </div>
             <nav>
                 <ul>
-                    <li class="active"><a href="/student.html">Home</a></li>
-                    <li><a href="/pages/student/reading.html">Reading Materials</a></li>
-                    <li><a href="/pages/student/wordlist.html">My Word List</a></li>
-                    <li><a href="/pages/student/quiz.html">My Quizzes</a></li>
-                    <li><a href="/pages/student/profile.html">My Profile & Statistics</a></li>
+                   <li class="active"><a href="student.html">Ana Sayfa</a></li>
+        <!-- Başındaki / işaretini kaldırıyoruz -->
+        <li><a href="pages/student/reading.html">Okuma Materyalleri</a></li>
+        <li><a href="pages/student/wordlist.html">Kelime Listem</a></li>
+        <li><a href="pages/student/quiz.html">Quiz'lerim</a></li>
+        <li><a href="pages/student/profile.html">Profilim & İstatistikler</a></li>
                 </ul>
             </nav>
         </aside>
 
-        <!-- MAIN CONTENT AREA -->
+        <!-- ANA İÇERİK BÖLÜMÜ -->
         <div class="main-content">
-            <!-- TOP BAR (HEADER) -->
+            <!-- ÜST BAR (HEADER) -->
             <header class="dashboard-header">
-                <h2>Home</h2>
+                <h2>Ana Sayfa</h2>
                 <div class="user-info">
-                    <span id="welcome-message">Loading...</span>
-                    <button id="logout-button">Log Out</button>
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
                 </div>
             </header>
 
-            <!-- CONTENT -->
+            <!-- İÇERİK -->
             <main class="content-area">
-                <h3>Overview</h3>
+                <h3>Genel Bakış</h3>
                 <div class="stats-grid">
                     <div class="card">
-                        <h4>Read Materials</h4>
+                        <h4>Okunan Materyal</h4>
                         <p id="total-readings-stat" class="stat-value">0</p>
                     </div>
                     <div class="card">
-                        <h4>Learned Words</h4>
+                        <h4>Öğrenilen Kelime</h4>
                         <p id="learned-words-stat" class="stat-value">0</p>
                     </div>
                     <div class="card">
-                        <h4>Quiz Performance</h4>
-                        <p id="quiz-success-stat" class="stat-value">0%</p>
+                        <h4>Quiz Başarısı</h4>
+                        <p id="quiz-success-stat" class="stat-value">%0</p>
                     </div>
                 </div>
 
-                <h3>Earned Badges</h3>
+                <h3>Kazanılan Rozetler</h3>
                 <div class="badges-container card">
                     <div id="badge-list" class="badge-list">
-                        <p>You haven't earned any badges yet.</p>
+                        <p>Henüz hiç rozet kazanmadın.</p>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- JavaScript Files -->
+    <!-- JavaScript Dosyaları -->
     <script type="module" src="assets/js/router.js"></script>
     <script type="module" src="assets/js/student/dashboard.js"></script>
 </body>

@@ -1,0 +1,104 @@
+/* assets/css/reading.css */
+
+.reading-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Sol menü sabit, sağ taraf esnek */
+    gap: 25px;
+    height: calc(100vh - 120px); /* Ekran yüksekliğine göre ayarla */
+}
+
+/* SOL SÜTUN */
+.materials-list-column {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow-y: auto;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.list-header h3 {
+    margin: 0;
+}
+
+#new-material-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+}
+
+#materials-list .material-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s;
+}
+
+#materials-list .material-item:hover {
+    background-color: #f8f9fa;
+}
+
+#materials-list .material-item.active {
+    background-color: var(--primary-light-color);
+    color: var(--primary-dark-color);
+    font-weight: bold;
+}
+
+/* SAĞ SÜTUN */
+.content-view-column {
+    overflow-y: auto; /* İçerik taşarsa scroll çıksın */
+}
+
+#reading-container {
+    padding: 10px;
+}
+
+#reading-title {
+    font-size: 2rem;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#reading-body {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* LOADER */
+#loader {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    color: #7f8c8d;
+}
+.loader-animation {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+
+/* MODAL Stilleri (student.css'den taşındı/kopyalandı) */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { position: relative; background: #fff; padding: 30px 40px; border-radius: 12px; width: 90%; max-width: 500px; }
+.modal-content h2 { margin-top: 0; text-align: center; }
+.modal-content p { text-align: center; color: #666; margin-bottom: 25px; }
+.modal-content form { display: flex; flex-direction: column; gap: 20px; }
+.modal-content label { font-weight: bold; font-size: 0.9rem; }
+.modal-content select, .modal-content button { padding: 12px; border-radius: 8px; border: 1px solid #ddd; font-size: 1rem; }
+.modal-content button { background-color: var(--primary-color); color: white; cursor: pointer; border: none; margin-top: 10px; }
+.close-button { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 2rem; cursor: pointer; color: #aaa; }
