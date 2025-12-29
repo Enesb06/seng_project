@@ -59,12 +59,32 @@
                     </div>
                 </div>
 
+                <div class="card" style="margin-top:20px;">
+    <h3>Sınıfım ve Ödevlerim</h3>
+    <div id="class-info-area">Sınıf bilgisi yükleniyor...</div>
+    <ul id="homework-list" class="homework-grid" style="margin-top:15px; list-style:none; padding:0;">
+        <!-- Ödevler buraya gelecek -->
+    </ul>
+</div>
+
                 <h3>Kazanılan Rozetler</h3>
                 <div class="badges-container card">
                     <div id="badge-list" class="badge-list">
                         <p>Henüz hiç rozet kazanmadın.</p>
                     </div>
                 </div>
+
+                <section class="card join-class-section" style="margin-top: 20px;">
+    <h3>Bir Sınıfa Katıl</h3>
+    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">
+        Öğretmeninden aldığın 6 haneli sınıf kodunu girerek sınıfa dahil olabilirsin.
+    </p>
+    <div class="join-controls">
+        <input type="text" id="class-code-input" placeholder="Örn: FPXERE" maxlength="6" style="text-transform: uppercase;">
+        <button id="join-class-btn">Sınıfa Katıl</button>
+    </div>
+    <p id="join-message" style="margin-top: 10px; font-size: 0.9rem; display: none;"></p>
+</section>
             </main>
         </div>
     </div>
