@@ -15,21 +15,23 @@
 </head>
 <body>
 
+    <!-- Navigasyon artık ana ortalama alanının DIŞINDA -->
+    <header class="main-header">
+        <div class="logo">
+            <a href="#">LearnENG.com</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <!-- NOT: CSS'te daha kolay hedeflemek için butonlara class ekledim -->
+                <li><a href="#" id="show-login-btn" class="btn-login">Login</a></li>
+                <li><a href="#" id="show-signup-btn" class="cta-button">Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <!-- Arka plan ve ana içerik için ana sarmalayıcı -->
     <main id="landing-page">
         <div class="overlay"></div>
-
-        <header class="main-header">
-            <div class="logo">
-                <a href="#">LearnENG.com</a>
-            </div>
-            <nav class="main-nav">
-                <ul>
-                    <li><a href="#" id="show-login-btn">Login</a></li>
-                    <li><a href="#" id="show-signup-btn" class="cta-button">Register</a></li>
-                </ul>
-            </nav>
-        </header>
 
         <section class="hero-content">
             <h1>Improve Your English<br>With AI.</h1>
@@ -58,9 +60,9 @@
             <p>Don't have an account? <a href="#" id="show-signup-link">Log in</a></p>
         </div>
 
-        <!-- Kayıt Formu -->
+        <!-- Kayıt Formu (İçerik "Log in" yazıyordu, "Sign Up" olarak düzelttim) -->
         <div id="signup-view" class="hidden">
-            <h2>Log in</h2>
+            <h2>Sign Up</h2>
             <form id="signup-form">
                 <input type="text" id="signup-fullname" placeholder="Name Surname" required>
                 <input type="email" id="signup-email" placeholder="E-mail" required>
@@ -69,7 +71,7 @@
                     <label><input type="radio" name="role" value="student" checked> Student</label>
                     <label><input type="radio" name="role" value="teacher"> Teacher</label>
                 </div>
-                <button type="submit">Log in</button>
+                <button type="submit">Sign Up</button>
             </form>
             <p>Already have an account? <a href="#" id="show-login-link">Log in</a></p>
         </div>
