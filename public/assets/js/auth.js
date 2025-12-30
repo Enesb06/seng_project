@@ -1,7 +1,6 @@
 import { _supabase } from './supabaseClient.js';
 
 // --- ELEMENT SEÇİMİ (Değişiklik yok) ---
-// ... (element seçim kodlarınız olduğu gibi kalıyor)
 const showLoginBtn = document.getElementById('show-login-btn');
 const showSignupBtn = document.getElementById('show-signup-btn');
 const closeAuthBtn = document.getElementById('close-auth-btn');
@@ -20,7 +19,6 @@ const backToLoginLink = document.getElementById('back-to-login-link');
 
 
 // --- MODAL YÖNETİM FONKSİYONLARI (Değişiklik yok) ---
-// ... (modal fonksiyonlarınız olduğu gibi kalıyor)
 const hideAllAuthViews = () => {
     loginView.classList.add('hidden');
     signupView.classList.add('hidden');
@@ -47,18 +45,12 @@ const displaySignupView = () => {
     signupView.classList.remove('hidden');
     openModal();
 };
-// Şifremi unuttum özelliği artık çalışmayacak
 const displayForgotPasswordView = () => {
     alert("Bu özellik şu anda devre dışıdır.");
-    // Veya formu yine de gösterebilirsiniz, ancak işlevsiz olacaktır.
-    // hideAllAuthViews();
-    // forgotPasswordView.classList.remove('hidden');
-    // openModal();
 };
 
 
 // --- OLAY DİNLEYİCİLERİ (Değişiklik yok) ---
-// ... (olay dinleyicileriniz olduğu gibi kalıyor)
 showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
 showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); displaySignupView(); });
 closeAuthBtn.addEventListener('click', closeModal);
@@ -69,9 +61,9 @@ showForgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); di
 backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
 
 
-// --- YENİ VERİTABANI İŞLEMLERİ (AUTH OLMADAN) ---
+// --- VERİTABANI İŞLEMLERİ (GÜNCELLENDİ) ---
 
-// 1. Kayıt Olma Formu -> 'profiles' tablosuna direkt ekleme
+// 1. Kayıt Olma Formu
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fullName = document.getElementById('signup-fullname').value;
@@ -79,79 +71,88 @@ signupForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('signup-password').value;
     const role = document.querySelector('input[name="role"]:checked').value;
 
+    // --- YENİ: Rol öğretmen ise onaysız (false), öğrenci ise onaylı (true) başlar ---
+    const isVerifiedStatus = (role !== 'teacher');
+
     const { data, error } = await _supabase
         .from('profiles')
         .insert([
             { 
                 full_name: fullName, 
                 email: email, 
-                password: password, // UYARI: Şifre açık metin olarak kaydediliyor!
-                role: role 
+                password: password, 
+                role: role,
+                is_verified: isVerifiedStatus // Onay durumu eklendi
             }
         ])
         .select()
         .single();
 
-
     if (error) {
-        if (error.code === '23505') { // Benzersizlik kısıtlaması hatası (email zaten var)
+        if (error.code === '23505') { 
             alert('Bu e-posta adresi zaten kayıtlı.');
         } else {
             alert('Kayıt hatası: ' + error.message);
         }
     } else {
         alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
-        displayLoginView(); // Kullanıcıyı giriş formuna yönlendir
+        displayLoginView();
         signupForm.reset();
     }
 });
 
-// 2. Giriş Yapma Formu -> 'profiles' tablosundan kontrol
+// 2. Giriş Yapma Formu
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
 
-    // E-posta ve şifre ile kullanıcıyı veritabanında ara
     const { data: user, error } = await _supabase
         .from('profiles')
         .select('*')
         .eq('email', email)
-        .eq('password', password) // UYARI: Şifre açık metin olarak karşılaştırılıyor!
-        .single(); // Sadece bir sonuç bekliyoruz
+        .eq('password', password)
+        .single();
 
     if (error || !user) {
         alert('Giriş hatası: E-posta veya şifre yanlış.');
     } else {
-        // Kullanıcı bulundu! Oturum bilgisini localStorage'a kaydet
+        // Oturum bilgisini localStorage'a kaydet
         localStorage.setItem('user', JSON.stringify(user));
-        // Sayfayı yeniden yükle, aşağıdaki DOMContentLoaded yönlendirmeyi yapacak
         window.location.reload(); 
     }
 });
 
-// 3. Şifre Sıfırlama Formu (Artık işlevsiz)
+// 3. Şifre Sıfırlama Formu (Değişiklik yok)
 forgotPasswordForm.addEventListener('submit', (e) => {
     e.preventDefault();
     alert('Bu özellik şu anda devre dışıdır.');
     closeModal();
 });
 
-// 4. Sayfa Yüklendiğinde Oturum Kontrolü ve Yönlendirme
+// 4. Sayfa Yüklendiğinde Oturum Kontrolü ve Yönlendirme (GÜNCELLENDİ)
 document.addEventListener('DOMContentLoaded', () => {
-    // Supabase session yerine localStorage'ı kontrol et
     const userString = localStorage.getItem('user');
     
     if (userString) {
         const user = JSON.parse(userString);
         
-        // Kullanıcının rolüne göre yönlendirme yap
         switch (user.role) {
-            case 'student': window.location.href = 'student.html'; break;
-            case 'teacher': window.location.href = 'teacher.html'; break;
-            case 'admin': window.location.href = 'admin.html'; break;
+            case 'student': 
+                window.location.href = 'student.html'; 
+                break;
+            case 'teacher': 
+                // --- YENİ: Öğretmen onaylı değilse bekleme sayfasına gönder ---
+                if (user.is_verified === false) {
+                    window.location.href = 'pages/teacher/pending.html';
+                } else {
+                    window.location.href = 'teacher.html';
+                }
+                break;
+            case 'admin': 
+                window.location.href = 'admin.html'; 
+                break;
             default: 
-                // Tanımsız bir rol varsa güvenlik için oturumu kapat
                 localStorage.removeItem('user');
                 break;
         }

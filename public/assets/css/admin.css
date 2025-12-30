@@ -1,0 +1,39 @@
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.admin-table th, .admin-table td { padding: 12px; border-bottom: 1px solid #eee; text-align: left; color: #334155; }
+.admin-table th { background: #f8fafc; font-size: 13px; font-weight: bold; }
+
+.role-badge { padding: 4px 10px; border-radius: 15px; font-size: 11px; font-weight: bold; display: inline-block; }
+.role-badge.admin { background: #fee2e2; color: #991b1b; }
+.role-badge.teacher { background: #dbeafe; color: #1e40af; }
+.role-badge.student { background: #fef9c3; color: #854d0e; }
+
+.action-btn { border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px; }
+.action-btn.edit { background: #e0f2fe; color: #0369a1; }
+.action-btn.delete { background: #fee2e2; color: #b91c1c; }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.modal-content { background: white; padding: 25px; border-radius: 10px; width: 350px; }
+.modal-content label { display: block; margin-top: 10px; font-weight: bold; font-size: 14px; }
+.modal-content input, .modal-content select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ddd; border-radius: 5px; }
+
+/* Sidebar Badge */
+.badge {
+    background: #ef4444;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/* Onay Butonu */
+.action-btn.verify {
+    background: #22c55e;
+    color: white;
+    font-weight: bold;
+}
+
+.action-btn.verify:hover { background: #16a34a; }
+
+.hidden { display: none; }

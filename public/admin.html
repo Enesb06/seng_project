@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Paneli - LearnEnglish</title>
+    
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- SOL MENÜ (SIDEBAR) -->
+        <aside class="sidebar">
+            <div class="logo">Admin Dashboard</div>
+            <nav>
+                <ul>
+                    <li id="li-users" class="active">
+                        <a href="#" id="nav-users">Kullanıcı Yönetimi</a>
+                    </li>
+                    <li id="li-verification">
+                        <a href="#" id="nav-verification">
+                            Öğretmen Onayları 
+                            <span id="pending-count" class="badge hidden">0</span>
+                        </a>
+                    </li>
+                    <li><a href="#">Sistem Ayarları</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ANA İÇERİK -->
+        <div class="main-content">
+            <header class="dashboard-header">
+                <h2 id="page-title">Kullanıcı Yönetimi</h2>
+                <div class="user-info">
+                    <span id="admin-display-name">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
+            <main class="content-area">
+                <!-- ÜST İSTATİSTİK KARTLARI (Her zaman görünür) -->
+                <div class="stats-grid">
+                    <div class="card stat-card">
+                        <h4>Toplam Öğrenci</h4>
+                        <p id="total-students" class="stat-value">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h4>Toplam Öğretmen</h4>
+                        <p id="total-teachers" class="stat-value">0</p>
+                    </div>
+                    <div class="card stat-card">
+                        <h4>Toplam İçerik</h4>
+                        <p id="total-contents" class="stat-value">0</p>
+                    </div>
+                </div>
+
+                <!-- BÖLÜM 1: GENEL KULLANICI LİSTESİ -->
+                <div id="users-section" class="card table-card">
+                    <div class="table-header">
+                        <h3>Sistemdeki Tüm Hesaplar</h3>
+                        <input type="text" id="user-search" placeholder="İsim veya e-posta ile ara...">
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>E-posta</th>
+                                <th>Rol</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="user-list-body">
+                            <!-- Veriler dashboard.js ile gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- BÖLÜM 2: ÖĞRETMEN ONAY LİSTESİ (Varsayılan olarak gizli) -->
+                <div id="verification-section" class="card table-card hidden">
+                    <div class="table-header">
+                        <h3>Onay Bekleyen Öğretmen Başvuruları</h3>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Ad Soyad</th>
+                                <th>E-posta</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="verification-list-body">
+                            <!-- Veriler verification.js ile gelecek -->
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- KULLANICI DÜZENLEME MODALI -->
+    <div id="edit-user-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>Hesap Bilgilerini Güncelle</h3>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <div class="form-group">
+                    <label>Ad Soyad</label>
+                    <input type="text" id="edit-full-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Rolü Değiştir</label>
+                    <select id="edit-user-role">
+                        <option value="student">Öğrenci</option>
+                        <option value="teacher">Öğretmen</option>
+                        <option value="admin">Yönetici</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="cta-button">Değişiklikleri Kaydet</button>
+                    <button type="button" id="close-modal-btn" class="cancel-btn">Vazgeç</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Giriş Noktası -->
+    <script type="module" src="assets/js/admin/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Onay Bekleniyor - LearnEnglish</title>
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <style>
+        .pending-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            background: #f8fafc;
+        }
+        .icon { font-size: 60px; margin-bottom: 20px; }
+        .card { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); max-width: 400px; }
+        .btn-refresh { background: #3b82f6; color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; margin-top: 20px; }
+        .btn-logout { background: transparent; color: #64748b; border: none; margin-top: 15px; cursor: pointer; text-decoration: underline; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="pending-container">
+        <div class="card">
+            <div class="icon">⏳</div>
+            <h2>Hesabınız Onay Bekliyor</h2>
+            <p>Öğretmen hesabınız admin tarafından inceleniyor. Onaylandığında sisteme tam erişim sağlayabileceksiniz.</p>
+            
+            <button onclick="checkStatus()" class="btn-refresh">Durumu Kontrol Et</button>
+            <br>
+            <button id="logout-btn" class="btn-logout">Çıkış Yap</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { _supabase } from '../../assets/js/supabaseClient.js';
+        
+        window.checkStatus = async () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) return window.location.href = '../../index.html';
+
+            // Veritabanından en güncel durumu çek
+            const { data, error } = await _supabase
+                .from('profiles')
+                .select('is_verified')
+                .eq('id', user.id)
+                .single();
+
+            if (data && data.is_verified) {
+                // Eğer artık onaylıysa bilgileri güncelle ve dashboard'a gönder
+                user.is_verified = true;
+                localStorage.setItem('user', JSON.stringify(user));
+                window.location.href = 'dashboard.html'; // Öğretmen paneline
+            } else {
+                alert("Henüz onaylanmamış. Lütfen biraz daha bekleyin.");
+            }
+        };
+
+        document.getElementById('logout-btn').onclick = () => {
+            localStorage.removeItem('user');
+            window.location.href = '../../index.html';
+        };
+    </script>
+</body>
+</html>
