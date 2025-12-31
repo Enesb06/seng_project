@@ -22,16 +22,26 @@
                 </ul>
             </nav>
         </aside>
-
+ 
         <div class="main-content">
-            <header class="dashboard-header"><h2>Kelime Quizi</h2></header>
+            <!-- 🚨 BURASI SADECE ÇIKIŞ YAP BUTONUNU EKLEMEK İÇİN DEĞİŞTİ 🚨 -->
+            <header class="dashboard-header">
+                <h2>Kelime Quizi</h2>
+                <div class="user-info">
+                    <span id="welcome-message"></span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+            <!-- 🚨 HEADER SONU 🚨 -->
+            
             <main class="content-area">
+                <!-- 🚨 ESKİ İÇERİK GERİ GELDİ 🚨 -->
                 <div id="quiz-intro" class="card">
                     <h3>Öğrendiğin Kelimeleri Test Et</h3>
-                     <p id="quiz-info-text">Kelimeleriniz taranıyor...</p> 
+                     <p id="quiz-info-text">Kelimeleriniz taranıyor...</p>
                     <button id="start-quiz-btn" class="cta-button">Quizi Başlat</button>
                 </div>
-
+ 
                 <div id="quiz-container" class="card hidden">
                     <div id="loader" class="hidden">Sorular hazırlanıyor...</div>
                     <div id="question-area">
@@ -40,15 +50,17 @@
                         <p id="quiz-progress">Soru 1 / 5</p>
                     </div>
                 </div>
-
+ 
                 <div id="result-area" class="card hidden">
                     <h3>Quiz Tamamlandı!</h3>
                     <p id="score-text"></p>
                     <button onclick="location.reload()" class="cta-button">Tekrar Dene</button>
                 </div>
+                <!-- 🚨 İÇERİK SONU 🚨 -->
             </main>
         </div>
     </div>
     <script type="module" src="../../assets/js/student/quiz.js"></script>
 </body>
 </html>
+ 
