@@ -155,3 +155,29 @@
 #translation-tooltip .add-btn:hover {
     background: #16a34a;
 }
+
+/* READING İÇİN FAVORİ (KALP) BUTONU */
+.reading-container {
+    position: relative;
+    padding-bottom: 40px; /* altta kalp için boşluk */
+}
+
+.favorite-btn {
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+    font-size: 26px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #d1d5db; /* gri kalp */
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.favorite-btn.active {
+    color: #ef4444; /* kırmızı kalp */
+}

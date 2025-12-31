@@ -19,7 +19,56 @@ const preferencesModal = document.getElementById('preferences-modal');
 const preferencesForm = document.getElementById('preferences-form');
 const loader = document.getElementById('loader');
 
+// ❤️ Kalp (favori) butonu
+const favoriteBtn = document.getElementById('favorite-btn');
+
 const AI_FUNCTION_URL = 'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-reading-material';
+
+// --- FAVORİ YÖNETİMİ (LOCALSTORAGE) ---
+
+const getFavorites = () => {
+    const user = getUser();
+    if (!user) return [];
+    try {
+        const stored = JSON.parse(localStorage.getItem(`favorites_${user.id}`));
+        return Array.isArray(stored) ? stored.map(id => String(id)) : [];
+    } catch {
+        return [];
+    }
+};
+
+const saveFavorites = (favorites) => {
+    const user = getUser();
+    if (!user) return;
+    localStorage.setItem(`favorites_${user.id}`, JSON.stringify(favorites));
+};
+
+const updateFavoriteIcon = () => {
+    if (!favoriteBtn) return;
+
+    if (!currentEssayId) {
+        favoriteBtn.classList.remove('active');
+        favoriteBtn.innerHTML = '♡';
+        favoriteBtn.title = 'Favorilere ekle';
+        return;
+    }
+
+    const favorites = getFavorites();
+    const isFav = favorites.includes(String(currentEssayId));
+
+    if (isFav) {
+        favoriteBtn.classList.add('active');
+        favoriteBtn.innerHTML = '♥';
+        favoriteBtn.title = 'Favorilerimden kaldır';
+    } else {
+        favoriteBtn.classList.remove('active');
+        favoriteBtn.innerHTML = '♡';
+        favoriteBtn.title = 'Favorilere ekle';
+    }
+};
+
+// Dışarıdan da erişmek istersen (Favorilerim sayfası için)
+window.getReadingFavorites = getFavorites;
 
 // --- 1. KELİME ÇEVİRİ MANTIĞI (WRAPPER & API) ---
 
@@ -64,6 +113,9 @@ const displayMaterial = async (contentId) => {
         // BU YAZIYA ÖZEL NOTU GETİR
         const savedNote = localStorage.getItem(`note_${user.id}_${contentId}`);
         noteTextarea.value = savedNote || "";
+
+        // ❤️ Bu yazı favori mi? Kalp ikonunu güncelle
+        updateFavoriteIcon();
 
     } catch (err) { console.error("Hata:", err); }
 };
@@ -183,6 +235,31 @@ document.getElementById('new-material-btn').onclick = () => preferencesModal.cla
 document.getElementById('close-modal-btn').onclick = () => preferencesModal.classList.add('hidden');
 preferencesForm.onsubmit = handleGenerateNewMaterial;
 
+// ❤️ Kalp butonu tıklama olayı
+if (favoriteBtn) {
+    favoriteBtn.addEventListener('click', () => {
+        if (!currentEssayId) {
+            alert("Önce bir yazı seçin!");
+            return;
+        }
+
+        const favorites = getFavorites();
+        const idStr = String(currentEssayId);
+
+        if (favorites.includes(idStr)) {
+            // Favorilerden çıkar
+            const updated = favorites.filter(id => id !== idStr);
+            saveFavorites(updated);
+        } else {
+            // Favorilere ekle
+            favorites.push(idStr);
+            saveFavorites(favorites);
+        }
+
+        updateFavoriteIcon();
+    });
+}
+
 // Sayfa Başlatıcı
 window.displayMaterial = displayMaterial;
 document.addEventListener('DOMContentLoaded', () => {
@@ -190,4 +267,5 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) document.getElementById('welcome-message').innerText = `Hoş geldin, ${user.full_name}!`;
     loadUserMaterials();
     renderHistory();
+    updateFavoriteIcon(); // başta nötr durumda olsun
 });

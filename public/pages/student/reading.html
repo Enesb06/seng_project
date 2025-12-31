@@ -55,10 +55,14 @@
             <div class="logo"><a href="/student.html">LearnEnglish</a></div>
             <nav>
                 <ul>
-                     <!-- İki klasör yukarı çıkıp student.html'i bul -->
+        <!-- İki klasör yukarı çıkıp student.html'i bul -->
         <li><a href="../../student.html">Ana Sayfa</a></li>
         <!-- Bu dosya zaten aynı klasörde olduğu için direkt adını yaz -->
         <li class="active"><a href="reading.html">Okuma Materyalleri</a></li>
+
+        <!-- 🔹 YENİ: Favorilerim sayfası -->
+        <li><a href="favorites.html">⭐ Favorilerim</a></li>
+
         <li><a href="wordlist.html">Kelime Listem</a></li>
         <li><a href="quiz.html">Quiz'lerim</a></li>
         <li><a href="profile.html">Profilim & İstatistikler</a></li>
@@ -100,10 +104,13 @@
             <!-- SAĞ SÜTUN: Metin ve Not Kutusu -->
             <div class="reader-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
                 <!-- Okuma Alanı (Metin uzunsa burada kayar) -->
-                <div id="reading-container" style="flex: 1; overflow-y: auto; padding: 30px;">
+                <div id="reading-container" class="reading-container" style="flex: 1; overflow-y: auto; padding: 30px;">
                     <h1 id="reading-title">Lütfen bir yazı seçin</h1>
                     <div id="reading-body" style="font-size: 1.1rem; line-height: 1.8;"></div>
                     <div id="loader" class="hidden">Yapay zeka yazıyor...</div>
+
+                    <!-- 🔹 Sağ alt kalp butonu -->
+                    <button id="favorite-btn" class="favorite-btn" type="button">♡</button>
                 </div>
 
                 <!-- Not Alanı (Her zaman en altta sabit) -->

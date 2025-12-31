@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorilerim - LearnEnglish.com</title>
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/reading.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo"><a href="/student.html">LearnEnglish</a></div>
+        <nav>
+            <ul>
+                <li><a href="../../student.html">Ana Sayfa</a></li>
+                <li><a href="reading.html">Okuma Materyalleri</a></li>
+                <li class="active"><a href="favorites.html">⭐ Favorilerim</a></li>
+                <li><a href="wordlist.html">Kelime Listem</a></li>
+                <li><a href="quiz.html">Quiz'lerim</a></li>
+                <li><a href="profile.html">Profilim & İstatistikler</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content" style="height:100vh;display:flex;flex-direction:column;overflow:hidden;">
+        
+        <!-- ÜST BAR -->
+        <header class="dashboard-header" style="flex-shrink:0;">
+            <h2>⭐ Favori Okuma Materyallerim</h2>
+            <div class="user-info">
+                <span id="welcome-message"></span>
+                <button id="logout-button">Çıkış Yap</button>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <main class="content-area" style="flex:1;overflow-y:auto;padding:20px;">
+            <div class="card" style="padding:20px;">
+                <h3 style="margin-top:0;">Beğendiğin Yazılar</h3>
+                <p style="margin-top:0;color:#6b7280;font-size:0.9rem;">
+                    Okuma sayfasındaki kalp ikonuna bastığın yazılar burada görünür.
+                </p>
+
+                <div id="favorites-loading" style="font-size:0.9rem;color:#6b7280;">
+                    Yükleniyor...
+                </div>
+
+                <div id="favorites-empty" style="display:none;font-size:0.9rem;color:#9ca3af;">
+                    Henüz favorin yok. Okuma materyallerine gidip sağ alttaki kalp ikonuna tıklayabilirsin.
+                </div>
+
+                <div id="favorites-list" style="margin-top:15px;display:flex;flex-direction:column;gap:10px;"></div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<!-- ZORUNLU ROUTER -->
+<script type="module" src="../../assets/js/router.js"></script>
+
+<!-- FAVORITES LOGIC -->
+<script type="module">
+    import { _supabase } from "../../assets/js/supabaseClient.js";
+
+    const favoritesListEl  = document.getElementById('favorites-list');
+    const emptyStateEl     = document.getElementById('favorites-empty');
+    const loadingEl        = document.getElementById('favorites-loading');
+    const welcomeMessageEl = document.getElementById('welcome-message');
+
+    const getUser = () => JSON.parse(localStorage.getItem('user'));
+
+    const getFavorites = () => {
+        const user = getUser();
+        if (!user) return [];
+        try {
+            const stored = JSON.parse(localStorage.getItem('favorites_' + user.id));
+            return Array.isArray(stored) ? stored.map(function(id){ return String(id); }) : [];
+        } catch (e) {
+            return [];
+        }
+    };
+
+    const renderFavorites = (items) => {
+        if (!items || items.length === 0) {
+            favoritesListEl.innerHTML = "";
+            emptyStateEl.style.display = "block";
+            return;
+        }
+
+        emptyStateEl.style.display = "none";
+
+        var html = "";
+        items.forEach(function(item) {
+            var dateText = item.created_at
+                ? new Date(item.created_at).toLocaleDateString("tr-TR")
+                : "-";
+
+            html += '<div style="'
+                 + 'border:1px solid #e5e7eb;'
+                 + 'border-radius:10px;'
+                 + 'padding:12px 14px;'
+                 + 'display:flex;'
+                 + 'justify-content:space-between;'
+                 + 'align-items:center;">';
+
+            html +=   '<div>';
+            html +=     '<div style="font-weight:600;font-size:0.95rem;">'
+                     + item.title
+                     + '</div>';
+            html +=     '<div style="font-size:0.8rem;color:#6b7280;">'
+                     + 'Oluşturulma: ' + dateText +
+                     '</div>';
+            html +=   '</div>';
+
+            html +=   '<a href="reading.html" style="'
+                     + 'background:#4CAF50;'
+                     + 'color:white;'
+                     + 'padding:6px 10px;'
+                     + 'border-radius:6px;'
+                     + 'text-decoration:none;'
+                     + 'font-size:0.8rem;">Oku</a>';
+
+            html += '</div>';
+        });
+
+        favoritesListEl.innerHTML = html;
+    };
+
+    const loadFavorites = async () => {
+        const user = getUser();
+        if (!user) {
+            window.location.href = "../../index.html";
+            return;
+        }
+
+        welcomeMessageEl.textContent = "Hoş geldin, " + user.full_name + "!";
+
+        const favIds = getFavorites();
+        if (favIds.length === 0) {
+            loadingEl.style.display = "none";
+            renderFavorites([]);
+            return;
+        }
+
+        const favIdsNum = favIds.map(function(id){ return Number(id); });
+
+        try {
+            const { data, error } = await _supabase
+                .from("contents")
+                .select("id,title,created_at")
+                .in("id", favIdsNum);
+
+            loadingEl.style.display = "none";
+
+            if (error) {
+                console.error(error);
+                favoritesListEl.innerHTML = "<p style='color:red;'>Favoriler yüklenirken hata oluştu</p>";
+                return;
+            }
+
+            const ordered = data.sort(function(a, b) {
+                return favIds.indexOf(String(a.id)) - favIds.indexOf(String(b.id));
+            });
+
+            renderFavorites(ordered);
+        } catch (err) {
+            loadingEl.style.display = "none";
+            console.error(err);
+            favoritesListEl.innerHTML = "<p style='color:red;'>Beklenmeyen bir hata oluştu</p>";
+        }
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadFavorites);
+    } else {
+        loadFavorites();
+    }
+</script>
+</body>
+</html>
