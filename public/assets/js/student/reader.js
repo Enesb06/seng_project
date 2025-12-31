@@ -12,6 +12,7 @@ const preferencesModal = document.getElementById('preferences-modal');
 const closeModalBtn = document.getElementById('close-modal-btn');
 const preferencesForm = document.getElementById('preferences-form');
 const loader = document.getElementById('loader');
+const materialsSidebar = document.getElementById('materials-sidebar'); // Sidebar'ı seçmek için eklendi
 
 // Tooltip (Çeviri Kutusu) Elemanları
 const tooltip = document.getElementById('translation-tooltip');
@@ -19,12 +20,13 @@ const tooltipWord = document.getElementById('tooltip-word');
 const tooltipMeaning = document.getElementById('tooltip-meaning');
 const addWordBtn = document.getElementById('add-to-wordlist-btn');
 
-const AI_FUNCTION_URL = 'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-reading-material'; 
+const AI_FUNCTION_URL = 'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-reading-material';
 
 const getUser = () => JSON.parse(localStorage.getItem('user'));
 
 // --- KELİMELERİ TIKLANABİLİR YAPMA ---
 const wrapWords = (text) => {
+    if(!text) return '';
     return text.split(/(\s+)/).map(part => {
         if (/\w+/.test(part)) {
             const cleanWord = part.replace(/[.,!?;:()]/g, '');
@@ -48,9 +50,11 @@ const getTranslation = async (word) => {
 
 // --- MATERYALİ EKRANA BAS ---
 const displayMaterial = async (contentId) => {
-    document.querySelectorAll('.material-item').forEach(el => el.classList.remove('active'));
-    const activeItem = document.querySelector(`.material-item[data-id='${contentId}']`);
-    if(activeItem) activeItem.classList.add('active');
+    if(document.querySelectorAll('.material-item')){
+        document.querySelectorAll('.material-item').forEach(el => el.classList.remove('active'));
+        const activeItem = document.querySelector(`.material-item[data-id='${contentId}']`);
+        if (activeItem) activeItem.classList.add('active');
+    }
 
     readingTitle.textContent = 'Yükleniyor...';
     readingBody.innerHTML = '';
@@ -77,32 +81,29 @@ readingBody.addEventListener('click', async (e) => {
         const word = e.target.getAttribute('data-word');
         const rect = e.target.getBoundingClientRect();
 
-        // Tooltip'i kelimenin tam üstünde göster
         tooltip.style.left = `${rect.left + window.scrollX}px`;
         tooltip.style.top = `${rect.top + window.scrollY - 80}px`;
         tooltip.style.display = 'flex';
 
         tooltipWord.textContent = word;
         tooltipMeaning.textContent = "Çevriliyor...";
-        
+
         const meaning = await getTranslation(word);
         tooltipMeaning.textContent = meaning;
-        
-        // Kaydet butonuna basınca olacaklar
+
         addWordBtn.onclick = () => saveToWordlist(word, meaning);
     } else {
         tooltip.style.display = 'none';
     }
 });
 
-// Boşluğa tıklayınca kapat
 document.addEventListener('mousedown', (e) => {
     if (tooltip && !tooltip.contains(e.target) && !e.target.classList.contains('word')) {
         tooltip.style.display = 'none';
     }
 });
 
-// --- VERİTABANINA KAYDETME (SENİN TABLO YAPINA GÖRE) ---
+// --- VERİTABANINA KAYDETME ---
 const saveToWordlist = async (word, meaning) => {
     const user = getUser();
     if (!user) return;
@@ -111,12 +112,12 @@ const saveToWordlist = async (word, meaning) => {
     addWordBtn.textContent = "Kaydediliyor...";
 
     const { error } = await _supabase
-        .from('word_list') // <-- EĞER TABLO ADIN FARKLIYSA BURAYI DEĞİŞTİR
+        .from('word_list')
         .insert({
-            student_id: user.id,      // Görseldeki sütun: student_id
-            word: word,               // Görseldeki sütun: word
-            definition: meaning,      // Görseldeki sütun: definition
-            learning_status: 'learning' // Görseldeki sütun: learning_status
+            student_id: user.id,
+            word: word,
+            definition: meaning,
+            learning_status: 'learning'
         });
 
     if (error) {
@@ -146,14 +147,14 @@ const handleGenerateNewMaterial = async (e) => {
     const length = document.getElementById('content-length').value;
 
     const promptDetails = `Write a ${length} reading text in English for an ${difficulty} level student about ${category}. IMPORTANT: Response must be ONLY a valid JSON object with "title" and "body" fields.`;
-    
+
     try {
         const response = await fetch(AI_FUNCTION_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ promptDetails })
         });
-        
+
         const responseData = await response.json();
         if (!response.ok) throw new Error(responseData.error || 'API Hatası');
 
@@ -191,7 +192,7 @@ const handleGenerateNewMaterial = async (e) => {
 // --- MATERYAL LİSTESİNİ YÜKLE ---
 const loadUserMaterials = async () => {
     const user = getUser();
-    if (!user) return;
+    if (!user || !materialsList) return;
 
     materialsList.innerHTML = '';
     const { data, error } = await _supabase
@@ -211,22 +212,110 @@ const loadUserMaterials = async () => {
     }
 };
 
+
+// --- YENİ EKLENEN KOD: ÖDEV TAMAMLAMA MANTIĞI ---
+
+// Sayfa en altına gelindiğinde "Ödevi Bitir" butonu göster
+window.onscroll = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hwId = urlParams.get('hw_id');
+    
+    // Sadece URL'de hw_id varsa ve sayfanın sonuna gelinmişse çalış
+    if (hwId && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50) {
+        showFinishHwButton(hwId);
+    }
+};
+
+const showFinishHwButton = async (hwId) => {
+    // Eğer buton zaten varsa tekrar oluşturma
+    if (document.getElementById('finish-hw-btn')) return;
+    
+    const user = getUser();
+    
+    // Bu ödevi daha önce tamamlamış mı diye kontrol et
+    const { data: existingCompletion } = await _supabase
+        .from('assignment_completions')
+        .select('id')
+        .eq('assignment_id', hwId)
+        .eq('student_id', user.id)
+        .single();
+        
+    // Eğer tamamlanmış bir kayıt varsa butonu gösterme
+    if (existingCompletion) {
+        return;
+    }
+
+    const btn = document.createElement('button');
+    btn.id = 'finish-hw-btn';
+    btn.textContent = "Ödevi Okudum ve Bitirdim ✅";
+    btn.className = "cta-button";
+    btn.style.cssText = "position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:1000; width:auto; padding:15px 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);";
+    
+    btn.onclick = async () => {
+        btn.disabled = true;
+        btn.textContent = "Kaydediliyor...";
+        
+        const { error } = await _supabase
+            .from('assignment_completions')
+            .insert({ assignment_id: hwId, student_id: user.id });
+        
+        if (error) {
+            alert("Bir hata oluştu: " + error.message);
+            btn.disabled = false;
+            btn.textContent = "Ödevi Okudum ve Bitirdim ✅";
+        } else {
+            alert("Ödev başarıyla tamamlandı!");
+            window.location.href = "../../student.html"; // Dashboard'a yönlendir
+        }
+    };
+    document.body.appendChild(btn);
+};
+
+
 // --- SAYFA BAŞLATMA ---
-const initializePage = () => {
+const initializePage = async () => {
     const user = getUser();
     if (user) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
-    loadUserMaterials();
     
-    logoutButton.addEventListener('click', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hwId = urlParams.get('hw_id');
+
+    if (hwId) {
+        // Bu bir ödev okuması, normal materyal listesini gizle
+        if(materialsSidebar) materialsSidebar.style.display = 'none';
+        
+        // Ödevin content_id'sini al ve materyali göster
+        const { data: assignment, error } = await _supabase
+            .from('assignments')
+            .select('content_id')
+            .eq('id', hwId)
+            .single();
+            
+        if (error || !assignment) {
+            readingTitle.textContent = "Hata";
+            readingBody.innerHTML = "Bu ödev bulunamadı veya erişim yetkiniz yok.";
+        } else {
+            displayMaterial(assignment.content_id);
+        }
+
+    } else {
+        // Normal okuma sayfası, kullanıcının kendi materyallerini yükle
+        loadUserMaterials();
+        if(materialsList) {
+            materialsList.addEventListener('click', (e) => {
+                if (e.target.classList.contains('material-item')) displayMaterial(e.target.dataset.id);
+            });
+        }
+    }
+
+    // Genel event listener'lar
+    if(logoutButton) logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
         window.location.href = '../../index.html';
     });
-    newMaterialBtn.addEventListener('click', () => preferencesModal.classList.remove('hidden'));
-    closeModalBtn.addEventListener('click', () => preferencesModal.classList.add('hidden'));
-    materialsList.addEventListener('click', (e) => {
-        if (e.target.classList.contains('material-item')) displayMaterial(e.target.dataset.id);
-    });
-    preferencesForm.addEventListener('submit', handleGenerateNewMaterial);
+    if(newMaterialBtn) newMaterialBtn.addEventListener('click', () => preferencesModal.classList.remove('hidden'));
+    if(closeModalBtn) closeModalBtn.addEventListener('click', () => preferencesModal.classList.add('hidden'));
+    if(preferencesForm) preferencesForm.addEventListener('submit', handleGenerateNewMaterial);
 };
 
 document.addEventListener('DOMContentLoaded', initializePage);
