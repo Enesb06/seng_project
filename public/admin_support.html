@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Destek Talepleri - Admin - LearnEnglish</title>
+
+    <!-- Aynı CSS'ler -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+<div class="dashboard-container">
+
+    <!-- SOL MENÜ -->
+    <aside class="sidebar">
+        <div class="logo">Admin Dashboard</div>
+        <nav>
+            <ul>
+                <li id="li-users">
+                    <a href="admin.html" id="nav-users">Kullanıcı Yönetimi</a>
+                </li>
+                <li id="li-verification">
+                    <a href="admin.html#verification">Öğretmen Onayları</a>
+                </li>
+                <li id="li-support" class="active">
+                    <a href="admin_support.html">Destek Talepleri</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ANA İÇERİK -->
+    <div class="main-content">
+        <header class="dashboard-header">
+            <h2>Destek Talepleri</h2>
+            <div class="user-info">
+                <span id="admin-display-name">Yükleniyor...</span>
+                <button id="logout-button">Çıkış Yap</button>
+            </div>
+        </header>
+
+        <main class="content-area">
+
+            <!-- ÜSTTE KÜÇÜK SAYI KARTI -->
+            <div style="
+                border:1px solid #e5e7eb;
+                border-radius:12px;
+                padding:12px 16px;
+                margin-bottom:20px;
+                background:#ffffff;">
+                <h3 style="margin:0 0 4px 0; font-size:0.95rem;">Toplam Destek Talebi</h3>
+                <p id="support-total-count" style="margin:0;font-size:1.5rem;font-weight:600;">0</p>
+            </div>
+
+            <!-- ALTA 2 KUTU: SOL LİSTE, SAĞ MESAJLAR -->
+            <div style="display:flex; gap:20px; align-items:flex-start;">
+
+                <!-- SOL: DESTEK TALEBİ LİSTESİ -->
+                <div style="
+                    flex:1;
+                    border:1px solid #e5e7eb;
+                    border-radius:12px;
+                    padding:16px;
+                    background:#ffffff;">
+                    
+                    <h3 style="margin-top:0; margin-bottom:12px; font-size:1rem;">
+                        Tüm Destek Talepleri
+                    </h3>
+
+                    <table style="width:100%; border-collapse:collapse; font-size:0.85rem;">
+                        <thead>
+                            <tr style="background:#f3f4f6;">
+                                <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">ID</th>
+                                <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Konu</th>
+                                <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Rol</th>
+                                <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Oluşturulma</th>
+                                <th style="text-align:left; padding:6px 8px; border-bottom:1px solid #e5e7eb;">Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody id="support-threads-body">
+                            <tr>
+                                <td colspan="5" style="padding:8px; text-align:center; color:#6b7280;">
+                                    Yükleniyor...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- SAĞ: MESAJLAR & CEVAP -->
+                <div style="
+                    flex:1;
+                    border:1px solid #e5e7eb;
+                    border-radius:12px;
+                    padding:16px;
+                    background:#ffffff;
+                    display:flex;
+                    flex-direction:column;
+                    gap:10px;">
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                        <div>
+                            <h3 id="selected-thread-title"
+                                style="margin:0; font-size:1rem;">
+                                Bir destek talebi seçin
+                            </h3>
+                            <p id="selected-thread-meta"
+                               style="margin:2px 0 0 0; font-size:0.8rem; color:#6b7280;">
+                                Henüz bir talep seçilmedi.
+                            </p>
+                        </div>
+                        <span id="selected-thread-status-badge"
+                              style="
+                                font-size:0.75rem;
+                                padding:4px 8px;
+                                border-radius:999px;
+                                background:#e5e7eb;
+                                color:#374151;
+                                display:none;">
+                            Durum
+                        </span>
+                    </div>
+
+                    <div id="messages-box"
+                         style="
+                            border:1px solid #e5e7eb;
+                            border-radius:10px;
+                            padding:10px;
+                            max-height:320px;
+                            overflow-y:auto;
+                            font-size:0.9rem;">
+                        Bir talep seçtiğinizde, mesajlar burada görünecek.
+                    </div>
+
+                    <!-- DURUM + CEVAP ALANI -->
+                    <div style="margin-top:8px; display:flex; flex-direction:column; gap:8px;">
+
+                        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                            <label for="thread-status-select" style="font-size:0.85rem;">
+                                Talep Durumu:
+                            </label>
+                            <select id="thread-status-select"
+                                    style="padding:4px 8px; font-size:0.85rem;">
+                                <option value="open">Açık</option>
+                                <option value="closed">Kapalı</option>
+                            </select>
+                            <button id="update-status-btn"
+                                    class="cta-button"
+                                    style="padding:6px 10px; font-size:0.8rem;">
+                                Durumu Güncelle
+                            </button>
+                        </div>
+
+                        <textarea id="admin-reply-input"
+                                  rows="3"
+                                  placeholder="Bu talebe cevap yazın..."
+                                  style="
+                                    width:100%;
+                                    padding:10px 12px;
+                                    border-radius:10px;
+                                    border:1px solid #d1d5db;
+                                    box-sizing:border-box;
+                                    font-size:0.9rem;
+                                    font-family:inherit;"></textarea>
+
+                        <button id="send-reply-btn"
+                                class="cta-button"
+                                style="align-self:flex-end;">
+                            Cevabı Gönder
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- JS -->
+<script type="module" src="assets/js/admin/support.js"></script>
+</body>
+</html>

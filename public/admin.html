@@ -21,12 +21,20 @@
                     <li id="li-users" class="active">
                         <a href="#" id="nav-users">Kullanıcı Yönetimi</a>
                     </li>
+
                     <li id="li-verification">
                         <a href="#" id="nav-verification">
                             Öğretmen Onayları 
                             <span id="pending-count" class="badge hidden">0</span>
                         </a>
                     </li>
+
+                    <!-- ✅ YENİ EKLENEN KISIM -->
+                    <li>
+                        <a href="admin_support.html">💬 Destek Mesajları</a>
+                    </li>
+                    <!-- ✅ BİTTİ -->
+
                     <li><a href="#">Sistem Ayarları</a></li>
                 </ul>
             </nav>
@@ -43,7 +51,7 @@
             </header>
 
             <main class="content-area">
-                <!-- ÜST İSTATİSTİK KARTLARI (Her zaman görünür) -->
+                <!-- ÜST İSTATİSTİK KARTLARI -->
                 <div class="stats-grid">
                     <div class="card stat-card">
                         <h4>Toplam Öğrenci</h4>
@@ -75,12 +83,11 @@
                             </tr>
                         </thead>
                         <tbody id="user-list-body">
-                            <!-- Veriler dashboard.js ile gelecek -->
                         </tbody>
                     </table>
                 </div>
 
-                <!-- BÖLÜM 2: ÖĞRETMEN ONAY LİSTESİ (Varsayılan olarak gizli) -->
+                <!-- BÖLÜM 2: ÖĞRETMEN ONAY -->
                 <div id="verification-section" class="card table-card hidden">
                     <div class="table-header">
                         <h3>Onay Bekleyen Öğretmen Başvuruları</h3>
@@ -95,7 +102,6 @@
                             </tr>
                         </thead>
                         <tbody id="verification-list-body">
-                            <!-- Veriler verification.js ile gelecek -->
                         </tbody>
                     </table>
                 </div>
@@ -103,16 +109,18 @@
         </div>
     </div>
 
-    <!-- KULLANICI DÜZENLEME MODALI -->
+    <!-- KULLANICI DÜZENLEME MODAL -->
     <div id="edit-user-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>Hesap Bilgilerini Güncelle</h3>
             <form id="edit-user-form">
                 <input type="hidden" id="edit-user-id">
+
                 <div class="form-group">
                     <label>Ad Soyad</label>
                     <input type="text" id="edit-full-name" required>
                 </div>
+
                 <div class="form-group">
                     <label>Rolü Değiştir</label>
                     <select id="edit-user-role">
@@ -121,6 +129,7 @@
                         <option value="admin">Yönetici</option>
                     </select>
                 </div>
+
                 <div class="modal-buttons">
                     <button type="submit" class="cta-button">Değişiklikleri Kaydet</button>
                     <button type="button" id="close-modal-btn" class="cancel-btn">Vazgeç</button>
@@ -129,7 +138,7 @@
         </div>
     </div>
 
-    <!-- Giriş Noktası -->
+    <!-- JS -->
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>

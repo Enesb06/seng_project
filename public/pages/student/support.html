@@ -2,10 +2,12 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destek Merkezi</title>
 
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -23,9 +25,7 @@
                 <li><a href="favorites.html">⭐ Favorilerim</a></li>
                 <li><a href="wordlist.html">Kelime Listem</a></li>
                 <li><a href="quiz.html">Quiz'lerim</a></li>
-
                 <li class="active"><a href="support.html">💬 Destek</a></li>
-
                 <li><a href="profile.html">Profilim & İstatistikler</a></li>
             </ul>
         </nav>
@@ -37,20 +37,13 @@
             <h2>💬 Destek &amp; Geri Bildirim</h2>
             <button id="logout-button">Çıkış Yap</button>
         </header>
-<main class="content-area" 
-      style="
-      display:flex;
-      flex-direction:column;
-      gap:20px;
-      max-width:850px;
-      margin:0 auto;
-      width:100%;
-      ">
 
-        
+        <!-- ORTALANMIŞ İÇERİK -->
+        <main class="content-area"
+              style="display:flex; flex-direction:column; gap:20px; max-width:850px; margin:0 auto; width:100%;">
 
-            <!-- YENİ KONU -->
-            <div class="card" style="padding:20px; max-width:720px;">
+            <!-- YENİ KONU AÇMA -->
+            <div class="card" style="padding:20px;">
                 <h3 style="margin-top:0; margin-bottom:12px;">Yeni Destek Talebi Oluştur</h3>
 
                 <div style="display:flex;flex-direction:column;gap:10px;">
@@ -59,19 +52,11 @@
                                style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
                             Konu Başlığı
                         </label>
-                        <input
-                            id="support-subject"
-                            type="text"
-                            placeholder="Örn: Quiz açılmıyor, okuma metni görünmüyor..."
-                            style="
-                                width:100%;
-                                padding:10px 12px;
-                                border-radius:10px;
-                                border:1px solid #d1d5db;
-                                font-size:0.95rem;
-                                box-sizing:border-box;
-                            "
-                        >
+                        <input id="support-subject"
+                               type="text"
+                               placeholder="Örn: Quiz açılmıyor, okuma metni görünmüyor..."
+                               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
+                                      font-size:0.95rem;box-sizing:border-box;">
                     </div>
 
                     <div>
@@ -79,43 +64,27 @@
                                style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
                             Mesajınız
                         </label>
-                        <textarea
-                            id="support-message"
-                            rows="4"
-                            placeholder="Sorununuzu veya geri bildiriminizi ayrıntılı şekilde yazın..."
-                            style="
-                                width:100%;
-                                padding:10px 12px;
-                                border-radius:10px;
-                                border:1px solid #d1d5db;
-                                font-size:0.95rem;
-                                resize:vertical;
-                                min-height:120px;
-                                box-sizing:border-box;
-                                font-family:inherit;
-                            "
-                        ></textarea>
+                        <textarea id="support-message"
+                                  rows="4"
+                                  placeholder="Sorununuzu veya geri bildiriminizi ayrıntılı şekilde yazın..."
+                                  style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
+                                         font-size:0.95rem;resize:vertical;min-height:120px;box-sizing:border-box;
+                                         font-family:inherit;"></textarea>
                     </div>
 
-                    <button
-                        id="create-thread"
-                        class="cta-button"
-                        style="width:100%;margin-top:4px;">
+                    <button id="create-thread" class="cta-button" style="width:100%;margin-top:4px;">
                         Gönder
                     </button>
                 </div>
             </div>
 
-            <!-- GEÇMİŞ TALEPLER -->
-            <div class="card" style="padding:20px; max-width:720px;">
+            <!-- KENDİ TALEPLERİ -->
+            <div class="card" style="padding:20px;">
                 <h3 style="margin-top:0; margin-bottom:12px;">Geçmiş Destek Taleplerim</h3>
 
-                <div id="my-threads" style="
-                    border:1px solid #e5e7eb;
-                    border-radius:12px;
-                    padding:12px 14px;
-                    background:#f9fafb;
-                    font-size:0.9rem;">
+                <div id="my-threads"
+                     style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;
+                            font-size:0.9rem;">
                     Henüz destek talebiniz yok.
                 </div>
             </div>
@@ -134,6 +103,7 @@ const threadsBox   = document.getElementById("my-threads");
 
 const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
 
+// Kendi taleplerini yükle
 const loadMyThreads = async () => {
     const user = getUser();
     if (!user) return;
@@ -170,6 +140,7 @@ const loadMyThreads = async () => {
     `).join("");
 };
 
+// Yeni talep oluştur
 createBtn.onclick = async () => {
     const user = getUser();
     if (!user) return;
@@ -182,6 +153,7 @@ createBtn.onclick = async () => {
         return;
     }
 
+    // 1) thread oluştur
     const { data: thread, error } = await _supabase
         .from("support_threads")
         .insert({
@@ -199,6 +171,7 @@ createBtn.onclick = async () => {
         return;
     }
 
+    // 2) ilk mesajı ekle
     await _supabase
         .from("support_messages")
         .insert({
@@ -210,6 +183,7 @@ createBtn.onclick = async () => {
 
     subjectInput.value = "";
     messageInput.value = "";
+
     loadMyThreads();
 };
 
