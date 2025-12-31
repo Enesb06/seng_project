@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Destek Merkezi</title>
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR (senin sistemde ne varsa aynı bırak, sadece destek ekli) -->
+    <aside class="sidebar">
+        <div class="logo"><a href="../../student.html">LearnEnglish</a></div>
+        <nav>
+            <ul>
+                <li><a href="../../student.html">Ana Sayfa</a></li>
+                <li><a href="reading.html">Okuma Materyalleri</a></li>
+                <li><a href="favorites.html">⭐ Favorilerim</a></li>
+                <li><a href="wordlist.html">Kelime Listem</a></li>
+                <li><a href="quiz.html">Quiz'lerim</a></li>
+
+                <li class="active"><a href="support.html">💬 Destek</a></li>
+
+                <li><a href="profile.html">Profilim & İstatistikler</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <header class="dashboard-header">
+            <h2>💬 Destek & Geri Bildirim</h2>
+            <button id="logout-button">Çıkış Yap</button>
+        </header>
+
+        <main class="content-area">
+
+            <!-- YENİ KONU AÇMA -->
+            <div class="card">
+                <h3>Yeni Destek Talebi Oluştur</h3>
+
+                <input id="support-subject"
+                       placeholder="Konu Başlığı (ör: Quiz açılmıyor)">
+                
+                <textarea id="support-message"
+                          placeholder="Sorununuz veya geri bildiriminizi yazın..."
+                          rows="4"></textarea>
+
+                <button id="create-thread" class="cta-button">
+                    Gönder
+                </button>
+            </div>
+
+            <!-- KENDİ TALEPLERİ -->
+            <div class="card">
+                <h3>Geçmiş Destek Taleplerim</h3>
+
+                <div id="my-threads" style="
+                    border:1px solid #ddd;
+                    border-radius:10px;
+                    padding:10px;">
+                    Yükleniyor...
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+
+<!-- ============ JS ============ -->
+<script type="module">
+import { _supabase } from "../../assets/js/supabaseClient.js";
+
+const subjectInput = document.getElementById("support-subject");
+const messageInput = document.getElementById("support-message");
+const createBtn = document.getElementById("create-thread");
+const threadsBox = document.getElementById("my-threads");
+
+const getUser = () => JSON.parse(localStorage.getItem("user"));
+
+const loadMyThreads = async () => {
+    const user = getUser();
+    if (!user) return;
+
+    const { data, error } = await _supabase
+        .from("support_threads")
+        .select("*")
+        .eq("created_by_user_id", user.id)
+        .order("created_at", { ascending: false });
+
+    if (error || !data) {
+        threadsBox.innerHTML = "Yüklenirken hata oluştu.";
+        return;
+    }
+
+    if (data.length === 0) {
+        threadsBox.innerHTML = "<p style='color:#777'>Henüz destek talebiniz yok.</p>";
+        return;
+    }
+
+    threadsBox.innerHTML = data.map(t => `
+        <div style="
+            border:1px solid #e5e7eb;
+            border-radius:8px;
+            padding:10px;
+            margin-bottom:6px;">
+            <div style="font-weight:600;">${t.subject}</div>
+            <div style="font-size:0.8rem;color:#666;">
+                Durum: ${t.status === "open" ? "Açık" : "Kapalı"}
+                • ${new Date(t.created_at).toLocaleString("tr-TR")}
+            </div>
+        </div>
+    `).join("");
+};
+
+createBtn.onclick = async () => {
+    const user = getUser();
+    if (!user) return;
+
+    const subject = subjectInput.value.trim();
+    const message = messageInput.value.trim();
+
+    if (!subject || !message) {
+        alert("Başlık ve mesaj boş olamaz!");
+        return;
+    }
+
+    // 1️⃣ thread oluştur
+    const { data: thread, error } = await _supabase
+        .from("support_threads")
+        .insert({
+            created_by_user_id: user.id,
+            created_by_role: user.role,
+            subject,
+            status: "open"
+        })
+        .select()
+        .single();
+
+    if (error) {
+        alert("Hata oluştu.");
+        return;
+    }
+
+    // 2️⃣ ilk mesajı ekle
+    await _supabase
+        .from("support_messages")
+        .insert({
+            thread_id: thread.id,
+            sender_user_id: user.id,
+            sender_role: user.role,
+            message
+        });
+
+    subjectInput.value = "";
+    messageInput.value = "";
+
+    loadMyThreads();
+};
+
+loadMyThreads();
+</script>
+
+</body>
+</html>

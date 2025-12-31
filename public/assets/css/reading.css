@@ -50,8 +50,9 @@
 }
 
 /* SAĞ SÜTUN */
-.content-view-column {
-    overflow-y: auto; /* İçerik taşarsa scroll çıksın */
+.reader-column {
+    position: relative;   /* ⭐ Kalbin yerleşmesi için gerekli */
+    overflow-y: auto;
 }
 
 #reading-container {
@@ -70,6 +71,34 @@
     white-space: pre-wrap;
 }
 
+/* ⭐ FAVORİ BUTONU — tam istediğin yere yerleşti */
+.favorite-btn {
+    position: absolute;
+    bottom: 60px;   /* Not alanının üst sınırı hizası */
+    right: 25px;    /* Sağdan mesafe */
+
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+
+    background: #4CAF50;
+    color: white;
+    font-size: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+}
+
+.favorite-btn:hover {
+    background: #3b8c40;
+}
+
+
 /* LOADER */
 #loader {
     display: flex;
@@ -80,6 +109,7 @@
     padding: 40px;
     color: #7f8c8d;
 }
+
 .loader-animation {
     border: 4px solid #f3f3f3;
     border-top: 4px solid var(--primary-color);
@@ -89,10 +119,14 @@
     animation: spin 1s linear infinite;
     margin-bottom: 15px;
 }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
 
 
-/* MODAL Stilleri (student.css'den taşındı/kopyalandı) */
+/* MODAL Stilleri */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; }
 .modal-content { position: relative; background: #fff; padding: 30px 40px; border-radius: 12px; width: 90%; max-width: 500px; }
 .modal-content h2 { margin-top: 0; text-align: center; }
@@ -117,7 +151,7 @@
     text-decoration: underline;
 }
 
-/* Tooltip (Çeviri Kutusu) */
+/* Tooltip */
 #translation-tooltip {
     position: absolute;
     background: white;
@@ -154,30 +188,4 @@
 
 #translation-tooltip .add-btn:hover {
     background: #16a34a;
-}
-
-/* READING İÇİN FAVORİ (KALP) BUTONU */
-.reading-container {
-    position: relative;
-    padding-bottom: 40px; /* altta kalp için boşluk */
-}
-
-.favorite-btn {
-    position: absolute;
-    right: 20px;
-    bottom: 15px;
-    font-size: 26px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #d1d5db; /* gri kalp */
-    transition: transform 0.15s ease, color 0.15s ease;
-}
-
-.favorite-btn:hover {
-    transform: scale(1.1);
-}
-
-.favorite-btn.active {
-    color: #ef4444; /* kırmızı kalp */
 }
