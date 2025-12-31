@@ -1,6 +1,6 @@
 // assets/js/student/reader.js
 import { _supabase } from '../supabaseClient.js';
-
+let currentEssayId = null; // Aktif yazıyı takip etmek için
 // --- ELEMENT SEÇİMİ ---
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
@@ -49,31 +49,45 @@ const getTranslation = async (word) => {
 };
 
 // --- MATERYALİ EKRANA BAS ---
+
+
 const displayMaterial = async (contentId) => {
-    if(document.querySelectorAll('.material-item')){
+    try {
+        console.log("Seçilen Yazı ID:", contentId);
+        currentEssayId = contentId; // ID'yi hafızaya al
+
+        // 1. Görsel olarak aktif olanı işaretle
         document.querySelectorAll('.material-item').forEach(el => el.classList.remove('active'));
-        const activeItem = document.querySelector(`.material-item[data-id='${contentId}']`);
+        const activeItem = document.querySelector(`[data-id="${contentId}"]`);
         if (activeItem) activeItem.classList.add('active');
+
+        // 2. Metni Supabase'den getir
+        const { data, error } = await _supabase
+            .from('contents')
+            .select('*')
+            .eq('id', contentId)
+            .single();
+
+        if (error) throw error;
+
+        // 3. Başlık ve metni ekrana bas
+        document.getElementById('reading-title').textContent = data.title;
+        // Eğer wrapWords fonksiyonun varsa: document.getElementById('reading-body').innerHTML = wrapWords(data.body);
+        document.getElementById('reading-body').innerHTML = data.body; 
+
+        // 4. BU YAZIYA ÖZEL NOTU YÜKLE
+        const user = JSON.parse(localStorage.getItem('user'));
+        const savedNote = localStorage.getItem(`note_${user.id}_${contentId}`);
+        const textarea = document.getElementById('note-textarea');
+        if (textarea) textarea.value = savedNote || "";
+
+    } catch (err) {
+        console.error("Materyal yüklenirken hata oluştu:", err);
     }
-
-    readingTitle.textContent = 'Yükleniyor...';
-    readingBody.innerHTML = '';
-
-    const { data, error } = await _supabase
-        .from('contents')
-        .select('title, body')
-        .eq('id', contentId)
-        .single();
-
-    if (error || !data) {
-        readingTitle.textContent = 'Hata';
-        readingBody.textContent = 'İçerik yüklenemedi.';
-        return;
-    }
-
-    readingTitle.textContent = data.title;
-    readingBody.innerHTML = wrapWords(data.body);
 };
+
+// Çok Önemli: Tıklanabilmesi için pencereye bağla
+window.displayMaterial = displayMaterial;
 
 // --- KELİME TIKLAMA VE TOOLTIP KONUMLANDIRMA ---
 readingBody.addEventListener('click', async (e) => {
@@ -270,7 +284,62 @@ const showFinishHwButton = async (hwId) => {
     };
     document.body.appendChild(btn);
 };
+// Notu kaydetme fonksiyonu
+const saveCurrentNote = () => {
+    if (!currentEssayId) return alert("Lütfen önce bir yazı seçin!");
 
+    const user = JSON.parse(localStorage.getItem('user'));
+    const noteText = document.getElementById('note-textarea').value;
+    const title = document.getElementById('reading-title').textContent;
+
+    // 1. Notu o yazıya özel kaydet
+    localStorage.setItem(`note_${user.id}_${currentEssayId}`, noteText);
+
+    // 2. Not Geçmişi listesini güncelle
+    let history = JSON.parse(localStorage.getItem(`history_${user.id}`)) || [];
+    history = history.filter(item => item.id !== currentEssayId); // Eskisini sil
+    
+    if (noteText.trim() !== "") {
+        history.unshift({
+            id: currentEssayId,
+            title: title,
+            date: new Date().toLocaleDateString('tr-TR')
+        });
+    }
+
+    localStorage.setItem(`history_${user.id}`, JSON.stringify(history));
+    
+    // 3. Arayüzü güncelle
+    document.getElementById('save-indicator').style.display = "block";
+    setTimeout(() => { document.getElementById('save-indicator').style.display = "none"; }, 2000);
+    
+    renderHistory(); // Listeyi yenileyen fonksiyon (Adım 3)
+};
+
+window.saveCurrentNote = saveCurrentNote;
+// Sol taraftaki listeyi doldurma fonksiyonu
+const renderHistory = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const history = JSON.parse(localStorage.getItem(`history_${user.id}`)) || [];
+    const container = document.getElementById('note-history-list');
+    
+    if (!container) return;
+
+    container.innerHTML = history.map(item => `
+        <div class="history-item" onclick="displayMaterial('${item.id}')" 
+             style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+            <div style="font-weight: bold; font-size: 0.85rem;">${item.title}</div>
+            <div style="font-size: 0.7rem; color: #888;">${item.date}</div>
+        </div>
+    `).join('');
+};
+
+// Sayfa açıldığında butonu ve geçmişi bağla
+document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+    const saveBtn = document.getElementById('save-note-btn');
+    if (saveBtn) saveBtn.onclick = saveCurrentNote;
+});
 
 // --- SAYFA BAŞLATMA ---
 const initializePage = async () => {
@@ -316,6 +385,30 @@ const initializePage = async () => {
     if(newMaterialBtn) newMaterialBtn.addEventListener('click', () => preferencesModal.classList.remove('hidden'));
     if(closeModalBtn) closeModalBtn.addEventListener('click', () => preferencesModal.classList.add('hidden'));
     if(preferencesForm) preferencesForm.addEventListener('submit', handleGenerateNewMaterial);
-};
+    // Kaydet butonuna basınca çalıştır
+document.getElementById('save-note-btn').onclick = saveCurrentNote;
 
+// Ctrl + Enter ile kaydetme özelliği
+document.getElementById('note-textarea').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        saveCurrentNote();
+    }
+});
+
+// Sayfa açıldığında geçmişi göster
+renderHistory();
+};
+// Fonksiyonları global hale getir (HTML'den çağrılabilmesi için)
+window.displayMaterial = displayMaterial;
+window.saveCurrentNote = saveCurrentNote;
+
+// Butonu bağla
+const saveBtn = document.getElementById('save-note-btn');
+if (saveBtn) saveBtn.onclick = saveCurrentNote;
+
+// Sayfa ilk açıldığında geçmişi yükle
+document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+});
 document.addEventListener('DOMContentLoaded', initializePage);

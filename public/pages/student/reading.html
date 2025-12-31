@@ -67,43 +67,59 @@
         </aside>
 
         <!-- ANA İÇERİK BÖLÜMÜ -->
-        <div class="main-content">
-            <header class="dashboard-header">
-                <h2>Okuma Materyalleri</h2>
-                <div class="user-info">
-                    <span id="welcome-message"></span>
-                    <button id="logout-button">Çıkış Yap</button>
-                </div>
-            </header>
-
-            <main class="content-area">
-                <div class="reading-layout">
-                    <!-- SOL SÜTUN: MATERYAL LİSTESİ -->
-                    <div class="materials-list-column card">
-                        <div class="list-header">
-                            <h3>Materyallerim</h3>
-                            <button id="new-material-btn" class="cta-button">+ Yeni Oluştur</button>
-                        </div>
-                        <div id="materials-list">
-                            <p>Yükleniyor...</p>
-                        </div>
-                    </div>
-                    <!-- SAĞ SÜTUN: İÇERİK GÖRÜNTÜLEYİCİ -->
-                    <div class="content-view-column card">
-                        <div id="reading-container">
-                            <h1 id="reading-title">Bir materyal seçin</h1>
-                            <div id="reading-body">
-                                <p>Okumak için soldaki listeden bir materyal seçin veya yeni bir tane oluşturun.</p>
-                            </div>
-                            <div id="loader" class="hidden">
-                                <div class="loader-animation"></div>
-                                <p>Yapay zeka senin için yazıyor...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+        <div class="main-content" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
+    <!-- Üst Başlık -->
+    <header class="dashboard-header" style="flex-shrink: 0;">
+        <h2>Okuma Materyalleri</h2>
+        <div class="user-info">
+            <span id="welcome-message"></span>
+            <button id="logout-button">Çıkış Yap</button>
         </div>
+    </header>
+
+    <!-- Ana Çalışma Alanı -->
+    <main class="content-area" style="flex: 1; overflow: hidden; padding: 20px;">
+        <div class="reading-layout" style="display: grid; grid-template-columns: 300px 1fr; gap: 20px; height: 100%;">
+            
+            <!-- SOL SÜTUN: Liste ve Geçmiş -->
+            <div class="sidebar-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
+                <div style="padding: 15px; border-bottom: 1px solid #eee;">
+                    <h3 style="margin:0; font-size: 1rem;">Materyallerim</h3>
+                    <button id="new-material-btn" class="cta-button" style="margin-top:10px; padding: 5px; width: 100%;">+ Yeni Oluştur</button>
+                </div>
+                <div id="materials-list" style="flex: 1; overflow-y: auto; padding: 10px;"></div>
+                
+                <div style="padding: 10px 15px; background: #f1f5f9; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+                    <h3 style="margin:0; font-size: 0.9rem;">📜 Not Geçmişim</h3>
+                </div>
+                <div id="note-history-list" style="flex: 1; overflow-y: auto; padding: 10px;">
+                    <!-- Notu olan yazılar buraya gelecek -->
+                </div>
+            </div>
+
+            <!-- SAĞ SÜTUN: Metin ve Not Kutusu -->
+            <div class="reader-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
+                <!-- Okuma Alanı (Metin uzunsa burada kayar) -->
+                <div id="reading-container" style="flex: 1; overflow-y: auto; padding: 30px;">
+                    <h1 id="reading-title">Lütfen bir yazı seçin</h1>
+                    <div id="reading-body" style="font-size: 1.1rem; line-height: 1.8;"></div>
+                    <div id="loader" class="hidden">Yapay zeka yazıyor...</div>
+                </div>
+
+                <!-- Not Alanı (Her zaman en altta sabit) -->
+                <div id="note-editor-area" style="flex-shrink: 0; background: #fafafa; border-top: 3px solid #4CAF50; padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <h4 style="margin:0;">📝 Bu Yazı İçin Notlarım</h4>
+                        <span id="save-indicator" style="color: green; font-weight: bold; display: none;">Kaydedildi!</span>
+                    </div>
+                    <textarea id="note-textarea" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; resize: none; font-family: inherit;" placeholder="Bu yazıya özel notlarını yaz..."></textarea>
+                    <button id="save-note-btn" class="cta-button" style="width: 100%; margin-top: 10px; background: #4CAF50;">Notu Kaydet (Ctrl+Enter)</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
     </div>
 
     <!-- Çeviri Tooltip'i -->
