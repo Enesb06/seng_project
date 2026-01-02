@@ -1,43 +1,69 @@
-import { _supabase } from '../supabaseClient.js';
+import { _supabase } from "../supabaseClient.js";
 
-const user = JSON.parse(localStorage.getItem('user'));
+const classSelect = document.getElementById("classSelect");
+const tableBody = document.getElementById("studentTable");
 
-async function loadReports() {
-    // Önce öğretmenin sınıflarını bul
-    const { data: myClasses } = await _supabase.from('classes').select('id').eq('teacher_id', user.id);
-    const classIds = myClasses.map(c => c.id);
 
-    // Bu sınıflardaki öğrencilerin ID'lerini al
-    const { data: members } = await _supabase.from('class_members').select('student_id').in('class_id', classIds);
-    const studentIds = [...new Set(members.map(m => m.student_id))];
 
-    // Öğrenci bilgilerini ve puanlarını getir
-    const { data: students } = await _supabase
-        .from('profiles')
-        .select(`
-            full_name,
-            email,
-            id,
-            quiz_results(score, success_rate),
-            word_list(id)
-        `)
-        .in('id', studentIds);
+async function loadClasses() {
+  const user = JSON.parse(localStorage.getItem("user"));
 
-    const tbody = document.getElementById('student-table-body');
-    tbody.innerHTML = students.map(s => {
-        const avgScore = s.quiz_results.length > 0 
-            ? (s.quiz_results.reduce((acc, curr) => acc + curr.score, 0) / s.quiz_results.length).toFixed(1)
-            : 'N/A';
-        
-        return `
-            <tr>
-                <td>${s.full_name}</td>
-                <td>${avgScore}</td>
-                <td>${s.word_list.length} Kelime</td>
-                <td><button onclick="alert('Detay yakında eklenecek')">İncele</button></td>
-            </tr>
-        `;
-    }).join('');
+  if (!user) {
+    console.error("Kullanıcı bulunamadı");
+    return;
+  }
+
+  const { data, error } = await _supabase
+    .from("classes")
+    .select("id, class_name")
+    .eq("teacher_id", user.id); 
+
+  if (error) {
+    console.error("Sınıflar alınamadı:", error);
+    return;
+  }
+
+  classSelect.innerHTML =
+    `<option value="">Sınıf seçiniz</option>` +
+    data.map(c => `<option value="${c.id}">${c.class_name}</option>`).join("");
 }
 
-loadReports();
+
+async function loadStudents(classId) {
+  if (!classId) return;
+
+  tableBody.innerHTML = `<tr><td colspan="3">Yükleniyor...</td></tr>`;
+
+  const { data: members } = await _supabase
+    .from("class_members")
+    .select("student_id")
+    .eq("class_id", classId);
+
+  if (!members || members.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="3">Öğrenci yok</td></tr>`;
+    return;
+  }
+
+  const ids = members.map(m => m.student_id);
+
+  const { data: students } = await _supabase
+    .from("profiles")
+    .select("id, full_name, email")
+    .in("id", ids);
+
+  tableBody.innerHTML = students.map(s => `
+    <tr>
+      <td>${s.full_name}</td>
+      <td>${s.email}</td>
+      <td>
+        <a href="student-detail.html?id=${s.id}">Raporu Gör</a>
+      </td>
+    </tr>
+  `).join("");
+}
+
+classSelect.addEventListener("change", e => {
+  loadStudents(e.target.value);
+});
+
+loadClasses();

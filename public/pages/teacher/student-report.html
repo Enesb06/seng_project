@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Öğrenci Raporları</title>
+
+    <link rel="stylesheet" href="../../assets/css/main.css">
+    <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/teacher.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SOL MENÜ -->
+    <aside class="sidebar">
+        <div class="logo">
+            <a href="../../teacher.html">LearnENG</a>
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="../../teacher.html">Anasayfa</a></li>
+                <li><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
+                <li class="active"><a href="student-report.html">Öğrenci Raporları</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- ANA İÇERİK -->
+    <div class="main-content">
+
+        <header class="dashboard-header">
+                <h2>Öğrenci Raporları</h2>
+                <div class="user-info">
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+        <main class="content-area">
+
+            <section class="card">
+                <h3>Sınıflarım</h3>
+
+                <label>Sınıf Seç:</label>
+                <select id="classSelect">
+                    <option value="">Sınıf seçiniz</option>
+                </select>
+            </section>
+
+            <section class="card">
+                <h3>Öğrenci Listesi</h3>
+
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Öğrenci</th>
+                            <th>E-posta</th>
+                            <th>Rapor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTable">
+                        <tr>
+                            <td colspan="3">Sınıf seçiniz</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+</div>
+
+<script type="module" src="../../assets/js/teacher/student-report.js"></script>
+<script type="module" src="../../assets/js/teacher/dashboard.js"></script>
+
+
+</body>
+</html>

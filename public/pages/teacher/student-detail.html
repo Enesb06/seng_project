@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Öğrenci Raporu</title>
+
+  <!-- Ortak stiller -->
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/teacher.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+          <a href="../../teacher.html">LearnENG</a>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="../../teacher.html">Anasayfa</a></li>
+            <li><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
+            <li class="active"><a href="student-report.html">Öğrenci Raporları</a></li>
+          </ul>
+        </nav>
+    </aside>
+
+    <!-- ANA İÇERİK -->
+    <main class="main-content">
+
+      <header class="dashboard-header">
+                <h2>Öğrenci Raporu</h2>
+                <div class="user-info">
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
+      
+
+      <!-- Öğrenci Bilgileri -->
+      <section class="card">
+        <h3 id="studentName">Öğrenci</h3>
+        <p><strong>E-posta:</strong> <span id="email">-</span></p>
+        <p><strong>Kayıt Tarihi:</strong> <span id="registerDate">-</span></p>
+        <p><strong>Sınıf:</strong> <span id="className">-</span></p>
+      </section>
+
+      <!-- Genel Performans -->
+      <section class="card">
+        <h3>Genel Performans</h3>
+        <div class="stats-grid">
+          <div class="stat-box">📘 Toplam Okuma: <b id="readCount">0</b></div>
+          <div class="stat-box">🧠 Kelime Sayısı: <b id="wordCount">0</b></div>
+          <div class="stat-box">📝 Quiz Sayısı: <b id="quizCount">0</b></div>
+          <div class="stat-box">⭐ Ortalama Başarı: <b id="avgScore">0</b>%</div>
+        </div>
+      </section>
+
+      <!-- Okuma Geçmişi -->
+      <section class="card">
+        <h3>Okuma Geçmişi</h3>
+        <div id="readingArea">Yükleniyor...</div>
+      </section>
+
+      <!-- Kelime Gelişimi -->
+      <section class="card">
+        <h3>Kelime Gelişimi</h3>
+        <div id="wordsArea">Yükleniyor...</div>
+      </section>
+      
+
+
+      <!-- Quiz -->
+      <section class="card">
+        <h3>Quiz / Test Performansı</h3>
+        <div id="quizArea">Yükleniyor...</div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- JS -->
+  <script src="../../assets/js/supabaseClient.js"></script>
+  <script type="module" src="../../assets/js/teacher/student-detail.js"></script>
+  <script type="module" src="../../assets/js/teacher/dashboard.js"></script>
+
+</body>
+</html>
