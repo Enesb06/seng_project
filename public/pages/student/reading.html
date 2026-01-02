@@ -135,5 +135,22 @@
     </div>
  
     <script type="module" src="../../assets/js/student/reader.js"></script>
+
+  
+    <script type="module">
+      const params = new URLSearchParams(window.location.search);
+      const openId = params.get('open');
+
+      if (openId) {
+        const tryOpen = () => {
+          if (window.displayMaterial) {
+            window.displayMaterial(openId);
+          } else {
+            setTimeout(tryOpen, 50);
+          }
+        };
+        tryOpen();
+      }
+    </script>
 </body>
 </html>
