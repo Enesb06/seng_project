@@ -1,5 +1,46 @@
 import { _supabase } from '../supabaseClient.js';
 
+const welcomeMessage = document.getElementById('welcome-message');
+const logoutButton = document.getElementById('logout-button');
+const userAvatar = document.getElementById('user-avatar'); // Avatar için
+
+const getUser = () => JSON.parse(localStorage.getItem('user'));
+
+// İLGİLİ JS DOSYASININ DOMContentLoaded bloğuna EKLE
+
+document.addEventListener('DOMContentLoaded', () => {
+    const user = getUser();
+    if (!user) {
+        window.location.href = '../../index.html'; // Güvenlik kontrolü
+        return;
+    }
+
+    if (welcomeMessage) {
+        welcomeMessage.innerText = `Hoş geldin, ${user.full_name}`;
+    }
+    // Avatarı ayarla (Eğer user objesinde avatar_url varsa kullan, yoksa placeholder kalsın)
+    if (userAvatar && user.avatar_url) {
+         userAvatar.src = user.avatar_url; 
+    }
+    
+    // Çıkış Butonu
+    if (logoutButton) {
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('user');
+            window.location.href = '../../index.html';
+        });
+    }
+
+    // ... (Sayfanın asıl yükleme fonksiyonu buraya çağrılmalı)
+});
+
+
+
+
+
+
+
+
 const user = JSON.parse(localStorage.getItem('user'));
 const classSelect = document.getElementById('select-class');
 const contentSelect = document.getElementById('select-content');
