@@ -466,3 +466,8 @@ document.addEventListener('DOMContentLoaded', () => {
     renderHistory();
     updateFavoriteIcon();
 });
+const userAvatar = JSON.parse(localStorage.getItem('user'));
+if (userAvatar && userAvatar.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if(imgEl) imgEl.src = userAvatar.avatar_url;
+}

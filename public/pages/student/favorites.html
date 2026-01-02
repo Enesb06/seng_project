@@ -26,6 +26,7 @@
                 <li><a href="quiz.html">Quiz'lerim</a></li>
                 <li><a href="support.html">💬 Destek</a></li>
                 <li><a href="profile.html">Profilim & İstatistikler</a></li>
+                <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
             </ul>
         </nav>
     </aside>
@@ -33,10 +34,11 @@
     <!-- MAIN -->
     <div class="main-content" style="height:100vh;display:flex;flex-direction:column;overflow:hidden;">
         
-        <!-- ÜST BAR -->
+        <!-- ÜST BAR (GÜNCELLENDİ: AVATAR EKLENDİ) -->
         <header class="dashboard-header" style="flex-shrink:0;">
             <h2>⭐ Favori Okuma Materyallerim</h2>
-            <div class="user-info">
+            <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+                <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
                 <button id="logout-button">Çıkış Yap</button>
             </div>
@@ -146,6 +148,12 @@
 
         welcomeMessageEl.textContent = "Hoş geldin, " + user.full_name + "!";
 
+        // --- AVATAR YÜKLEME KODU BURADA ---
+        if (user.avatar_url) {
+            const imgEl = document.getElementById('header-avatar');
+            if(imgEl) imgEl.src = user.avatar_url;
+        }
+
         const favIds = getFavorites();
         if (favIds.length === 0) {
             loadingEl.style.display = "none";
@@ -179,6 +187,12 @@
             console.error(err);
             favoritesListEl.innerHTML = "<p style='color:red;'>Beklenmeyen bir hata oluştu</p>";
         }
+    };
+
+    // Logout İşlemi
+    document.getElementById('logout-button').onclick = () => {
+        localStorage.removeItem('user');
+        window.location.href = "../../index.html";
     };
 
     if (document.readyState === "loading") {

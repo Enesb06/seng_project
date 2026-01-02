@@ -3,11 +3,16 @@ import { _supabase } from "../supabaseClient.js";
 const classSelect = document.getElementById("classSelect");
 const tableBody = document.getElementById("studentTable");
 
+// 1. Kullanıcı bilgisini al
+const user = JSON.parse(localStorage.getItem("user"));
 
+// 2. Avatarı Başlat (Header kısmındaki profil resmi için)
+if (user && user.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if (imgEl) imgEl.src = user.avatar_url;
+}
 
 async function loadClasses() {
-  const user = JSON.parse(localStorage.getItem("user"));
-
   if (!user) {
     console.error("Kullanıcı bulunamadı");
     return;
@@ -66,4 +71,5 @@ classSelect.addEventListener("change", e => {
   loadStudents(e.target.value);
 });
 
+// Başlat
 loadClasses();

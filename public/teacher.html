@@ -19,7 +19,8 @@
                 <ul>
                     <li class="active"><a href="/teacher.html">Anasayfa</a></li>
                     <li><a href="pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                    <li><a href="pages/teacher/student-report.html">Öğrenci Raporları</a></li>     
+                    <li><a href="pages/teacher/student-report.html">Öğrenci Raporları</a></li>
+                    <li><a href="pages/common/settings.html">⚙️ Ayarlar</a></li>     
                 </ul>
             </nav>
         </aside>
@@ -27,12 +28,13 @@
         <!-- ANA İÇERİK -->
         <div class="main-content">
             <header class="dashboard-header">
-                <h2>Öğretmen Özeti</h2>
-                <div class="user-info">
-                    <span id="welcome-message">Yükleniyor...</span>
-                    <button id="logout-button">Çıkış Yap</button>
-                </div>
-            </header>
+    <h2>Öğretmen Özeti</h2>
+    <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+        <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+        <span id="welcome-message">Yükleniyor...</span>
+        <button id="logout-button">Çıkış Yap</button>
+    </div>
+</header>
             <main class="content-area">
                 <h3>Genel Bakış</h3>
                 <div class="stats-grid">

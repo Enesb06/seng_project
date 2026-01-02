@@ -23,6 +23,7 @@
                     <li><a href="quiz.html">Quiz'lerim</a></li>
                     <li><a href="support.html">💬 Destek</a></li>
                     <li><a href="profile.html">Profilim & İstatistikler</a></li>
+                    <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
                 </ul>
             </nav>
         </aside>
@@ -31,11 +32,12 @@
         <div class="main-content">
             <header class="dashboard-header">
                 <h2>Kelime Listem</h2>
-                <div class="user-info">
-                    <span id="welcome-message"></span>
-                    <button id="logout-button">Çıkış Yap</button>
-                </div>
-            </header>
+                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+        <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+        <span id="welcome-message"></span>
+        <button id="logout-button">Çıkış Yap</button>
+    </div>
+</header>
 
             <main class="content-area">
                 <div class="wordlist-controls card">

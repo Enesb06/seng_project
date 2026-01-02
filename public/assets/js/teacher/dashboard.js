@@ -40,5 +40,8 @@ document.getElementById('logout-button').addEventListener('click', () => {
     // Veya:
     // window.location.href = '/index.html'; // Eğer sunucu / ile kökü işaret ediyorsa bu da çalışmalı, ancak ilki daha güvenli.
 });
-
+const userForAvatar = JSON.parse(localStorage.getItem('user'));
+if (userForAvatar && userForAvatar.avatar_url) {
+    document.getElementById('header-avatar').src = userForAvatar.avatar_url;
+}
 initDashboard();

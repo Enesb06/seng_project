@@ -145,6 +145,11 @@ classSelect.addEventListener('change', (e) => {
     loadStudentProgress(selectedClassId);
 });
 
+// --- AVATAR (PROFİL RESMİ) GÜNCELLEME ---
+if (user && user.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if(imgEl) imgEl.src = user.avatar_url;
+}
 
 // --- BAŞLANGIÇ ---
 loadFormData();

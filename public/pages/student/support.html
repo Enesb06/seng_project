@@ -27,15 +27,21 @@
                 <li><a href="quiz.html">Quiz'lerim</a></li>
                 <li class="active"><a href="support.html">💬 Destek</a></li>
                 <li><a href="profile.html">Profilim & İstatistikler</a></li>
+                <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
             </ul>
         </nav>
     </aside>
 
     <!-- MAIN -->
     <div class="main-content">
+        <!-- ÜST BAR (GÜNCELLENDİ) -->
         <header class="dashboard-header">
             <h2>💬 Destek &amp; Geri Bildirim</h2>
-            <button id="logout-button">Çıkış Yap</button>
+            <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+                <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+                <span id="welcome-message"></span>
+                <button id="logout-button">Çıkış Yap</button>
+            </div>
         </header>
 
         <!-- ORTALANMIŞ İÇERİK -->
@@ -102,6 +108,25 @@ const createBtn    = document.getElementById("create-thread");
 const threadsBox   = document.getElementById("my-threads");
 
 const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
+
+// --- KULLANICI BİLGİLERİNİ GÜNCELLE (Avatar ve İsim) ---
+const initUser = () => {
+    const user = getUser();
+    if (!user) {
+        window.location.href = "../../index.html";
+        return;
+    }
+
+    // Hoşgeldin mesajı
+    const welcomeEl = document.getElementById('welcome-message');
+    if(welcomeEl) welcomeEl.textContent = "Hoş geldin, " + user.full_name;
+
+    // Profil resmi (Header)
+    if (user.avatar_url) {
+        const imgEl = document.getElementById('header-avatar');
+        if(imgEl) imgEl.src = user.avatar_url;
+    }
+};
 
 // Kendi taleplerini yükle
 const loadMyThreads = async () => {
@@ -187,6 +212,14 @@ createBtn.onclick = async () => {
     loadMyThreads();
 };
 
+// Çıkış Yap Butonu
+document.getElementById('logout-button').onclick = () => {
+    localStorage.removeItem('user');
+    window.location.href = "../../index.html";
+};
+
+// Başlatıcılar
+initUser();
 loadMyThreads();
 </script>
 

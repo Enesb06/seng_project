@@ -102,3 +102,8 @@ document.getElementById('logout-button').onclick = () => {
     localStorage.removeItem('user');
     window.location.href = '../../index.html';
 };
+const userAvatar = JSON.parse(localStorage.getItem('user'));
+if (userAvatar && userAvatar.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if(imgEl) imgEl.src = userAvatar.avatar_url;
+}

@@ -27,6 +27,7 @@
 
                     <!-- ŞU AN AÇIK OLAN SAYFA BU OLDUĞU İÇİN ACTIVE SADECE BURADA -->
                     <li class="active"><a href="profile.html">Profilim & İstatistikler</a></li>
+                    <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
                 </ul>
             </nav>
         </aside>
@@ -35,8 +36,12 @@
         <div class="main-content">
             <header class="dashboard-header">
                 <h2>Profilim & Gelişimim</h2>
-                <button id="logout-button">Çıkış Yap</button>
-            </header>
+                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+        <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+        <span id="welcome-message"></span>
+        <button id="logout-button">Çıkış Yap</button>
+    </div>
+</header>
 
             <main class="content-area">
                 <!-- ÜST KISIM: KİŞİSEL BİLGİLER VE ÖZET -->

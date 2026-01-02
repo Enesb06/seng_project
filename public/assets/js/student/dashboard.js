@@ -221,3 +221,7 @@ if (joinClassBtn) {
 
 // --- BAŞLANGIÇ ---
 document.addEventListener('DOMContentLoaded', loadStudentDashboard);
+const userForAvatar = JSON.parse(localStorage.getItem('user'));
+if (userForAvatar && userForAvatar.avatar_url) {
+    document.getElementById('header-avatar').src = userForAvatar.avatar_url;
+}

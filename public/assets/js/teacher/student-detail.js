@@ -55,7 +55,7 @@ async function loadStudentInfo() {
   // EMAIL
   emailEl.textContent = data.profiles?.email || "-";
 
-  // TARİH (HATA BURADAYDI)
+  // TARİH
   if (data.profiles?.created_at) {
     const d = new Date(data.profiles.created_at);
     dateEl.textContent = isNaN(d.getTime())
@@ -86,7 +86,6 @@ async function loadReadingHistory() {
     return;
   }
 
-  // ✅ BURASI EKSİKTİ
   readCountEl.textContent = data.length;
 
   if (!data.length) {
@@ -138,7 +137,6 @@ async function loadWords() {
     return;
   }
 
-  // 🔥 BURASI ÖNEMLİ – KELİME SAYISINI GÜNCELLİYOR
   wordCountEl.textContent = data.length;
 
   if (!data.length) {
@@ -229,7 +227,12 @@ avgScoreEl.textContent = avg;
   `;
 }
 
-
+// --- AVATAR (PROFİL RESMİ) GÜNCELLEME ---
+const currentUser = JSON.parse(localStorage.getItem('user'));
+if (currentUser && currentUser.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if(imgEl) imgEl.src = currentUser.avatar_url;
+}
 
 
 // ======================

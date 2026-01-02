@@ -121,3 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (user) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
     loadWords();
 });
+const userAvatar = JSON.parse(localStorage.getItem('user'));
+if (userAvatar && userAvatar.avatar_url) {
+    const imgEl = document.getElementById('header-avatar');
+    if(imgEl) imgEl.src = userAvatar.avatar_url;
+}
