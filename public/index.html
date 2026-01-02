@@ -67,6 +67,16 @@
                 <input type="text" id="signup-fullname" placeholder="Name Surname" required>
                 <input type="email" id="signup-email" placeholder="E-mail" required>
                 <input type="password" id="signup-password" placeholder="Password" required>
+                
+                <div class="security-question-area" style="margin-bottom: 15px; text-align: left;">
+                    <label id="signup-security-question-label" for="security-answer" style="font-weight: bold; display: block; margin-bottom: 5px;">Güvenlik Sorusu Yükleniyor...</label>
+                    <!-- Soru değerini JS ile doldurmak için gizli input -->
+                    <input type="hidden" id="security-question-value">
+                    <input type="text" id="security-answer" placeholder="Güvenlik Sorusu Cevabı" required>
+                </div>
+                
+                
+                
                 <div class="role-selection">
                     <label><input type="radio" name="role" value="student" checked> Student</label>
                     <label><input type="radio" name="role" value="teacher"> Teacher</label>
@@ -81,7 +91,18 @@
             <h2>Reset Password</h2>
             <form id="forgot-password-form">
                 <input type="email" id="forgot-email" placeholder="E-mail address" required>
-                <button type="submit">Send Reset Link</button>
+                <div id="forgot-question-area" style="margin-bottom: 15px; text-align: left;" class="hidden">
+                    <label id="forgot-security-question-label" for="forgot-security-answer" style="font-weight: bold; display: block; margin-bottom: 5px;">[Soru Buraya Gelecek]</label>
+                    <input type="text" id="forgot-security-answer" placeholder="Güvenlik Sorusu Cevabı" required>
+                    <input type="hidden" id="forgot-security-question-value">
+                </div>
+
+                <div id="new-password-area" class="hidden">
+                    <input type="password" id="new-password" placeholder="Yeni Şifre" required autocomplete = "new-password">
+                    <input type="password" id="confirm-password" placeholder="Yeni Şifre (Tekrar)" required required autocomplete="new-password" >
+                </div>
+                
+                <button type="submit" id="forgot-submit-btn">Devam Et</button>
             </form>
             <p><a href="#" id="back-to-login-link">Go Back to Log in Page</a></p>
         </div>
