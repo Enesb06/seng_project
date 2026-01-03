@@ -139,3 +139,16 @@
     align-self: flex-start;
     padding: 10px 15px;
 }
+/* ai-chat.css dosyasının en sonuna ekleyin */
+
+.history-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4b5563; /* Koyu gri bir renk */
+    border-bottom: 1px solid #e5e7eb;
+    text-transform: uppercase; /* BÜYÜK HARF */
+    letter-spacing: 0.05em; /* Harf aralığı */
+}
