@@ -1,9 +1,13 @@
+/* ================= PROFILE HEADER ================= */
+
 .profile-header-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 20px;
     margin-bottom: 25px;
 }
+
+/* ================= USER CARD ================= */
 
 .user-profile-card {
     text-align: center;
@@ -19,6 +23,8 @@
     border-radius: 50%;
     margin: 0 auto 15px;
 }
+
+/* ================= MINI STATS ================= */
 
 .stats-grid-mini {
     display: grid;
@@ -40,7 +46,8 @@
     color: #3b82f6;
 }
 
-/* Rozet Stilleri */
+/* ================= BADGES ================= */
+
 .badges-list {
     display: flex;
     gap: 20px;
@@ -55,11 +62,38 @@
     border-radius: 12px;
     text-align: center;
     width: 120px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
-.badge-icon { font-size: 30px; display: block; margin-bottom: 5px; }
-.badge-name { font-size: 0.8rem; font-weight: bold; color: #475569; }
+.badge-icon {
+    font-size: 30px;
+    display: block;
+    margin-bottom: 6px;
+}
 
-/* Tablo Stilleri */
-.history-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-.history-table th, .history-table td { padding: 12px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+.badge-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* ================= QUIZ TABLE ================= */
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    text-align: left;
+}
+
+.history-table th {
+    background: #f8fafc;
+    font-weight: 600;
+    font-size: 0.85rem;
+}

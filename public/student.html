@@ -4,96 +4,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Öğrenci Paneli - LearnEnglish.com</title>
-    
+
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/student.css">
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-    <div class="dashboard-container">
-        <!-- SOL MENÜ (SIDEBAR) -->
-        <aside class="sidebar">
-            <div class="logo">
-                <a href="student.html">LearnEnglish</a>
-            </div>
-            <nav>
-                <ul>
-                    <li class="active"><a href="student.html">Ana Sayfa</a></li>
-                    <li><a href="pages/student/reading.html">Okuma Materyalleri</a></li>
-                    <li><a href="pages/student/favorites.html">⭐ Favorilerim</a></li>
-                    <li><a href="pages/student/wordlist.html">Kelime Listem</a></li>
-                    <li><a href="pages/student/quiz.html">Quiz'lerim</a></li>
-                    <li><a href="pages/student/support.html">💬 Destek</a></li>
-                    <li><a href="pages/student/profile.html">Profilim & İstatistikler</a></li>
-                    <li><a href="pages/common/settings.html">⚙️ Ayarlar</a></li>
-                </ul>
-            </nav>
-        </aside>
+<div class="dashboard-container">
 
-        <!-- ANA İÇERİK BÖLÜMÜ -->
-        <div class="main-content">
-            <!-- ÜST BAR (HEADER) -->
-            <header class="dashboard-header">
-    <h2>Ana Sayfa</h2>
-    <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-        <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
-        <span id="welcome-message">Yükleniyor...</span>
-        <button id="logout-button">Çıkış Yap</button>
-    </div>
-</header>
-
-            <!-- İÇERİK -->
-            <main class="content-area">
-                <h3>Genel Bakış</h3>
-                <div class="stats-grid">
-                    <div class="card">
-                        <h4>Okunan Materyal</h4>
-                        <p id="total-readings-stat" class="stat-value">0</p>
-                    </div>
-                    <div class="card">
-                        <h4>Öğrenilen Kelime</h4>
-                        <p id="learned-words-stat" class="stat-value">0</p>
-                    </div>
-                    <div class="card">
-                        <h4>Quiz Başarısı</h4>
-                        <p id="quiz-success-stat" class="stat-value">%0</p>
-                    </div>
-                </div>
-
-                <div class="card" style="margin-top:20px;">
-                    <h3>Sınıfım ve Ödevlerim</h3>
-                    <div id="class-info-area">Sınıf bilgisi yükleniyor...</div>
-                    <ul id="homework-list" class="homework-grid" style="margin-top:15px; list-style:none; padding:0;">
-                        <!-- Ödevler buraya gelecek -->
-                    </ul>
-                </div>
-
-                <h3>Kazanılan Rozetler</h3>
-                <div class="badges-container card">
-                    <div id="badge-list" class="badge-list">
-                        <p>Henüz hiç rozet kazanmadın.</p>
-                    </div>
-                </div>
-
-                <section class="card join-class-section" style="margin-top: 20px;">
-                    <h3>Bir Sınıfa Katıl</h3>
-                    <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">
-                        Öğretmeninden aldığın 6 haneli sınıf kodunu girerek sınıfa dahil olabilirsin.
-                    </p>
-                    <div class="join-controls">
-                        <input type="text" id="class-code-input" placeholder="Örn: FPXERE" maxlength="6" style="text-transform: uppercase;">
-                        <button id="join-class-btn">Sınıfa Katıl</button>
-                    </div>
-                    <p id="join-message" style="margin-top: 10px; font-size: 0.9rem; display: none;"></p>
-                </section>
-            </main>
+    <!-- SOL MENÜ -->
+    <aside class="sidebar">
+        <div class="logo">
+            <a href="student.html">LearnEnglish</a>
         </div>
-    </div>
+        <nav>
+            <ul>
+                <li class="active"><a href="student.html">Ana Sayfa</a></li>
+                <li><a href="pages/student/reading.html">Okuma Materyalleri</a></li>
+                <li><a href="pages/student/favorites.html">⭐ Favorilerim</a></li>
+                <li><a href="pages/student/wordlist.html">Kelime Listem</a></li>
+                <li><a href="pages/student/quiz.html">Quiz'lerim</a></li>
+                <li><a href="pages/student/support.html">💬 Destek</a></li>
+                <li><a href="pages/student/profile.html">Profilim & İstatistikler</a></li>
+                <li><a href="pages/common/settings.html">⚙️ Ayarlar</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-    <!-- JavaScript Dosyaları -->
-    <script type="module" src="assets/js/router.js"></script>
-    <script type="module" src="assets/js/student/dashboard.js"></script>
+    <!-- ANA İÇERİK -->
+    <div class="main-content">
+
+        <!-- HEADER -->
+        <header class="dashboard-header">
+            <h2>Ana Sayfa</h2>
+
+            <div class="user-info" style="display:flex;align-items:center;gap:15px;">
+                <img id="header-avatar"
+                     src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
+                     style="width:35px;height:35px;border-radius:50%;border:2px solid #4CAF50;object-fit:cover;">
+
+                <span id="welcome-message">Yükleniyor...</span>
+
+                <!-- 🔥 STREAK -->
+                <span id="streak-header" class="hidden"></span>
+
+                <button id="logout-button">Çıkış Yap</button>
+            </div>
+        </header>
+
+        <!-- İÇERİK -->
+        <main class="content-area">
+            <h3>Genel Bakış</h3>
+
+            <div class="stats-grid">
+                <div class="card">
+                    <h4>Okunan Materyal</h4>
+                    <p id="total-readings-stat" class="stat-value">0</p>
+                </div>
+
+                <div class="card">
+                    <h4>Öğrenilen Kelime</h4>
+                    <p id="learned-words-stat" class="stat-value">0</p>
+                </div>
+
+                <div class="card">
+                    <h4>Quiz Başarısı</h4>
+                    <p id="quiz-success-stat" class="stat-value">%0</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:20px;">
+                <h3>Sınıfım ve Ödevlerim</h3>
+                <div id="class-info-area">Sınıf bilgisi yükleniyor...</div>
+                <ul id="homework-list" class="homework-grid" style="margin-top:15px; list-style:none; padding:0;"></ul>
+            </div>
+
+            <h3>Kazanılan Rozetler</h3>
+            <div class="badges-container card">
+                <div id="badge-list" class="badge-list">
+                    <p>Henüz hiç rozet kazanmadın.</p>
+                </div>
+            </div>
+
+            <section class="card join-class-section" style="margin-top: 20px;">
+                <h3>Bir Sınıfa Katıl</h3>
+                <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 10px;">
+                    Öğretmeninden aldığın 6 haneli sınıf kodunu girerek sınıfa dahil olabilirsin.
+                </p>
+                <div class="join-controls">
+                    <input type="text" id="class-code-input" placeholder="Örn: FPXERE" maxlength="6" style="text-transform: uppercase;">
+                    <button id="join-class-btn">Sınıfa Katıl</button>
+                </div>
+                <p id="join-message" style="margin-top: 10px; font-size: 0.9rem; display: none;"></p>
+            </section>
+        </main>
+
+    </div>
+</div>
+
+<script type="module" src="assets/js/router.js"></script>
+<script type="module" src="assets/js/student/dashboard.js"></script>
 </body>
 </html>

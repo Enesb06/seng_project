@@ -1,4 +1,7 @@
-/* Tüm Paneller İçin Ortak Stiller */
+/* =========================
+   DASHBOARD (Student Panel)
+   ========================= */
+
 body {
     background-color: #f4f7fa;
     margin: 0;
@@ -10,7 +13,7 @@ body {
     min-height: 100vh;
 }
 
-/* Sol Menü (Sidebar) */
+/* SIDEBAR */
 .sidebar {
     width: 260px;
     background-color: #2c3e50;
@@ -18,9 +21,14 @@ body {
     padding: 20px;
     display: flex;
     flex-direction: column;
+
     position: fixed;
-    height: 100%;
+    left: 0;
+    top: 0;
+    height: 100vh;
+
     box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    z-index: 20;
 }
 
 .sidebar .logo {
@@ -38,6 +46,7 @@ body {
 .sidebar nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .sidebar nav ul li {
@@ -64,21 +73,23 @@ body {
     font-weight: bold;
 }
 
-/* Ana İçerik */
+/* MAIN CONTENT */
 .main-content {
     flex-grow: 1;
-    margin-left: 260px; /* Sidebar genişliği kadar boşluk */
+    margin-left: 260px;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
 }
 
-/* Üst Bar (Header) */
+/* HEADER */
 .dashboard-header {
     background-color: #ffffff;
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     border-bottom: 1px solid #e0e0e0;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
@@ -92,13 +103,16 @@ body {
 .dashboard-header .user-info {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 #welcome-message {
     font-weight: 500;
 }
 
+/* LOGOUT */
 #logout-button {
     background-color: #e74c3c;
     color: white;
@@ -115,16 +129,46 @@ body {
     background-color: #c0392b;
 }
 
-/* Asıl İçerik Alanı */
+/* 🔥 STREAK CHIP */
+#streak-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    white-space: nowrap;
+    cursor: default;
+}
+
+#streak-header.hidden { display: none !important; }
+
+#streak-header[data-tooltip] {
+    position: relative;
+}
+
+#streak-header[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: #111827;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 9999;
+}
+
+/* CONTENT */
 .content-area {
     padding: 30px;
     flex-grow: 1;
-}
-
-.content-area h3 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 1.3rem;
 }
 
 .card {
@@ -133,4 +177,22 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.08);
     border: 1px solid #e0e0e0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .sidebar { width: 220px; }
+    .main-content { margin-left: 220px; }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        box-shadow: none;
+    }
+    .main-content { margin-left: 0; }
+    .dashboard-container { flex-direction: column; }
+    .dashboard-header { padding: 12px 15px; gap: 10px; }
 }
