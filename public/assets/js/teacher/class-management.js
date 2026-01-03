@@ -1,196 +1,241 @@
 import { _supabase } from '../supabaseClient.js';
 
+/* =====================
+   ELEMENTLER & USER
+===================== */
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
-const userAvatar = document.getElementById('user-avatar'); // Avatar için
+const userAvatar = document.getElementById('user-avatar');
+
+const classSelect = document.getElementById('select-class');              // Ödev atama
+const reportClassSelect = document.getElementById('report-class-select'); // Rapor
+const studentStatusArea = document.getElementById('student-status-area');
+const classListDiv = document.getElementById('class-list');
+
+/* 🔵 VERDİĞİM ÖDEVLER */
+const myAssignmentsClassSelect = document.getElementById('my-assignments-class-select');
+const myAssignmentsArea = document.getElementById('my-assignments-area');
 
 const getUser = () => JSON.parse(localStorage.getItem('user'));
+const user = getUser();
 
-// İLGİLİ JS DOSYASININ DOMContentLoaded bloğuna EKLE
-
+/* =====================
+   DOM READY
+===================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const user = getUser();
     if (!user) {
-        window.location.href = '../../index.html'; // Güvenlik kontrolü
+        window.location.href = '../../index.html';
         return;
     }
 
-    if (welcomeMessage) {
-        welcomeMessage.innerText = `Hoş geldin, ${user.full_name}`;
-    }
-    // Avatarı ayarla (Eğer user objesinde avatar_url varsa kullan, yoksa placeholder kalsın)
-    if (userAvatar && user.avatar_url) {
-         userAvatar.src = user.avatar_url; 
-    }
-    
-    // Çıkış Butonu
-    if (logoutButton) {
-        logoutButton.addEventListener('click', () => {
-            localStorage.removeItem('user');
-            window.location.href = '../../index.html';
-        });
-    }
+    welcomeMessage.innerText = `Hoş geldin, ${user.full_name}`;
+    if (userAvatar && user.avatar_url) userAvatar.src = user.avatar_url;
 
-    // ... (Sayfanın asıl yükleme fonksiyonu buraya çağrılmalı)
+    logoutButton.addEventListener('click', () => {
+        localStorage.removeItem('user');
+        window.location.href = '../../index.html';
+    });
+
+    loadFormData();
+    loadTeacherClasses();
 });
 
-
-
-
-
-
-
-
-const user = JSON.parse(localStorage.getItem('user'));
-const classSelect = document.getElementById('select-class');
-const contentSelect = document.getElementById('select-content');
-const studentStatusArea = document.getElementById('student-status-area'); // Rapor tablosunun gösterileceği alan
-
-// 1. 6 Haneli Rastgele Sınıf Kodu Üret
+/* =====================
+   YARDIMCI
+===================== */
 function generateCode() {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
-// 2. Sınıfları ve İçerikleri Yükle
+/* =====================
+   SINIFLARI YÜKLE
+===================== */
 async function loadFormData() {
-    // Sınıflar
-    const { data: classes } = await _supabase.from('classes').select('*').eq('teacher_id', user.id);
-    if (classes) {
-        classSelect.innerHTML = classes.map(c => `<option value="${c.id}">${c.class_name} (${c.class_code})</option>`).join('');
-        
-        // Sayfa yüklendiğinde listedeki ilk sınıfın ilerleme durumunu otomatik olarak yükle
-        if (classes.length > 0) {
-            loadStudentProgress(classes[0].id);
-        }
-    }
+    const { data: classes } = await _supabase
+        .from('classes')
+        .select('*')
+        .eq('teacher_id', user.id);
 
+    classSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
+    reportClassSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
+    myAssignmentsClassSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
 
-    // İçerikler (contents tablosundan okuma parçaları)
-    const { data: contents } = await _supabase.from('contents').select('id, title');
-    if (contents) {
-        contentSelect.innerHTML = '<option value="">Parça Seçilmedi</option>' +
-            contents.map(cnt => `<option value="${cnt.id}">${cnt.title}</option>`).join('');
-    }
+    classes.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = `${c.class_name} (${c.class_code})`;
+
+        classSelect.appendChild(opt);
+        reportClassSelect.appendChild(opt.cloneNode(true));
+        myAssignmentsClassSelect.appendChild(opt.cloneNode(true));
+    });
 }
 
-// 3. Sınıf Oluşturma
+/* =====================
+   SINIF OLUŞTUR
+===================== */
 document.getElementById('create-class-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const className = document.getElementById('class-name').value;
-    const classCode = generateCode();
 
-    const { error } = await _supabase.from('classes').insert([{
+    await _supabase.from('classes').insert([{
         teacher_id: user.id,
-        class_name: className,
-        class_code: classCode
+        class_name: document.getElementById('class-name').value,
+        class_code: generateCode()
     }]);
 
-    if (error) alert("Hata: " + error.message);
-    else {
-        alert(`Sınıf Açıldı! Kod: ${classCode}`);
-        loadFormData(); // Yeni sınıfı listeye ekle
-        document.getElementById('create-class-form').reset();
-    }
+    e.target.reset();
+    loadFormData();
+    loadTeacherClasses();
 });
 
-// 4. Ödev Atama
+/* =====================
+   ÖDEV ATA
+===================== */
 document.getElementById('assign-homework-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const { error } = await _supabase.from('assignments').insert([{
+
+    await _supabase.from('assignments').insert([{
         teacher_id: user.id,
         class_id: classSelect.value,
-        content_id: contentSelect.value || null,
         title: document.getElementById('hw-title').value,
+        description: document.getElementById('hw-description').value,
         due_date: document.getElementById('hw-due-date').value
     }]);
 
-    if (error) alert("Hata: " + error.message);
-    else {
-        alert("Ödev başarıyla atandı!");
-        // Ödev atandıktan sonra o sınıfın tablosunu yenile
-        loadStudentProgress(classSelect.value);
-        document.getElementById('assign-homework-form').reset();
-    }
+    alert("Ödev başarıyla atandı!");
+    e.target.reset();
 });
 
-
-// --- YENİ EKLENEN KOD: ÖĞRENCİ İLERLEME RAPORU ---
-
-const loadStudentProgress = async (classId) => {
+/* =====================
+   🔵 VERDİĞİM ÖDEVLER (SINIF SEÇMELİ)
+===================== */
+myAssignmentsClassSelect.addEventListener('change', (e) => {
+    const classId = e.target.value;
     if (!classId) {
-        studentStatusArea.innerHTML = "<p>Raporu görmek için lütfen bir sınıf seçin.</p>";
+        myAssignmentsArea.innerHTML = "<p>Lütfen bir sınıf seçin.</p>";
         return;
     }
-    
-    studentStatusArea.innerHTML = "<p>Öğrenci verileri yükleniyor...</p>";
+    loadMyAssignments(classId);
+});
 
-    // 1. Sınıftaki öğrencileri al (kullanıcı adlarıyla birlikte)
-    const { data: students, error: studentsError } = await _supabase
-        .from('class_members')
-        .select(`student_id, users:student_id(full_name)`)
-        .eq('class_id', classId);
+async function loadMyAssignments(classId) {
+    myAssignmentsArea.innerHTML = "<p>Yükleniyor...</p>";
 
-    // 2. Bu sınıfa atanan ödevleri al
-    const { data: assignments, error: assignmentsError } = await _supabase
+    const { data: assignments } = await _supabase
         .from('assignments')
-        .select('id, title')
-        .eq('class_id', classId);
+        .select('id, title, description, due_date')
+        .eq('teacher_id', user.id)
+        .eq('class_id', classId)
+        .order('due_date', { ascending: true });
 
-    // 3. İlgili ödevleri bitirme durumlarını al
-    const assignmentIds = assignments.map(a => a.id);
-    const { data: completions, error: completionsError } = await _supabase
-        .from('assignment_completions')
-        .select('assignment_id, student_id')
-        .in('assignment_id', assignmentIds); // Sadece bu sınıfa ait ödevlerin tamamlanma durumlarını çek
-
-    if(studentsError || assignmentsError || completionsError){
-        studentStatusArea.innerHTML = "<p>Veriler yüklenirken bir hata oluştu.</p>";
-        console.error(studentsError || assignmentsError || completionsError);
+    if (!assignments || assignments.length === 0) {
+        myAssignmentsArea.innerHTML = "<p>Bu sınıfa verdiğiniz ödev yok.</p>";
         return;
     }
 
-    if(students.length === 0){
-         studentStatusArea.innerHTML = "<h4>Öğrenci Durum Raporu</h4><p>Bu sınıfta henüz kayıtlı öğrenci yok.</p>";
-         return;
-    }
-    
-    if(assignments.length === 0){
-         studentStatusArea.innerHTML = "<h4>Öğrenci Durum Raporu</h4><p>Bu sınıfa henüz atanmış bir ödev yok.</p>";
-         return;
-    }
+    myAssignmentsArea.innerHTML = assignments.map(a => `
+        <div class="teacher-hw-item"
+             data-id="${a.id}"
+             style="border:1px solid #e5e7eb;padding:12px;border-radius:8px;margin-bottom:10px;cursor:pointer;">
+            <strong>${a.title}</strong><br>
+            <small>📅 Son Teslim: ${new Date(a.due_date).toLocaleDateString('tr-TR')}</small>
 
-    // Rapor Tablosunu Oluştur
-    let html = `<h4>Öğrenci Durum Raporu</h4><table class="report-table"><tr><th>Öğrenci</th>`;
-    assignments.forEach(hw => html += `<th>${hw.title}</th>`);
-    html += `</tr>`;
+            <div id="teacher-desc-${a.id}"
+                 style="display:none;margin-top:8px;padding:8px;background:#f9fafb;border-radius:6px;">
+                ${a.description || "Açıklama girilmemiş."}
+            </div>
+        </div>
+    `).join('');
+}
 
-    students.forEach(student => {
-        // users tablosundan veri gelmediyse student_id'yi göster
-        const studentName = student.users ? student.users.full_name : student.student_id;
-        html += `<tr><td>${studentName}</td>`;
-        assignments.forEach(hw => {
-            // some() metodu ile bu öğrencinin bu ödevi tamamlayıp tamamlamadığını kontrol et
-            const isDone = completions.some(c => c.assignment_id === hw.id && c.student_id === student.student_id);
-            html += `<td class="status-cell">${isDone ? '✅ Tamamladı' : '❌ Tamamlamadı'}</td>`;
+/* Açıklama aç / kapa */
+document.addEventListener('click', (e) => {
+    const card = e.target.closest('.teacher-hw-item');
+    if (!card) return;
+
+    const id = card.dataset.id;
+    const desc = document.getElementById(`teacher-desc-${id}`);
+    if (!desc) return;
+
+    desc.style.display = desc.style.display === "block" ? "none" : "block";
+});
+
+/* =====================
+   RAPOR SELECT
+===================== */
+reportClassSelect.addEventListener('change', (e) => {
+    const classId = e.target.value;
+    if (!classId) {
+        studentStatusArea.innerHTML = "<p>Rapor için bir sınıf seçin.</p>";
+        return;
+    }
+    loadStudentProgress(classId);
+});
+
+/* =====================
+   ÖĞRENCİ RAPORU (GÜN BAZLI)
+===================== */
+async function loadStudentProgress(classId) {
+    studentStatusArea.innerHTML = "<p>Yükleniyor...</p>";
+
+    const { data: students } = await _supabase
+        .from("class_members")
+        .select(`student_id, users:student_id ( full_name )`)
+        .eq("class_id", classId);
+
+    const { data: assignments } = await _supabase
+        .from("assignments")
+        .select("id, title, description, due_date")
+        .eq("class_id", classId);
+
+    const { data: completions } = await _supabase
+        .from("assignment_completions")
+        .select("assignment_id, student_id, completed_at")
+        .in("assignment_id", assignments.map(a => a.id));
+
+    let html = `<table class="report-table"><thead><tr><th>Öğrenci</th>`;
+    assignments.forEach((a, i) => {
+        html += `<th title="${a.description || ''}">Ödev ${i + 1}<br>${a.title}</th>`;
+    });
+    html += `</tr></thead><tbody>`;
+
+    students.forEach(stu => {
+        html += `<tr><td>${stu.users.full_name}</td>`;
+        assignments.forEach(a => {
+            const c = completions.find(x =>
+                x.assignment_id === a.id && x.student_id === stu.student_id
+            );
+
+            if (!c) {
+                html += `<td>❌ Yapılmadı</td>`;
+            } else {
+                const due = a.due_date.split('T')[0];
+                const done = c.completed_at.split('T')[0];
+                html += `<td>${done > due ? '🟠 Geç' : '✅ Zamanında'}<br>${new Date(c.completed_at).toLocaleDateString('tr-TR')}</td>`;
+            }
         });
         html += `</tr>`;
     });
-    html += `</table>`;
-    
+
+    html += `</tbody></table>`;
     studentStatusArea.innerHTML = html;
-};
-
-// Sınıf dropdown'ı değiştiğinde ilgili sınıfın raporunu yükle
-classSelect.addEventListener('change', (e) => {
-    const selectedClassId = e.target.value;
-    loadStudentProgress(selectedClassId);
-});
-
-// --- AVATAR (PROFİL RESMİ) GÜNCELLEME ---
-if (user && user.avatar_url) {
-    const imgEl = document.getElementById('header-avatar');
-    if(imgEl) imgEl.src = user.avatar_url;
 }
 
-// --- BAŞLANGIÇ ---
-loadFormData();
+/* =====================
+   OLUŞTURULAN SINIFLAR
+===================== */
+async function loadTeacherClasses() {
+    classListDiv.innerHTML = '<li>Yükleniyor...</li>';
+
+    const { data: classes } = await _supabase
+        .from('classes')
+        .select('*')
+        .eq('teacher_id', user.id);
+
+    classListDiv.innerHTML = '';
+    classes.forEach(c => {
+        const li = document.createElement('li');
+        li.textContent = `${c.class_name} (${c.class_code})`;
+        classListDiv.appendChild(li);
+    });
+}

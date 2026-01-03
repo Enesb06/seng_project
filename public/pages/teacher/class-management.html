@@ -51,20 +51,66 @@
                     </form>
                 </section>
 
+                <div class="card" style="margin-top:20px;">
+                    <h3>Oluşturulan Sınıflar</h3>
+                    <ul id="class-list" class="class-list">
+                        <li>Yükleniyor...</li>
+                    </ul>
+                </div>
+
+
                 <section class="card" style="margin-top:20px;">
                     <h3>Ödev Ata</h3>
                     <form id="assign-homework-form">
                         <label>Sınıf Seçin:</label>
                         <select id="select-class" required></select>
+                        <label>Ödev Başlığı</label>
+                        <input type="text" id="hw-title"  required>
+                        <label>Ödev açıklaması</label>
+                        <textarea id="hw-description" class="input-field" placeholder="Öğrencilere gösterilecek açıklama..." rows="4"></textarea>
+
                         
-                        <label>Okuma Parçası Seçin (İsteğe bağlı):</label>
-                        <select id="select-content"></select>
                         
-                        <input type="text" id="hw-title" placeholder="Ödev Başlığı" required>
                         <label>Teslim Tarihi:</label>
-                        <input type="date" id="hw-due-date" required>
+                        <input type="datetime-local" id="hw-due-date" class="date-input" required>
+
                         
-                        <button type="submit">Ödevi Yayınla</button>
+                        <button type="submit">Ödevi Ata</button>
+
+                        </section>
+
+                        <section class="card" style="margin-top:20px;">
+                            <h3>Verdiğim Ödevler</h3>
+
+                            <label>Sınıf seçin:</label>
+                            <select id="my-assignments-class-select">
+                                <option value="">Sınıf seçiniz</option>
+                            </select>
+
+                            <div id="my-assignments-area" style="margin-top:15px;">
+                                
+                            </div>
+                        </section>
+
+
+
+                        <section class="card" style="margin-top:20px;">
+                            <h3>Öğrenci Ödev Raporları</h3>
+
+                            <label>Sınıf seçin:</label>
+                            <select id="report-class-select">
+                                <option value="">Sınıf seçiniz</option>
+                            </select>
+                            
+
+                            <div id="student-status-area">
+                                
+                            </div>
+                        </section>
+
+                        
+
+
                     </form>
                 </section>
             </main>

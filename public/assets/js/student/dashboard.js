@@ -1,8 +1,6 @@
-// assets/js/student/dashboard.js
-
 import { _supabase } from '../supabaseClient.js';
 
-// --- ELEMENT SEÇİMİ ---
+/* ========= ELEMENTLER ========= */
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
 const totalReadingsStat = document.getElementById('total-readings-stat');
@@ -13,16 +11,15 @@ const joinClassBtn = document.getElementById('join-class-btn');
 const classCodeInput = document.getElementById('class-code-input');
 const joinMessage = document.getElementById('join-message');
 
-
-// --- PANEL YÜKLEME ---
+/* ========= PANEL ========= */
 const loadStudentDashboard = () => {
     const userString = localStorage.getItem('user');
     if (!userString) {
         window.location.href = '/index.html';
         return;
     }
-    const user = JSON.parse(userString);
 
+    const user = JSON.parse(userString);
     if (user.role !== 'student') {
         localStorage.removeItem('user');
         window.location.href = '/index.html';
@@ -32,83 +29,136 @@ const loadStudentDashboard = () => {
     welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
     loadStats();
     loadBadges();
-    loadMyClassAndHomework(); // Yeni eklenen fonksiyonu burada çağırıyoruz
+    loadMyClassAndHomework();
 };
 
-// --- SINIF BİLGİLERİ VE ÖDEVLERİ YÜKLE ---
+/* ========= SINIF & ÖDEVLER (GÜN BAZLI) ========= */
 const loadMyClassAndHomework = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
-    
-    // 1. Katıldığı sınıfı bul
-    const { data: membership, error: membershipError } = await _supabase
+
+    const { data: membership } = await _supabase
         .from('class_members')
         .select('class_id, classes(class_name, class_code)')
         .eq('student_id', user.id)
         .single();
 
-    if (membershipError || !membership) {
-        // Eğer bir hata varsa veya öğrenci bir sınıfa kayıtlı değilse, mesaj göster.
-        // `join-class-section` gibi bir ID'ye sahip bir bölüm varsa onu göster, sınıf bilgi alanını gizle.
-        const classInfoArea = document.getElementById('class-info-area');
-        if (classInfoArea) classInfoArea.innerHTML = "<p>Henüz bir sınıfa katılmadınız. Kodu kullanarak katılabilirsiniz.</p>";
+    const classInfoArea = document.getElementById('class-info-area');
+    if (!membership) {
+        if (classInfoArea)
+            classInfoArea.innerHTML = "<p>Henüz bir sınıfa katılmadınız.</p>";
         return;
     }
-    
-    // Öğrenci bir sınıfa katılmışsa sınıf bilgisini göster
-    const classInfoArea = document.getElementById('class-info-area');
-    if(classInfoArea){
+
+    if (classInfoArea) {
         classInfoArea.innerHTML = `
-            <strong>Sınıf:</strong> ${membership.classes.class_name} 
+            <strong>Sınıf:</strong> ${membership.classes.class_name}
             <small>(Kod: ${membership.classes.class_code})</small>
         `;
     }
 
-
-    // 2. Bu sınıfa atanmış ödevleri ve bitirilme durumunu getir
-    const { data: assignments, error: assignmentsError } = await _supabase
+    const { data: assignments } = await _supabase
         .from('assignments')
-        .select(`*, assignment_completions(id)`)
+        .select('id, title, description, due_date, assignment_completions(completed_at)')
         .eq('class_id', membership.class_id);
 
-    if(assignmentsError){
-        console.error("Ödevler çekilirken hata oluştu:", assignmentsError);
+    const hwList = document.getElementById('homework-list');
+    if (!hwList) return;
+
+    if (!assignments || assignments.length === 0) {
+        hwList.innerHTML = "<p>Bu sınıfa atanmış ödev yok.</p>";
         return;
     }
 
-    const hwList = document.getElementById('homework-list');
-    if (hwList) {
-        if(assignments && assignments.length > 0) {
-            hwList.innerHTML = assignments.map(hw => {
-                // Her bir ödev için tamamlanma durumunu kontrol et
-                const isDone = hw.assignment_completions && hw.assignment_completions.length > 0;
-                return `
-                    <li class="hw-item ${isDone ? 'done' : ''}" style="padding:15px; border:1px solid #eee; border-radius:8px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <h4 style="margin:0;">${hw.title}</h4>
-                            <small>Bitiş: ${new Date(hw.due_date).toLocaleDateString()}</small>
-                        </div>
-                        ${isDone
-                            ? '<span style="color:green;">✅ Tamamlandı</span>'
-                            : `<button onclick="window.location.href='pages/student/reading.html?hw_id=${hw.id}'" class="cta-button" style="width:auto; padding:5px 15px;">Ödevi Oku</button>`}
-                    </li>
-                `;
-            }).join('');
-        } else {
-            hwList.innerHTML = "<p>Bu sınıfa atanmış aktif bir ödev bulunmuyor.</p>";
+    hwList.innerHTML = assignments.map(hw => {
+        const completion = hw.assignment_completions?.[0];
+
+        const isDone = !!completion;
+
+        let statusHTML = `
+            <button class="cta-button read-btn"
+                data-id="${hw.id}"
+                style="width:auto;padding:5px 12px;">
+                Ödevin İçeriğini Oku
+            </button>
+
+            <button class="cta-button complete-btn"
+                data-id="${hw.id}"
+                style="width:auto;padding:5px 12px;background:#16a34a;margin-left:6px;">
+                Tamamladım
+            </button>
+        `;
+
+        if (isDone) {
+            const dueDay = new Date(hw.due_date).toISOString().split('T')[0];
+            const completedDay = new Date(completion.completed_at).toISOString().split('T')[0];
+
+            const isLate = completedDay > dueDay;
+
+            statusHTML = isLate
+                ? '<span style="color:orange;">🟠 Geç Teslim</span>'
+                : '<span style="color:green;">✅ Zamanında</span>';
         }
-    }
+
+        return `
+            <li class="hw-item"
+                style="padding:15px;border:1px solid #eee;border-radius:8px;margin-bottom:12px;">
+
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <h4 style="margin:0;">${hw.title}</h4>
+                        <small>Teslim günü: ${new Date(hw.due_date).toLocaleDateString('tr-TR')}</small>
+                    </div>
+
+                    <div>${statusHTML}</div>
+                </div>
+
+                <div id="content-${hw.id}"
+                    style="display:none;margin-top:10px;padding:10px;background:#f9fafb;border-radius:6px;">
+                    ${hw.description || "Bu ödev için içerik eklenmemiş."}
+                </div>
+            </li>
+        `;
+    }).join('');
 };
 
+/* ========= ÖDEV AÇ / KAPAT ========= */
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("read-btn")) {
+        const id = e.target.dataset.id;
+        const content = document.getElementById(`content-${id}`);
+        if (!content) return;
 
-// --- İSTATİSTİKLERİ YÜKLE ---
+        const open = content.style.display === "block";
+        content.style.display = open ? "none" : "block";
+        e.target.textContent = open ? "Ödevin İçeriğini Oku" : "Kapat";
+    }
+});
+
+/* ========= TAMAMLADIM ========= */
+document.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("complete-btn")) {
+        const assignmentId = e.target.dataset.id;
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        await _supabase.from("assignment_completions").insert({
+            assignment_id: assignmentId,
+            student_id: user.id,
+            completed_at: new Date().toISOString()
+        });
+
+        alert("Ödev tamamlandı ✔");
+        loadMyClassAndHomework();
+    }
+});
+
+/* ========= STATİKLER ========= */
 const loadStats = () => {
-    // Gelecekte bu veriler Supabase'den dinamik olarak çekilecek
     if (totalReadingsStat) totalReadingsStat.innerText = '12';
     if (learnedWordsStat) learnedWordsStat.innerText = '78';
     if (quizSuccessStat) quizSuccessStat.innerText = '%92';
 };
 
-// --- ROZETLERİ YÜKLE ---
+/* ========= ROZETLER ========= */
 const loadBadges = () => {
     const userBadges = [
         { name: 'İlk 10 Kelime', image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png' },
@@ -116,112 +166,60 @@ const loadBadges = () => {
         { name: 'Quiz Ustası', image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png' }
     ];
 
-    if (badgeList) {
-        if (userBadges.length > 0) {
-            badgeList.innerHTML = '';
-            userBadges.forEach(badge => {
-                const badgeElement = document.createElement('div');
-                badgeElement.classList.add('badge');
-                badgeElement.innerHTML = `<img src="${badge.image}" alt="${badge.name}"><span>${badge.name}</span>`;
-                badgeList.appendChild(badgeElement);
-            });
-        } else {
-            badgeList.innerHTML = '<p>Henüz hiç rozet kazanmadın.</p>';
-        }
-    }
+    if (!badgeList) return;
+    badgeList.innerHTML = '';
+    userBadges.forEach(badge => {
+        badgeList.innerHTML += `
+            <div class="badge">
+                <img src="${badge.image}">
+                <span>${badge.name}</span>
+            </div>
+        `;
+    });
 };
 
-// --- SINIFA KATILMA ---
+/* ========= SINIFA KATIL ========= */
 const handleJoinClass = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     const code = classCodeInput.value.trim().toUpperCase();
 
     if (code.length < 6) {
-        showMessage("Lütfen 6 haneli kodu tam girin.", "red");
+        showMessage("6 haneli kod girin", "red");
         return;
     }
 
-    joinClassBtn.disabled = true;
-    joinClassBtn.textContent = "Kontrol ediliyor...";
+    const { data: classData } = await _supabase
+        .from('classes')
+        .select('id, class_name')
+        .eq('class_code', code)
+        .single();
 
-    try {
-        // 1. ADIM: Sınıf kodunu 'classes' tablosunda ara
-        const { data: classData, error: findError } = await _supabase
-            .from('classes')
-            .select('id, class_name')
-            .eq('class_code', code)
-            .single();
-
-        if (findError || !classData) {
-            throw new Error("Geçersiz sınıf kodu! Lütfen kodu kontrol edin.");
-        }
-
-        // 2. ADIM: Öğrenci zaten bu sınıfta mı kontrol et
-        const { data: existingMember } = await _supabase
-            .from('class_members')
-            .select('id')
-            .eq('class_id', classData.id)
-            .eq('student_id', user.id)
-            .single();
-
-        if (existingMember) {
-            throw new Error(`Zaten "${classData.class_name}" sınıfına üyesiniz.`);
-        }
-
-        // 3. ADIM: 'class_members' tablosuna kayıt ekle
-        const { error: joinError } = await _supabase
-            .from('class_members')
-            .insert({
-                class_id: classData.id,
-                student_id: user.id
-            });
-
-        if (joinError) throw joinError;
-
-        showMessage(`Tebrikler! "${classData.class_name}" sınıfına katıldınız. Sayfa yenileniyor...`, "green");
-        classCodeInput.value = "";
-        
-        // Sınıfa katıldıktan sonra bilgilerin güncellenmesi için sayfayı yeniden yükle
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000);
-
-
-    } catch (err) {
-        showMessage(err.message, "red");
-    } finally {
-        joinClassBtn.disabled = false;
-        joinClassBtn.textContent = "Sınıfa Katıl";
+    if (!classData) {
+        showMessage("Geçersiz sınıf kodu", "red");
+        return;
     }
+
+    await _supabase.from('class_members').insert({
+        class_id: classData.id,
+        student_id: user.id
+    });
+
+    showMessage(`"${classData.class_name}" sınıfına katıldınız`, "green");
+    setTimeout(() => window.location.reload(), 1500);
 };
 
-// Mesaj gösterme yardımcı fonksiyonu
 const showMessage = (msg, color) => {
-    if(joinMessage){
-        joinMessage.textContent = msg;
-        joinMessage.style.color = color === "red" ? "#dc2626" : "#16a34a";
-        joinMessage.style.display = "block";
-        setTimeout(() => { joinMessage.style.display = "none"; }, 5000);
-    }
+    if (!joinMessage) return;
+    joinMessage.textContent = msg;
+    joinMessage.style.color = color === "red" ? "#dc2626" : "#16a34a";
 };
 
-
-// --- ÇIKIŞ YAPMA ---
-if(logoutButton) {
+/* ========= EVENTLER ========= */
+if (joinClassBtn) joinClassBtn.addEventListener('click', handleJoinClass);
+if (logoutButton)
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
         window.location.href = 'index.html';
     });
-}
 
-// --- EVENT LISTENERS ---
-if (joinClassBtn) {
-    joinClassBtn.addEventListener('click', handleJoinClass);
-}
-
-// --- BAŞLANGIÇ ---
 document.addEventListener('DOMContentLoaded', loadStudentDashboard);
-const userForAvatar = JSON.parse(localStorage.getItem('user'));
-if (userForAvatar && userForAvatar.avatar_url) {
-    document.getElementById('header-avatar').src = userForAvatar.avatar_url;
-}
