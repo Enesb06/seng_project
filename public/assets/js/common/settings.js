@@ -34,13 +34,14 @@ const initSettings = async () => {
             `;
         } else {
             navUl.innerHTML = `
-                <li><a href="../../student.html">Ana Sayfa</a></li>
-                <li><a href="../student/reading.html">Okuma Materyalleri</a></li>
+                <li><a href="../../student.html">🏠 Ana Sayfa</a></li>
+                <li><a href="../student/reading.html">📚 Okuma Materyalleri</a></li>
                 <li><a href="../student/favorites.html">⭐ Favorilerim</a></li>
-                <li><a href="../student/wordlist.html">Kelime Listem</a></li>
-                <li><a href="../student/quiz.html">Quiz'lerim</a></li>
+                <li><a href="../student/wordlist.html">📝 Kelime Listem</a></li>
+                <li><a href="../student/quiz.html">🧠 Quiz'lerim</a></li>
+                <li><a href="../student/ai-chat.html">🤖 AI Asistan</a></li>
                 <li><a href="../student/support.html">💬 Destek</a></li>
-                <li><a href="../student/profile.html">Profilim & İstatistikler</a></li>
+                <li><a href="../student/profile.html">📊 Profilim & İstatistikler</a></li>
                 <li class="active"><a href="settings.html">⚙️ Ayarlar</a></li>
             `;
         }
