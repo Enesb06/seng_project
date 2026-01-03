@@ -12,7 +12,7 @@ const classCodeInput = document.getElementById('class-code-input');
 const joinMessage = document.getElementById('join-message');
 
 /* ========= PANEL ========= */
-const loadStudentDashboard = () => {
+const loadStudentDashboard = async () => {
     const userString = localStorage.getItem('user');
     if (!userString) {
         window.location.href = '/index.html';
@@ -27,7 +27,7 @@ const loadStudentDashboard = () => {
     }
 
     welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
-    loadStats();
+    await loadStats(); // ✅ SADECE BURASI: artık gerçek veri
     loadBadges();
     loadMyClassAndHomework();
 };
@@ -152,10 +152,46 @@ document.addEventListener("click", async (e) => {
 });
 
 /* ========= STATİKLER ========= */
-const loadStats = () => {
-    if (totalReadingsStat) totalReadingsStat.innerText = '12';
-    if (learnedWordsStat) learnedWordsStat.innerText = '78';
-    if (quizSuccessStat) quizSuccessStat.innerText = '%92';
+const loadStats = async () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return;
+
+    try {
+        // 1) Okuma Sayısı
+        const { count: readCount } = await _supabase
+            .from('contents')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id);
+
+        // 2) Öğrenilen Kelime
+        const { count: wordCount } = await _supabase
+            .from('word_list')
+            .select('*', { count: 'exact', head: true })
+            .eq('student_id', user.id)
+            .eq('learning_status', 'learned');
+
+        // 3) Quiz Ortalama
+        const { data: quizData } = await _supabase
+            .from('quiz_results')
+            .select('success_rate')
+            .eq('student_id', user.id);
+
+        let avg = 0;
+        if (quizData && quizData.length > 0) {
+            const total = quizData.reduce((sum, r) => sum + (r.success_rate || 0), 0);
+            avg = Math.round(total / quizData.length);
+        }
+
+        if (totalReadingsStat) totalReadingsStat.innerText = readCount || 0;
+        if (learnedWordsStat) learnedWordsStat.innerText = wordCount || 0;
+        if (quizSuccessStat) quizSuccessStat.innerText = `%${avg}`;
+
+    } catch (err) {
+        console.error("Ana sayfa istatistikleri çekilemedi:", err);
+        if (totalReadingsStat) totalReadingsStat.innerText = '0';
+        if (learnedWordsStat) learnedWordsStat.innerText = '0';
+        if (quizSuccessStat) quizSuccessStat.innerText = '%0';
+    }
 };
 
 /* ========= ROZETLER ========= */
