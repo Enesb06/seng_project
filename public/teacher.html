@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Öğretmen Paneli - LearnENG</title>
+
     <!-- CSS Dosyaları -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
-    <!-- BURAYA GELECEK: Teacher panele özel stil dosyası -->
-    <link rel="stylesheet" href="assets/css/teacher.css"> 
+    <link rel="stylesheet" href="assets/css/teacher.css">
+
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -20,7 +21,11 @@
                     <li class="active"><a href="/teacher.html">Anasayfa</a></li>
                     <li><a href="pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
                     <li><a href="pages/teacher/student-report.html">Öğrenci Raporları</a></li>
-                    <li><a href="pages/common/settings.html">⚙️ Ayarlar</a></li>     
+
+                    <!-- ✅ DESTEK EKLENDİ -->
+                    <li><a href="pages/teacher/support.html">💬 Destek</a></li>
+
+                    <li><a href="pages/common/settings.html">⚙️ Ayarlar</a></li>
                 </ul>
             </nav>
         </aside>
@@ -28,13 +33,16 @@
         <!-- ANA İÇERİK -->
         <div class="main-content">
             <header class="dashboard-header">
-    <h2>Öğretmen Özeti</h2>
-    <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-        <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
-        <span id="welcome-message">Yükleniyor...</span>
-        <button id="logout-button">Çıkış Yap</button>
-    </div>
-</header>
+                <h2>Öğretmen Özeti</h2>
+                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
+                    <img id="header-avatar"
+                         src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
+                         style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+                    <span id="welcome-message">Yükleniyor...</span>
+                    <button id="logout-button">Çıkış Yap</button>
+                </div>
+            </header>
+
             <main class="content-area">
                 <h3>Genel Bakış</h3>
                 <div class="stats-grid">
@@ -50,6 +58,7 @@
             </main>
         </div>
     </div>
+
     <!-- JavaScript Dosyası -->
     <script type="module" src="assets/js/teacher/dashboard.js"></script>
 </body>

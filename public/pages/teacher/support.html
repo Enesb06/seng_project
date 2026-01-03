@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destek Merkezi</title>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+  <!-- SIDEBAR (Teacher) -->
+  <aside class="sidebar">
+    <div class="logo"><a href="../../teacher.html">LearnEnglish</a></div>
+    <nav>
+      <ul>
+        <li><a href="../../teacher.html">Ana Sayfa</a></li>
+        <li><a href="class-management.html">Sınıf Yönetimi</a></li>
+        <li><a href="pending.html">Onay Bekleyenler</a></li>
+        <li class="active"><a href="support.html">💬 Destek</a></li>
+        <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- ÜST BAR -->
+    <header class="dashboard-header">
+      <h2>💬 Destek &amp; Geri Bildirim</h2>
+      <div class="user-info" style="display:flex; align-items:center; gap:15px;">
+        <img id="header-avatar"
+             src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
+             style="width:35px;height:35px;border-radius:50%;border:2px solid #4CAF50;object-fit:cover;">
+        <span id="welcome-message"></span>
+        <button id="logout-button">Çıkış Yap</button>
+      </div>
+    </header>
+
+    <main class="content-area"
+          style="display:flex; flex-direction:column; gap:20px; max-width:850px; margin:0 auto; width:100%;">
+
+      <!-- YENİ KONU AÇMA -->
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-top:0; margin-bottom:12px;">Yeni Destek Talebi Oluştur</h3>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div>
+            <label for="support-subject"
+                   style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
+              Konu Başlığı
+            </label>
+            <input id="support-subject" type="text"
+                   placeholder="Örn: Sınıf yönetimi sayfası hata veriyor..."
+                   style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
+                          font-size:0.95rem;box-sizing:border-box;">
+          </div>
+
+          <div>
+            <label for="support-message"
+                   style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
+              Mesajınız
+            </label>
+            <textarea id="support-message" rows="4"
+                      placeholder="Sorununuzu veya geri bildiriminizi ayrıntılı şekilde yazın..."
+                      style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
+                             font-size:0.95rem;resize:vertical;min-height:120px;box-sizing:border-box;
+                             font-family:inherit;"></textarea>
+          </div>
+
+          <button id="create-thread" class="cta-button" style="width:100%;margin-top:4px;">
+            Gönder
+          </button>
+        </div>
+      </div>
+
+      <!-- TALEPLER + CHAT -->
+      <div class="card" style="padding:20px;">
+        <h3 style="margin-top:0; margin-bottom:12px;">Geçmiş Destek Taleplerim</h3>
+
+        <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+
+          <!-- SOL: thread list -->
+          <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
+            <div id="my-threads-list" style="font-size:0.9rem;">
+              Henüz destek talebiniz yok.
+            </div>
+          </div>
+
+          <!-- SAĞ: chat -->
+          <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#ffffff;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+              <div>
+                <div id="user-selected-title" style="font-weight:700;">Bir talep seçin</div>
+                <div id="user-selected-meta" style="font-size:0.8rem; color:#6b7280;">
+                  Mesajları görmek için soldan seç.
+                </div>
+              </div>
+              <span id="user-selected-status"
+                    style="display:none; font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#e5e7eb; color:#374151;">
+                Durum
+              </span>
+            </div>
+
+            <div id="user-messages-box"
+                 style="margin-top:10px; border:1px solid #e5e7eb;border-radius:10px;padding:10px; max-height:260px; overflow-y:auto; font-size:0.9rem;">
+              Bir talep seçtiğinizde mesajlar burada görünecek.
+            </div>
+
+            <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+              <textarea id="user-reply-input" rows="3" placeholder="Mesaj yazın..."
+                        style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; box-sizing:border-box; font-size:0.9rem; font-family:inherit;"></textarea>
+
+              <button id="user-send-btn" class="cta-button" style="align-self:flex-end;">
+                Gönder
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Aynı JS dosyasını teacher’da da kullanıyoruz -->
+<script type="module" src="../../assets/js/student/support.js"></script>
+</body>
+</html>

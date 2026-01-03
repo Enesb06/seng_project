@@ -34,11 +34,13 @@
 
     <!-- MAIN -->
     <div class="main-content">
-        <!-- ÜST BAR (GÜNCELLENDİ) -->
+        <!-- ÜST BAR -->
         <header class="dashboard-header">
             <h2>💬 Destek &amp; Geri Bildirim</h2>
             <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-                <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+                <img id="header-avatar"
+                     src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
+                     style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
                 <button id="logout-button">Çıkış Yap</button>
             </div>
@@ -84,144 +86,60 @@
                 </div>
             </div>
 
-            <!-- KENDİ TALEPLERİ -->
+            <!-- KENDİ TALEPLERİ + CHAT -->
             <div class="card" style="padding:20px;">
                 <h3 style="margin-top:0; margin-bottom:12px;">Geçmiş Destek Taleplerim</h3>
 
-                <div id="my-threads"
-                     style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;
-                            font-size:0.9rem;">
-                    Henüz destek talebiniz yok.
+                <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+
+                    <!-- SOL: thread list -->
+                    <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
+                        <div id="my-threads-list" style="font-size:0.9rem;">
+                            Henüz destek talebiniz yok.
+                        </div>
+                    </div>
+
+                    <!-- SAĞ: chat -->
+                    <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#ffffff;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                            <div>
+                                <div id="user-selected-title" style="font-weight:700;">Bir talep seçin</div>
+                                <div id="user-selected-meta" style="font-size:0.8rem; color:#6b7280;">
+                                    Mesajları görmek için soldan seç.
+                                </div>
+                            </div>
+                            <span id="user-selected-status"
+                                  style="display:none; font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#e5e7eb; color:#374151;">
+                                Durum
+                            </span>
+                        </div>
+
+                        <div id="user-messages-box"
+                             style="margin-top:10px; border:1px solid #e5e7eb;border-radius:10px;padding:10px; max-height:260px; overflow-y:auto; font-size:0.9rem;">
+                            Bir talep seçtiğinizde mesajlar burada görünecek.
+                        </div>
+
+                        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
+                            <textarea id="user-reply-input"
+                                      rows="3"
+                                      placeholder="Mesaj yazın..."
+                                      style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; box-sizing:border-box; font-size:0.9rem; font-family:inherit;"></textarea>
+
+                            <button id="user-send-btn" class="cta-button" style="align-self:flex-end;">
+                                Gönder
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
         </main>
     </div>
 </div>
 
-<!-- ============ JS ============ -->
-<script type="module">
-import { _supabase } from "../../assets/js/supabaseClient.js";
-
-const subjectInput = document.getElementById("support-subject");
-const messageInput = document.getElementById("support-message");
-const createBtn    = document.getElementById("create-thread");
-const threadsBox   = document.getElementById("my-threads");
-
-const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
-
-// --- KULLANICI BİLGİLERİNİ GÜNCELLE (Avatar ve İsim) ---
-const initUser = () => {
-    const user = getUser();
-    if (!user) {
-        window.location.href = "../../index.html";
-        return;
-    }
-
-    // Hoşgeldin mesajı
-    const welcomeEl = document.getElementById('welcome-message');
-    if(welcomeEl) welcomeEl.textContent = "Hoş geldin, " + user.full_name;
-
-    // Profil resmi (Header)
-    if (user.avatar_url) {
-        const imgEl = document.getElementById('header-avatar');
-        if(imgEl) imgEl.src = user.avatar_url;
-    }
-};
-
-// Kendi taleplerini yükle
-const loadMyThreads = async () => {
-    const user = getUser();
-    if (!user) return;
-
-    const { data, error } = await _supabase
-        .from("support_threads")
-        .select("*")
-        .eq("created_by_user_id", user.id)
-        .order("created_at", { ascending: false });
-
-    if (error || !data) {
-        threadsBox.innerHTML = "Yüklenirken hata oluştu.";
-        return;
-    }
-
-    if (data.length === 0) {
-        threadsBox.innerHTML = "<p style='color:#6b7280;margin:0;'>Henüz destek talebiniz yok.</p>";
-        return;
-    }
-
-    threadsBox.innerHTML = data.map(t => `
-        <div style="
-            border:1px solid #e5e7eb;
-            border-radius:10px;
-            padding:10px 12px;
-            margin-bottom:8px;
-            background:#ffffff;">
-            <div style="font-weight:600;font-size:0.95rem;">${t.subject}</div>
-            <div style="font-size:0.8rem;color:#6b7280;margin-top:2px;">
-                Durum: ${t.status === "open" ? "Açık" : "Kapalı"}
-                • ${new Date(t.created_at).toLocaleString("tr-TR")}
-            </div>
-        </div>
-    `).join("");
-};
-
-// Yeni talep oluştur
-createBtn.onclick = async () => {
-    const user = getUser();
-    if (!user) return;
-
-    const subject = subjectInput.value.trim();
-    const message = messageInput.value.trim();
-
-    if (!subject || !message) {
-        alert("Başlık ve mesaj boş olamaz!");
-        return;
-    }
-
-    // 1) thread oluştur
-    const { data: thread, error } = await _supabase
-        .from("support_threads")
-        .insert({
-            created_by_user_id: user.id,
-            created_by_role: user.role || "student",
-            subject,
-            status: "open"
-        })
-        .select()
-        .single();
-
-    if (error) {
-        console.error(error);
-        alert("Talep oluşturulurken bir hata oluştu.");
-        return;
-    }
-
-    // 2) ilk mesajı ekle
-    await _supabase
-        .from("support_messages")
-        .insert({
-            thread_id: thread.id,
-            sender_user_id: user.id,
-            sender_role: user.role || "student",
-            message
-        });
-
-    subjectInput.value = "";
-    messageInput.value = "";
-
-    loadMyThreads();
-};
-
-// Çıkış Yap Butonu
-document.getElementById('logout-button').onclick = () => {
-    localStorage.removeItem('user');
-    window.location.href = "../../index.html";
-};
-
-// Başlatıcılar
-initUser();
-loadMyThreads();
-</script>
+<!-- JS (Dış Dosya) -->
+<script type="module" src="../../assets/js/student/support.js"></script>
 
 </body>
 </html>
