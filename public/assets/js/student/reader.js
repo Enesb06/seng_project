@@ -1,4 +1,3 @@
-// assets/js/student/reader.js
 import { _supabase } from '../supabaseClient.js';
 
 /* ========= GENEL DEĞİŞKENLER & SEÇİCİLER ========= */
@@ -23,24 +22,25 @@ const getUser = () => {
   }
 };
 
-const readingTitle     = document.getElementById('reading-title');
-const readingBody      = document.getElementById('reading-body');
-const materialsList    = document.getElementById('materials-list');
-const noteTextarea     = document.getElementById('note-textarea');
+const readingTitle = document.getElementById('reading-title');
+const readingBody = document.getElementById('reading-body');
+const materialsList = document.getElementById('materials-list');
+const noteTextarea = document.getElementById('note-textarea');
 const historyContainer = document.getElementById('note-history-list');
 
-const tooltip          = document.getElementById('translation-tooltip');
-const tooltipWord      = document.getElementById('tooltip-word');
-const tooltipMeaning   = document.getElementById('tooltip-meaning');
-const addWordBtn       = document.getElementById('add-to-wordlist-btn');
+const tooltip = document.getElementById('translation-tooltip');
+const tooltipWord = document.getElementById('tooltip-word');
+const tooltipMeaning = document.getElementById('tooltip-meaning');
+const addWordBtn = document.getElementById('add-to-wordlist-btn');
+const playPronunciationBtn = document.getElementById('play-pronunciation-btn');
 
 const preferencesModal = document.getElementById('preferences-modal');
-const preferencesForm  = document.getElementById('preferences-form');
-const loader           = document.getElementById('loader');
+const preferencesForm = document.getElementById('preferences-form');
+const loader = document.getElementById('loader');
 
-const favoriteBtn      = document.getElementById('favorite-btn');
+const favoriteBtn = document.getElementById('favorite-btn');
 const welcomeMessageEl = document.getElementById('welcome-message');
-const logoutButton     = document.getElementById('logout-button');
+const logoutButton = document.getElementById('logout-button');
 
 const AI_FUNCTION_URL =
   'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-reading-material';
@@ -51,6 +51,29 @@ const formatDate = (dateString) => {
   const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
   return new Date(dateString).toLocaleDateString('tr-TR', options);
 };
+
+// ========= KELİME SESLENDİRME (DOĞRU VE SON HALİ) =========
+const speakWord = (word) => {
+  try {
+    // HATA BURADAYDI. `getURL` yerine URL'yi kendimiz oluşturuyoruz.
+    // Proje URL'niz ekran görüntüsünden belli: https://infmglbngspopnxrjnfv.supabase.co
+    const projectUrl = 'https://infmglbngspopnxrjnfv.supabase.co';
+    
+    // Fonksiyonun tam URL'sini oluşturuyoruz.
+    const ttsFunctionUrl = `${projectUrl}/functions/v1/get-pronunciation?text=${encodeURIComponent(word)}`;
+
+    // Bu URL'yi kaynak olarak kullanan yeni bir ses nesnesi oluştur.
+    const audio = new Audio(ttsFunctionUrl);
+
+    // Sesi çal.
+    audio.play();
+
+  } catch (error) {
+    console.error("Telaffuz oynatılırken hata oluştu:", error);
+    alert("Sesli telaffuz şu an kullanılamıyor.");
+  }
+};
+
 
 /* ========= FAVORİ YÖNETİMİ ========= */
 const getFavorites = () => {
@@ -129,20 +152,18 @@ const getTranslation = async (word) => {
    Metin sağ panelde render olduysa 1 kere okundu say.
 */
 const markAsRead = async (contentId) => {
+  // --- KONTROL İÇİN BU SATIRI EKLEYİN ---
+  console.log('Okundu olarak işaretlenen metin ID:', contentId); 
+  
   const user = getUser();
   if (!user || !contentId) return;
 
-  // NOT: reading_logs tablon UUID ise student_id uuid olmalı.
-  // Sen bazen TEXT yaptın dedin. Burada String(user.id) gönderiyorum.
-  // Eğer kolon uuid ise bu yine de UUID string olduğu için çalışır.
   const payload = {
     student_id: String(user.id),
     content_id: contentId,
     read_at: new Date().toISOString(),
   };
 
-  // UNIQUE index varsa (student_id, content_id) tekrar saymaz.
-  // upsert için onConflict kesin bu şekilde yazılmalı:
   const { error } = await _supabase
     .from('reading_logs')
     .upsert(payload, { onConflict: 'student_id,content_id' });
@@ -171,14 +192,11 @@ const displayMaterial = async (contentId) => {
 
     if (error || !data) throw error || new Error('İçerik bulunamadı');
 
-    // ✅ Sağ panel render
     if (readingTitle) readingTitle.textContent = data.title || '';
     if (readingBody) readingBody.innerHTML = wrapWords(data.body || '');
 
-    // ✅ Render sonrası okundu say
     await markAsRead(contentId);
 
-    // Not
     const savedNote = localStorage.getItem(`note_${user.id}_${contentId}`);
     if (noteTextarea) noteTextarea.value = savedNote || '';
 
@@ -274,9 +292,9 @@ const handleGenerateNewMaterial = async (e) => {
   if (loader) loader.classList.remove('hidden');
   if (preferencesModal) preferencesModal.classList.add('hidden');
 
-  const category   = document.getElementById('interest-category')?.value;
+  const category = document.getElementById('interest-category')?.value;
   const difficulty = document.getElementById('difficulty-level')?.value;
-  const length     = document.getElementById('content-length')?.value;
+  const length = document.getElementById('content-length')?.value;
 
   const promptDetails = `Write a ${length} English reading text about ${category} for ${difficulty} level. Response MUST be ONLY JSON: {"title": "...", "body": "..."}`;
 
@@ -355,7 +373,6 @@ const loadUserMaterials = async () => {
 };
 
 /* ========= EVENT LISTENER'LAR ========= */
-// Kelimeye tıklama (çeviri)
 if (readingBody) {
   readingBody.addEventListener('click', async (e) => {
     if (e.target.classList.contains('word')) {
@@ -364,7 +381,7 @@ if (readingBody) {
 
       if (tooltip) {
         tooltip.style.left = `${rect.left + window.scrollX}px`;
-        tooltip.style.top = `${rect.top + window.scrollY - 80}px`;
+        tooltip.style.top = `${rect.top + window.scrollY - 95}px`;
         tooltip.style.display = 'flex';
       }
 
@@ -393,13 +410,19 @@ if (readingBody) {
           }
         };
       }
+
+      if (playPronunciationBtn) {
+        playPronunciationBtn.onclick = () => {
+          speakWord(word);
+        };
+      }
+
     } else {
       if (tooltip) tooltip.style.display = 'none';
     }
   });
 }
 
-// Not kaydetme
 const saveBtn = document.getElementById('save-note-btn');
 if (saveBtn) saveBtn.onclick = saveCurrentNote;
 
@@ -412,7 +435,6 @@ if (noteTextarea) {
   });
 }
 
-// Modal kontrolleri
 const newMaterialBtn = document.getElementById('new-material-btn');
 const closeModalBtn  = document.getElementById('close-modal-btn');
 
@@ -426,7 +448,6 @@ if (preferencesForm) {
   preferencesForm.onsubmit = handleGenerateNewMaterial;
 }
 
-// Kalp butonu
 if (favoriteBtn) {
   favoriteBtn.addEventListener('click', () => {
     if (!currentEssayId) {
@@ -448,7 +469,6 @@ if (favoriteBtn) {
   });
 }
 
-// Logout
 if (logoutButton) {
   logoutButton.addEventListener('click', goHome);
 }
@@ -466,7 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderHistory();
   updateFavoriteIcon();
 
-  // Avatar
   if (user.avatar_url) {
     const imgEl = document.getElementById('header-avatar');
     if (imgEl) imgEl.src = user.avatar_url;

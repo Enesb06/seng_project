@@ -132,10 +132,17 @@
     </div>
  
     <!-- Çeviri Tooltip'i -->
+    <!-- Çeviri Tooltip'i (GÜNCELLENDİ) -->
     <div id="translation-tooltip">
-        <strong id="tooltip-word">Word</strong>
-        <span id="tooltip-meaning" class="meaning">Anlamı yükleniyor...</span>
-        <button id="add-to-wordlist-btn" class="add-btn">Kelime Listeme Ekle</button>
+      <strong id="tooltip-word">Word</strong>
+      <span id="tooltip-meaning" class="meaning">Anlamı yükleniyor...</span>
+    
+    <!-- Butonları bir arada tutan yeni alan -->
+      <div class="tooltip-actions" style="display: flex; gap: 8px; margin-top: 8px;">
+          <button id="add-to-wordlist-btn" class="add-btn">Kelime Listeme Ekle</button>
+        <!-- YENİ EKLENEN HOPARLÖR BUTONU -->
+          <button id="play-pronunciation-btn" class="speak-btn" title="Telaffuzu Dinle">🔊</button>
+      </div>
     </div>
  
     <script type="module" src="../../assets/js/student/reader.js"></script>

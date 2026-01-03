@@ -189,3 +189,33 @@
 #translation-tooltip .add-btn:hover {
     background: #16a34a;
 }
+
+
+/* Tooltip Buton Stilleri (GÜNCELLENDİ) */
+#translation-tooltip .add-btn,
+#translation-tooltip .speak-btn {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.2s;
+}
+
+#translation-tooltip .add-btn:hover,
+#translation-tooltip .speak-btn:hover {
+    background: #16a34a;
+}
+
+/* YENİ EKLENEN TELAFUZ BUTONU STİLİ */
+#translation-tooltip .speak-btn {
+    padding: 5px; /* Sadece ikon için daha küçük dolgu */
+    width: 32px;  /* Genişliği sabitle */
+    height: 32px; /* Yüksekliği sabitle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1em; /* İkonu biraz büyüt */
+}
