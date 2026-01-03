@@ -6,8 +6,23 @@ const filterSelect = document.getElementById('filter-status');
 const welcomeMessage = document.getElementById('welcome-message');
  
 const getUser = () => JSON.parse(localStorage.getItem('user'));
+
+// ========= KELİME SESLENDİRME FONKSİYONU =========
+const speakWord = (word) => {
+  try {
+    const projectUrl = 'https://infmglbngspopnxrjnfv.supabase.co'; // Kendi Proje URL'niz
+    const ttsFunctionUrl = `${projectUrl}/functions/v1/get-pronunciation?text=${encodeURIComponent(word)}`;
+
+    const audio = new Audio(ttsFunctionUrl);
+    audio.play();
+
+  } catch (error) {
+    console.error("Telaffuz oynatılırken hata oluştu:", error);
+    alert("Sesli telaffuz şu an kullanılamıyor.");
+  }
+};
+// =======================================================
  
-// 🚨 YENİ: Tüm kelimeleri saklamak için global değişken
 let allWords = [];
  
 // --- KELİMELERİ YÜKLE ---
@@ -26,51 +41,54 @@ const loadWords = async () => {
         return;
     }
  
-    // 🚨 YENİ: Çekilen tüm veriyi global değişkene kaydet
     allWords = data; 
-    // 🚨 YENİ: Filtrele ve Ara fonksiyonunu çağır (Ekrana ilk yükleme için)
     filterData(); 
 };
  
-// --- EKRANA BAS (RenderWords) fonksiyonu aynı kalacak, SADECE parametresini değiştiriyoruz ---
+// --- EKRANA BAS (RenderWords) FONKSİYONU GÜNCELLENDİ ---
 const renderWords = (words) => {
-    // ... (Kodun geri kalanı aynı)
     wordListBody.innerHTML = '';
     if (words.length === 0) {
         document.getElementById('no-words').classList.remove('hidden');
         return;
     }
     document.getElementById('no-words').classList.add('hidden');
- 
+
     words.forEach(item => {
         const row = document.createElement('tr');
         const date = new Date(item.added_at).toLocaleDateString('tr-TR');
-        // ... (HTML oluşturma kısmı aynı kalır)
+        
+        // --- BU BÖLÜM GÜNCELLENDİ ---
         row.innerHTML = `
-<td><strong>${item.word}</strong></td>
-<td>${item.definition}</td>
-<td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Öğreniyorum' : 'Öğrenildi'}</span></td>
-<td>${date}</td>
-<td>
-<button class="action-btn learned-btn" onclick="updateStatus(${item.id}, '${item.learning_status}')">✔️</button>
-<button class="action-btn delete-btn" onclick="deleteWord(${item.id})">🗑️</button>
-</td>
+            <td>
+                <!-- YENİ: İçerik bir div içine alındı -->
+                <div class="word-container">
+                    <strong>${item.word}</strong>
+                    <button class="action-btn speak-btn" onclick="speakWord('${item.word}')" title="Telaffuzu Dinle">🔊</button>
+                </div>
+            </td>
+            <td>${item.definition}</td>
+            <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Öğreniyorum' : 'Öğrenildi'}</span></td>
+            <td>${date}</td>
+            <td>
+                <button class="action-btn learned-btn" onclick="updateStatus(${item.id}, '${item.learning_status}')">✔️</button>
+                <button class="action-btn delete-btn" onclick="deleteWord(${item.id})">🗑️</button>
+            </td>
         `;
+        // --- GÜNCELLEME SONU ---
+
         wordListBody.appendChild(row);
     });
 };
  
-// --- FİLTRELEME VE ARAMA FONKSİYONU (GÜNCELLENDİ) ---
-// Artık allWords'ü parametre olarak beklemiyor, global değişkenden okuyor
+// --- FİLTRELEME VE ARAMA FONKSİYONU ---
 const filterData = () => {
     const searchTerm = searchInput.value.toLowerCase();
     const filterStatus = filterSelect.value;
  
     const filtered = allWords.filter(w => {
-        // Kontrol 1: Arama kelimesiyle eşleşiyor mu? (word veya definition kontrolü)
         const matchesSearch = w.word.toLowerCase().includes(searchTerm) || 
-                              (w.definition && w.definition.toLowerCase().includes(searchTerm)); // 'definition' null olabilir
-        // Kontrol 2: Durum filtresiyle eşleşiyor mu?
+                              (w.definition && w.definition.toLowerCase().includes(searchTerm));
         const matchesStatus = filterStatus === 'all' || w.learning_status === filterStatus;
         return matchesSearch && matchesStatus;
     });
@@ -78,13 +96,8 @@ const filterData = () => {
 };
  
  
-// --- DİĞER FONKSİYONLARIN GÜNCELLENMESİ ---
-// Silme ve Durum güncelleme fonksiyonlarında da veriyi yeniden yükledikten sonra
-// filtrelemeyi tetiklemek yerine, direkt loadWords'ü çağırıyoruz. (Zaten loadWords -> filterData yapacak)
- 
-// --- SİLME (Global fonksiyon yapıyoruz onclick için) ---
+// --- SİLME ---
 window.deleteWord = async (id) => {
-    // ... (silme kodu aynı)
     if (!confirm("Bu kelimeyi silmek istediğine emin misin?")) return;
  
     const { error } = await _supabase
@@ -93,12 +106,11 @@ window.deleteWord = async (id) => {
         .eq('id', id);
  
     if (error) alert("Silme hatası: " + error.message);
-    else loadWords(); // Sadece loadWords() çağrısı yeterli
+    else loadWords();
 };
  
 // --- DURUM GÜNCELLEME ---
 window.updateStatus = async (id, currentStatus) => {
-    // ... (güncelleme kodu aynı)
     const newStatus = currentStatus === 'learning' ? 'learned' : 'learning';
  
     const { error } = await _supabase
@@ -107,10 +119,12 @@ window.updateStatus = async (id, currentStatus) => {
         .eq('id', id);
  
     if (error) alert("Güncelleme hatası: " + error.message);
-    else loadWords(); // Sadece loadWords() çağrısı yeterli
+    else loadWords();
 };
+
+window.speakWord = speakWord;
  
-// 🚨 YENİ: OLAY DİNLEYİCİLERİNİ BAŞLATMA
+// --- OLAY DİNLEYİCİLERİ ---
 searchInput.addEventListener('input', filterData);
 filterSelect.addEventListener('change', filterData);
  

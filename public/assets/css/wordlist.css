@@ -25,6 +25,11 @@
     border-bottom: 1px solid #eee;
 }
 
+/* Tüm hücreleri dikey olarak ortalamak için bu kural kalıyor */
+.word-table td {
+    vertical-align: middle;
+}
+
 .status-badge {
     padding: 4px 8px;
     border-radius: 4px;
@@ -47,3 +52,30 @@
 .learned-btn { background: #dcfce7; color: #166534; }
 
 .hidden { display: none; }
+
+
+/* --- GÜNCELLEME: YENİ KURAL --- */
+/* Flex hizalamasını td yerine içindeki div'e uyguluyoruz */
+.word-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Kelime ile buton arasına boşluk koy */
+}
+
+
+
+/* Yeni Hoparlör Butonu Stili */
+.speak-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem; /* İkonu biraz büyüt */
+    padding: 0 5px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.speak-btn:hover {
+    opacity: 1;
+}
