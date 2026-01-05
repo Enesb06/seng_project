@@ -11,35 +11,27 @@
 <body>
     <div class="dashboard-container">
         <aside class="sidebar">
-            <div class="logo">
-                
-                <a href="../../teacher.html">LearnENG</a>
-            </div>
+            <div class="logo"><a href="../../teacher.html">LearnENG</a></div>
             <nav>
                 <ul>
                     <li><a href="../../teacher.html">Anasayfa</a></li>
-                    <li class="active"><a href="/pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                    <li><a href="../teacher/student-report.html">Öğrenci Raporları</a></li>
+                    <li class="active"><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
+                    <li><a href="student-report.html">Öğrenci Raporları</a></li>
+                    <li><a href="support.html">💬 Destek</a></li>
                     <li><a href="../common/settings.html">⚙️ Ayarlar</a></li>
                 </ul>
             </nav>
         </aside>
 
         <div class="main-content">
-
-            
             <header class="dashboard-header">
                 <h2>Sınıf & Ödev Yönetimi</h2>
                 <div class="user-info">
-                    <!-- Avatar (CSS ile şekillendirilmeli) -->
                     <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
                     <span id="welcome-message"></span>
                     <button id="logout-button">Çıkış Yap</button>
                 </div>
             </header>
-
-
-
 
             <main class="content-area">
                 <section class="card">
@@ -53,11 +45,8 @@
 
                 <div class="card" style="margin-top:20px;">
                     <h3>Oluşturulan Sınıflar</h3>
-                    <ul id="class-list" class="class-list">
-                        <li>Yükleniyor...</li>
-                    </ul>
+                    <ul id="class-list" class="class-list"><li>Yükleniyor...</li></ul>
                 </div>
-
 
                 <section class="card" style="margin-top:20px;">
                     <h3>Ödev Ata</h3>
@@ -65,58 +54,31 @@
                         <label>Sınıf Seçin:</label>
                         <select id="select-class" required></select>
                         <label>Ödev Başlığı</label>
-                        <input type="text" id="hw-title"  required>
+                        <input type="text" id="hw-title" required>
                         <label>Ödev açıklaması</label>
                         <textarea id="hw-description" class="input-field" placeholder="Öğrencilere gösterilecek açıklama..." rows="4"></textarea>
-
-                        
-                        
                         <label>Teslim Tarihi:</label>
                         <input type="datetime-local" id="hw-due-date" class="date-input" required>
-
-                        
                         <button type="submit">Ödevi Ata</button>
-
-                        </section>
-
-                        <section class="card" style="margin-top:20px;">
-                            <h3>Verdiğim Ödevler</h3>
-
-                            <label>Sınıf seçin:</label>
-                            <select id="my-assignments-class-select">
-                                <option value="">Sınıf seçiniz</option>
-                            </select>
-
-                            <div id="my-assignments-area" style="margin-top:15px;">
-                                
-                            </div>
-                        </section>
-
-
-
-                        <section class="card" style="margin-top:20px;">
-                            <h3>Öğrenci Ödev Raporları</h3>
-
-                            <label>Sınıf seçin:</label>
-                            <select id="report-class-select">
-                                <option value="">Sınıf seçiniz</option>
-                            </select>
-                            
-
-                            <div id="student-status-area">
-                                
-                            </div>
-                        </section>
-
-                        
-
-
                     </form>
+                </section>
+
+                <section class="card" style="margin-top:20px;">
+                    <h3>Verdiğim Ödevler</h3>
+                    <label>Sınıf seçin:</label>
+                    <select id="my-assignments-class-select"><option value="">Sınıf seçiniz</option></select>
+                    <div id="my-assignments-area" style="margin-top:15px;"></div>
+                </section>
+
+                <section class="card" style="margin-top:20px;">
+                    <h3>Öğrenci Ödev Raporları</h3>
+                    <label>Sınıf seçin:</label>
+                    <select id="report-class-select"><option value="">Sınıf seçiniz</option></select>
+                    <div id="student-status-area"></div>
                 </section>
             </main>
         </div>
     </div>
     <script type="module" src="../../assets/js/teacher/class-management.js"></script>
-    
 </body>
 </html>
