@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Dinamik yazıyı güncelle
         updateIntroText();
+        loadQuizHistory(); 
     }
 });
 const userAvatar = JSON.parse(localStorage.getItem('user'));
@@ -245,3 +246,54 @@ if (userAvatar && userAvatar.avatar_url) {
     const imgEl = document.getElementById('header-avatar');
     if(imgEl) imgEl.src = userAvatar.avatar_url;
 }
+// 🆕 QUIZ GEÇMİŞİ
+const loadQuizHistory = async () => {
+  const user = getUser();
+  if (!user) return;
+
+  const historyArea = document.getElementById('quiz-history-list');
+  if (!historyArea) return;
+
+  const { data, error } = await _supabase
+    .from('quiz_results')
+    .select('score, total_questions, success_rate, created_at')
+    .eq('student_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  if (error) {
+    historyArea.innerHTML = "<p>Quiz geçmişi yüklenemedi.</p>";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    historyArea.innerHTML = "<p>Henüz quiz geçmişiniz yok.</p>";
+    return;
+  }
+
+  historyArea.innerHTML = `
+  <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+    <thead>
+      <tr style="border-bottom:2px solid #e5e7eb;">
+        <th style="text-align:left; padding:8px;">Tarih</th>
+        <th style="text-align:center; padding:8px;">Skor</th>
+        <th style="text-align:center; padding:8px;">Başarı</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${data.map(r => `
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="padding:8px;">${new Date(r.created_at).toLocaleDateString('tr-TR')}</td>
+          <td style="padding:8px; text-align:center;">
+            ${r.score} / ${r.total_questions}
+          </td>
+          <td style="padding:8px; text-align:center;">
+            %${r.success_rate}
+          </td>
+        </tr>
+      `).join('')}
+    </tbody>
+  </table>
+`;
+
+};
