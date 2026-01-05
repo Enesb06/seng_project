@@ -23,19 +23,16 @@
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
     <div class="dashboard-container">
-        <!-- SOL MENÜ (Sidebar) - Sadece Destek Eklendi -->
+        <!-- SOL MENÜ (Sidebar) -->
         <aside class="sidebar">
-            <div class="logo"><a href="../../teacher.html">LearnENG</a></div>
+            <div class="logo">
+                <a id="logo-link" href="#">LearnENG</a>
+            </div>
             <nav>
-                <ul>
-                    <li><a href="../../teacher.html">Anasayfa</a></li>
-                    <li><a href="../teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                    <li><a href="../teacher/student-report.html">Öğrenci Raporları</a></li>
-                    <li><a href="../teacher/support.html">💬 Destek</a></li>
-                    <li class="active"><a href="settings.html">⚙️ Ayarlar</a></li>
-                </ul>
+                <ul id="nav-links"></ul>
             </nav>
         </aside>
 
@@ -43,15 +40,16 @@
             <header class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Hesap Ayarları</h2>
                 <div style="display: flex; align-items: center; gap: 15px;">
-                    <!-- Avatar -->
-                    <img id="header-avatar" src="" alt="Profil" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover; display: none;">
-                    <button id="logout-button" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">Çıkış Yap</button>
+                    <img id="header-avatar" src="" alt="Profil"
+                         style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover; display: none;">
+                    <button id="logout-button" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;">
+                        Çıkış Yap
+                    </button>
                 </div>
             </header>
 
             <main class="content-area">
                 <div class="card settings-container">
-                    <!-- PROFIL -->
                     <h3 class="section-title">Profil Bilgileri</h3>
                     <form id="profile-form">
                         <label>Ad Soyad</label>
@@ -61,7 +59,6 @@
                         <button type="submit" class="btn-green">İsmi Güncelle</button>
                     </form>
 
-                    <!-- AVATAR -->
                     <h3 class="section-title">Avatar Seçimi</h3>
                     <div class="avatar-grid" id="avatar-picker">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
@@ -70,8 +67,7 @@
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mistu" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=Mistu">
                     </div>
                     <button id="save-avatar-btn" class="btn-green">Avatarı Kaydet</button>
-                    
-                    <!-- GÜVENLİK -->
+
                     <h3 class="section-title">Güvenlik ve Şifre</h3>
                     <form id="password-form" autocomplete="off">
                         <div class="security-box">
@@ -86,11 +82,13 @@
                         <input type="password" id="confirm-password" placeholder="Tekrar yazın" required autocomplete="new-password">
                         <button type="submit" class="btn-red">Güvenlik Onayıyla Şifreyi Değiştir</button>
                     </form>
+
                     <p id="settings-message"></p>
                 </div>
             </main>
         </div>
     </div>
+
     <script type="module" src="../../assets/js/common/settings.js"></script>
 </body>
 </html>

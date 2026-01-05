@@ -30,6 +30,7 @@ const initSettings = async () => {
                 <li><a href="../../teacher.html">Anasayfa</a></li>
                 <li><a href="../teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
                 <li><a href="../teacher/student-report.html">Öğrenci Raporları</a></li>
+                <li><a href="../teacher/support.html">💬 Destek</a></li>
                 <li class="active"><a href="settings.html">⚙️ Ayarlar</a></li>
             `;
         } else {
