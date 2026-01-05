@@ -91,6 +91,7 @@ const loadStudentDashboard = async () => {
 
   // sınıf/ödev
   await loadMyClassAndHomework(user.id);
+  subscribeAssignmentsRealtime(user.id);
 };
 
 /* ========= STATİKLER =========
@@ -288,10 +289,19 @@ const loadMyClassAndHomework = async (studentId) => {
         const completedDay = new Date(completion.completed_at).toISOString().split('T')[0];
         const isLate = completedDay > dueDay;
 
-        statusHTML = isLate
-          ? '<span style="color:orange;">🟠 Geç Teslim</span>'
-          : '<span style="color:green;">✅ Zamanında</span>';
+        statusHTML = `
+          <button class="cta-button read-btn"
+            data-id="${hw.id}"
+            style="width:auto;padding:5px 12px;">
+            Ödevin İçeriğini Oku
+          </button>
+
+          <span style="margin-left:10px;color:${isLate ? 'orange' : 'green'};">
+            ${isLate ? '🟠 Geç Teslim' : '✅ Zamanında'}
+          </span>
+        `;
       }
+
 
       return `
         <li class="hw-item"
@@ -408,5 +418,24 @@ const showMessage = (msg, color) => {
 if (joinClassBtn) joinClassBtn.addEventListener('click', handleJoinClass);
 
 if (logoutButton) logoutButton.addEventListener('click', goHome);
+
+/* ========= REALTIME – ÖDEV GÜNCELLEMELERİ ========= */
+let assignmentChannel = null;
+
+const subscribeAssignmentsRealtime = (studentId) => {
+  if (assignmentChannel) return;
+
+  assignmentChannel = _supabase
+    .channel('assignments-realtime')
+    .on(
+      'postgres_changes',
+      { event: '*', schema: 'public', table: 'assignments' },
+      async () => {
+        console.log('📡 Ödev güncellendi → öğrenci ekranı yenileniyor');
+        await loadMyClassAndHomework(studentId);
+      }
+    )
+    .subscribe();
+};
 
 document.addEventListener('DOMContentLoaded', loadStudentDashboard);

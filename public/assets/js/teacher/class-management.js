@@ -119,34 +119,69 @@ myAssignmentsClassSelect.addEventListener('change', (e) => {
 });
 
 async function loadMyAssignments(classId) {
-    myAssignmentsArea.innerHTML = "<p>Yükleniyor...</p>";
+  myAssignmentsArea.innerHTML = "<p>Yükleniyor...</p>";
 
-    const { data: assignments } = await _supabase
-        .from('assignments')
-        .select('id, title, description, due_date')
-        .eq('teacher_id', user.id)
-        .eq('class_id', classId)
-        .order('due_date', { ascending: true });
+  const { data: assignments, error } = await _supabase
+    .from('assignments')
+    .select(`
+      id,
+      title,
+      description,
+      due_date,
+      assignment_completions(student_id),
+      classes (
+        class_members(student_id)
+      )
+    `)
+    .eq('teacher_id', user.id)
+    .eq('class_id', classId)
+    .order('created_at', { ascending: true })
 
-    if (!assignments || assignments.length === 0) {
-        myAssignmentsArea.innerHTML = "<p>Bu sınıfa verdiğiniz ödev yok.</p>";
-        return;
-    }
 
-    myAssignmentsArea.innerHTML = assignments.map(a => `
-        <div class="teacher-hw-item"
-             data-id="${a.id}"
-             style="border:1px solid #e5e7eb;padding:12px;border-radius:8px;margin-bottom:10px;cursor:pointer;">
-            <strong>${a.title}</strong><br>
-            <small>📅 Son Teslim: ${new Date(a.due_date).toLocaleDateString('tr-TR')}</small>
+  if (error) {
+    myAssignmentsArea.innerHTML = "<p>Ödevler yüklenirken hata oluştu.</p>";
+    return;
+  }
 
-            <div id="teacher-desc-${a.id}"
-                 style="display:none;margin-top:8px;padding:8px;background:#f9fafb;border-radius:6px;">
-                ${a.description || "Açıklama girilmemiş."}
-            </div>
+  if (!assignments || assignments.length === 0) {
+    myAssignmentsArea.innerHTML = "<p>Bu sınıfa verdiğiniz ödev yok.</p>";
+    return;
+  }
+
+  myAssignmentsArea.innerHTML = assignments.map((a, i) => {
+    const totalStudents = a.classes?.class_members?.length || 0;
+    const completedCount = a.assignment_completions?.length || 0;
+
+    return `
+      <div class="teacher-hw-item" data-id="${a.id}">
+
+        <strong>Ödev ${i + 1} — ${a.title}</strong>
+
+        <div class="hw-date">
+          📅 Son Teslim: ${new Date(a.due_date).toLocaleDateString('tr-TR')}
         </div>
-    `).join('');
+
+        ${a.description ? `
+          <div class="hw-desc" style="margin-top:10px;">
+            ${a.description}
+          </div>
+        ` : ``}
+
+        <div style="margin-top:10px;font-size:0.85rem;color:#555;">
+          👥 ${completedCount} / ${totalStudents} tamamladı
+        </div>
+
+        <div class="hw-actions">
+          <button class="edit-hw-btn" title="Düzenle">✏️</button>
+          <button class="delete-hw-btn" title="Sil">🗑️</button>
+        </div>
+
+      </div>
+    `;
+  }).join('');
 }
+
+
 
 /* Açıklama aç / kapa */
 document.addEventListener('click', (e) => {
@@ -239,3 +274,47 @@ async function loadTeacherClasses() {
         classListDiv.appendChild(li);
     });
 }
+
+document.addEventListener('click', async (e) => {
+    const card = e.target.closest('.teacher-hw-item');
+    if (!card) return;
+
+    const assignmentId = card.dataset.id;
+
+    /* 🗑 SİL */
+    if (e.target.classList.contains('delete-hw-btn')) {
+        if (!confirm("Bu ödevi silmek istiyor musunuz?")) return;
+
+        await _supabase
+            .from('assignments')
+            .delete()
+            .eq('id', assignmentId);
+
+        loadMyAssignments(myAssignmentsClassSelect.value);
+    }
+
+    /* ✏️ DÜZENLE AÇ */
+    if (e.target.classList.contains('edit-hw-btn')) {
+        card.querySelector('.edit-area').style.display = 'block';
+    }
+
+    /* ❌ İPTAL */
+    if (e.target.classList.contains('cancel-hw-btn')) {
+        card.querySelector('.edit-area').style.display = 'none';
+    }
+
+    /* 💾 KAYDET */
+    if (e.target.classList.contains('save-hw-btn')) {
+        const title = card.querySelector('.edit-title').value;
+        const description = card.querySelector('.edit-desc').value;
+        const due_date = card.querySelector('.edit-date').value;
+
+        await _supabase
+            .from('assignments')
+            .update({ title, description, due_date })
+            .eq('id', assignmentId);
+
+        alert("Ödev güncellendi ✅");
+        loadMyAssignments(myAssignmentsClassSelect.value);
+    }
+});

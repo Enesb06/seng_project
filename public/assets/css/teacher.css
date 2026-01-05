@@ -160,4 +160,66 @@ input[type="date"] {
     margin-top: 2px;
 }
 
+.teacher-hw-item {
+    position: relative;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 14px 16px 40px 16px;
+    margin-bottom: 12px;
+    background: #fff;
+}
+
+.hw-date {
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 4px;
+}
+
+.hw-desc {
+    margin-top: 6px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+/* SAĞ ALT BUTONLAR */
+.hw-actions {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: flex;
+    gap: 6px;
+}
+
+.hw-actions button {
+    border: none;
+    background: #f3f4f6;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.hw-actions button:hover {
+    background: #e5e7eb;
+}
+
+/* DÜZENLEME ALANI */
+.edit-area {
+    display: none;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+
+.edit-area input,
+.edit-area textarea {
+    width: 100%;
+    margin-bottom: 6px;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
 
