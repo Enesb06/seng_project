@@ -41,23 +41,23 @@ const initSettings = async () => {
         const navUl = document.getElementById('nav-links');
         if (user.role === 'teacher') {
             navUl.innerHTML = `
-                <li><a href="../../teacher.html">Anasayfa</a></li>
-                <li><a href="../teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                <li><a href="../teacher/student-report.html">Öğrenci Raporları</a></li>
-                <li><a href="../teacher/support.html"> Destek</a></li>
-                <li class="active"><a href="settings.html"> Ayarlar</a></li>
+                <li><a href="../../teacher.html">Home</a></li>
+                <li><a href="../teacher/class-management.html"> Class & Homework Management</a></li>
+                <li><a href="../teacher/student-report.html"> Student Reports</a></li>
+                <li><a href="../teacher/support.html"> Support</a></li>
+                <li class="active"><a href="settings.html"> Settings</a></li>
             `;
         } else {
             navUl.innerHTML = `
-                <li><a href="../../student.html"> Ana Sayfa</a></li>
-                <li><a href="../student/reading.html"> Okuma Materyalleri</a></li>
-                <li><a href="../student/favorites.html"> Favorilerim</a></li>
-                <li><a href="../student/wordlist.html"> Kelime Listem</a></li>
-                <li><a href="../student/quiz.html"> Quiz'lerim</a></li>
-                <li><a href="../student/ai-chat.html"> AI Asistan</a></li>
-                <li><a href="../student/support.html"> Destek</a></li>
-                <li><a href="../student/profile.html"> Profilim & İstatistikler</a></li>
-                <li class="active"><a href="settings.html"> Ayarlar</a></li>
+                <li><a href="../../student.html"> Home</a></li>
+                <li><a href="../student/reading.html"> Reading Metarilas</a></li>
+                <li><a href="../student/favorites.html"> Favourites</a></li>
+                <li><a href="../student/wordlist.html"> Word List</a></li>
+                <li><a href="../student/quiz.html"> Quizzes</a></li>
+                <li><a href="../student/ai-chat.html"> AI Asistant</a></li>
+                <li><a href="../student/support.html"> Support</a></li>
+                <li><a href="../student/profile.html"> Profile & Statistics</a></li>
+                <li class="active"><a href="settings.html"> Settings</a></li>
             `;
         }
 
