@@ -5,6 +5,9 @@ import { _supabase } from '../supabaseClient.js';
 const user = JSON.parse(localStorage.getItem('user'));
 let selectedAvatarUrl = user?.avatar_url || "";
 let correctSecurityAnswer = ""; 
+const welcomeMessage = document.getElementById('welcome-message');
+const logoutButton = document.getElementById('logout-button');
+const headerAvatar = document.getElementById('user-avatar')
 
 // Üst bar resmini güncelleyen yardımcı fonksiyon
 const updateHeaderAvatar = (url) => {
@@ -23,7 +26,13 @@ const initSettings = async () => {
         }
 
         // Sayfa ilk açıldığında header'daki avatarı yükle
+        if (welcomeMessage) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+        if (headerAvatar) {
+            const avatarUrl = user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.full_name}&mouth=smile&top=shortHair&style=circle`;
+            headerAvatar.src = avatarUrl;
+        }
         updateHeaderAvatar(user.avatar_url);
+        
 
         // 1. SIDEBAR OLUŞTURMA
         const navUl = document.getElementById('nav-links');
