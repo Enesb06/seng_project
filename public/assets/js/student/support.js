@@ -18,6 +18,7 @@ const sendBtn      = document.getElementById("user-send-btn");
 const logoutBtn    = document.getElementById("logout-button");
 const welcomeMessage = document.getElementById("welcome-message");
 const userAvatar = document.getElementById("user-avatar")
+const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=base"; 
 
 const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
 
@@ -283,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
           userAvatar.src = user.avatar_url; // Kayıtlı avatarı kullan
       } else {
           // Kayıtlı avatar yoksa isme göre rastgele bir placeholder avatar kullan
-          userAvatar.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.full_name}&mouth=smile&top=shortHair&style=circle`; 
+          userAvatar.src = DEFAULT_AVATAR_URL; 
       }
   }
   

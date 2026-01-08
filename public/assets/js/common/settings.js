@@ -1,20 +1,23 @@
 import { _supabase } from '../supabaseClient.js';
 
-
-
 const user = JSON.parse(localStorage.getItem('user'));
 let selectedAvatarUrl = user?.avatar_url || "";
 let correctSecurityAnswer = ""; 
+
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
-const headerAvatar = document.getElementById('user-avatar')
+// 🚨 DÜZELTİLDİ: HTML'de "user-avatar" veya "header-avatar" ID'si hangisiyse o seçilmeli.
+// HTML'de sadece user-avatar var, onu kullanıyoruz.
+const headerAvatar = document.getElementById('user-avatar'); 
+const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=base"; 
+
 
 // Üst bar resmini güncelleyen yardımcı fonksiyon
 const updateHeaderAvatar = (url) => {
-    const headerImg = document.getElementById('header-avatar');
-    if (headerImg && url) {
-        headerImg.src = url;
-        headerImg.style.display = "block"; // Resim varsa göster
+    // 🚨 DÜZELTİLDİ: headerAvatar kullanılıyor
+    if (headerAvatar && url) {
+        headerAvatar.src = url;
+        headerAvatar.style.display = "block"; 
     }
 };
 
@@ -25,14 +28,14 @@ const initSettings = async () => {
             return;
         }
 
-        // Sayfa ilk açıldığında header'daki avatarı yükle
+        // --- HEADER BİLGİLERİNİ DOLDUR ---
+        const currentAvatarUrl = user.avatar_url || DEFAULT_AVATAR_URL; 
+        
         if (welcomeMessage) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
         if (headerAvatar) {
-            const avatarUrl = user.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.full_name}&mouth=smile&top=shortHair&style=circle`;
-            headerAvatar.src = avatarUrl;
+            headerAvatar.src = currentAvatarUrl;
         }
-        updateHeaderAvatar(user.avatar_url);
-        
+        // ------------------------------------------
 
         // 1. SIDEBAR OLUŞTURMA
         const navUl = document.getElementById('nav-links');
@@ -41,28 +44,28 @@ const initSettings = async () => {
                 <li><a href="../../teacher.html">Anasayfa</a></li>
                 <li><a href="../teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
                 <li><a href="../teacher/student-report.html">Öğrenci Raporları</a></li>
-                <li><a href="../teacher/support.html"> Destek</a></li>
-                <li class="active"><a href="settings.html"> Ayarlar</a></li>
+                <li><a href="../teacher/support.html">💬 Destek</a></li>
+                <li class="active"><a href="settings.html">⚙️ Ayarlar</a></li>
             `;
         } else {
             navUl.innerHTML = `
-                <li><a href="../../student.html"> Ana Sayfa</a></li>
-                <li><a href="../student/reading.html"> Okuma Materyalleri</a></li>
-                <li><a href="../student/favorites.html"> Favorilerim</a></li>
-                <li><a href="../student/wordlist.html"> Kelime Listem</a></li>
-                <li><a href="../student/quiz.html"> Quiz'lerim</a></li>
-                <li><a href="../student/ai-chat.html"> AI Asistan</a></li>
-                <li><a href="../student/support.html"> Destek</a></li>
-                <li><a href="../student/profile.html"> Profilim & İstatistikler</a></li>
-                <li class="active"><a href="settings.html"> Ayarlar</a></li>
+                <li><a href="../../student.html">🏠 Ana Sayfa</a></li>
+                <li><a href="../student/reading.html">📚 Okuma Materyalleri</a></li>
+                <li><a href="../student/favorites.html">⭐ Favorilerim</a></li>
+                <li><a href="../student/wordlist.html">📝 Kelime Listem</a></li>
+                <li><a href="../student/quiz.html">🧠 Quiz'lerim</a></li>
+                <li><a href="../student/ai-chat.html">🤖 AI Asistan</a></li>
+                <li><a href="../student/support.html">💬 Destek</a></li>
+                <li><a href="../student/profile.html">📊 Profilim & İstatistikler</a></li>
+                <li class="active"><a href="settings.html">⚙️ Ayarlar</a></li>
             `;
         }
 
-        // 2. FORM DOLDURMA
+        // 2. FORM DOLDURMA (Aynı kalır)
         document.getElementById('settings-fullname').value = user.full_name || "";
         document.getElementById('settings-email').value = user.email || "";
 
-        // 3. GÜVENLİK SORUSUNU VERİTABANINDAN ÇEK VE METNE ÇEVİR
+        // 3. GÜVENLİK SORUSUNU ÇEK (Aynı kalır)
         const { data: profile, error } = await _supabase
             .from('profiles')
             .select('security_question, security_answer')
@@ -83,21 +86,45 @@ const initSettings = async () => {
             correctSecurityAnswer = profile.security_answer;
         }
 
-        // 4. AVATAR SEÇİMİ (UI)
+        // 4. AVATAR SEÇİMİ (UI) - GÜNCELLENDİ
+        const avatarPicker = document.getElementById('avatar-picker');
+        
+        // 🚨 HTML'de olmayan default avatarı ekle (Eğer HTML'de eksikse)
+        // Eğer HTML'de ilk görsel default görsel değilse bu satırı eklemeliyiz.
+        const defaultAvatarExists = avatarPicker.querySelector(`[data-url="${DEFAULT_AVATAR_URL}"]`);
+        
+        if (!defaultAvatarExists) {
+             const defaultOpt = document.createElement('img');
+             defaultOpt.className = 'avatar-option';
+             defaultOpt.src = DEFAULT_AVATAR_URL;
+             defaultOpt.dataset.url = DEFAULT_AVATAR_URL;
+             // Listenin başına eklemek için
+             avatarPicker.prepend(defaultOpt); 
+        }
+
         const options = document.querySelectorAll('.avatar-option');
+        
         options.forEach(opt => {
-            if(opt.dataset.url === user.avatar_url) opt.classList.add('selected');
+            const isDefault = opt.dataset.url === DEFAULT_AVATAR_URL;
+            
+            // Eğer kullanıcının avatarı seçenekteki url ise VEYA user.avatar_url boş ve bu seçenek default ise seçili yap
+            if (opt.dataset.url === user.avatar_url || (!user.avatar_url && isDefault)) {
+                 opt.classList.add('selected');
+                 selectedAvatarUrl = opt.dataset.url;
+            }
+
             opt.onclick = () => {
                 options.forEach(o => o.classList.remove('selected'));
                 opt.classList.add('selected');
                 selectedAvatarUrl = opt.dataset.url;
             }
         });
+        // ------------------------------------------
 
     } catch (e) { console.error("Hata:", e); }
 };
 
-// Bildirim Mesajı
+// Bildirim Mesajı (Aynı kalır)
 const showMsg = (text, isError = false) => {
     const el = document.getElementById('settings-message');
     if (el) {
@@ -107,7 +134,7 @@ const showMsg = (text, isError = false) => {
     }
 };
 
-// BUTON OLAYLARI
+// BUTON OLAYLARI (Aynı kalır)
 
 // Profil Güncelle
 document.getElementById('profile-form').onsubmit = async (e) => {
@@ -130,13 +157,9 @@ document.getElementById('save-avatar-btn').onclick = async () => {
     if (error) {
         showMsg("Hata: " + error.message, true);
     } else {
-        // Yerel depolamayı ve kullanıcı objesini güncelle
         user.avatar_url = selectedAvatarUrl;
         localStorage.setItem('user', JSON.stringify(user));
-        
-        // Üst barı anında güncelle
         updateHeaderAvatar(selectedAvatarUrl); 
-        
         showMsg("Avatar başarıyla değiştirildi.");
     }
 };
@@ -163,8 +186,6 @@ document.getElementById('password-form').onsubmit = async (e) => {
         showMsg("Hata: " + error.message, true);
     }
 };
-
-
 
 // Çıkış
 document.getElementById('logout-button').onclick = () => {
