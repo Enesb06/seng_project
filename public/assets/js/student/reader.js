@@ -351,7 +351,7 @@ const loadUserMaterials = async () => {
 
   if (!data || data.length === 0) {
     materialsList.innerHTML =
-      '<p style="color:#9ca3af;font-size:0.85rem;">You haven't created any materials yet.</p>';
+      '<p style="color:#9ca3af;font-size:0.85rem;">You havent created any materials yet.</p>';
     return;
   }
 
