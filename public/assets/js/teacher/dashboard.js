@@ -128,7 +128,7 @@ function initDashboard() {
     
     // HEADER BİLGİLERİNİ DOLDURMA
     if (welcomeMessage) {
-         welcomeMessage.innerText = `Welcome, ${user.full_name}`;
+         welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
     }
     
     if (headerAvatar) {

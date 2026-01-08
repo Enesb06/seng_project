@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (welcomeMessage) {
-        welcomeMessage.innerText = `Welcome, ${user.full_name}`;
+        welcomeMessage.innerText = `Welcome, ${user.full_name}! `;
     }
     // Avatarı ayarla (Eğer user objesinde avatar_url varsa kullan, yoksa placeholder kalsın)
     if (userAvatar && user.avatar_url) {

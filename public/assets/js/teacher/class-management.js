@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    welcomeMessage.innerText = `Welcome, ${user.full_name}`;
+    welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
     if (userAvatar && user.avatar_url) userAvatar.src = user.avatar_url;
 
     logoutButton.addEventListener('click', () => {
