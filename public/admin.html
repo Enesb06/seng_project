@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetici Paneli - LearnENG.com</title>
+    <title>Admin Panel - LearnENG.com</title>
     
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
@@ -19,19 +19,19 @@
             <nav>
                 <ul>
                     <li id="li-users" class="active">
-                        <a href="#" id="nav-users">Kullanıcı Yönetimi</a>
+                        <a href="#" id="nav-users">User Management</a>
                     </li>
 
                     <li id="li-verification">
                         <a href="#" id="nav-verification">
-                            Öğretmen Onayları 
+                            Teacher Approvals 
                             <span id="pending-count" class="badge hidden">0</span>
                         </a>
                     </li>
 
                     <!-- ✅ YENİ EKLENEN KISIM -->
                     <li>
-                        <a href="admin_support.html"> Destek Mesajları</a>
+                        <a href="admin_support.html"> Support Messages</a>
                     </li>
                     <!-- ✅ BİTTİ -->
 
@@ -43,10 +43,10 @@
         <!-- ANA İÇERİK -->
         <div class="main-content">
             <header class="dashboard-header">
-                <h2 id="page-title">Kullanıcı Yönetimi</h2>
+                <h2 id="page-title">User Management</h2>
                 <div class="user-info">
-                    <span id="admin-display-name">Yükleniyor...</span>
-                    <button id="logout-button">Çıkış Yap</button>
+                    <span id="admin-display-name">Loading...</span>
+                    <button id="logout-button">Logout</button>
                 </div>
             </header>
 
@@ -54,15 +54,15 @@
                 <!-- ÜST İSTATİSTİK KARTLARI -->
                 <div class="stats-grid">
                     <div class="card stat-card">
-                        <h4>Toplam Öğrenci</h4>
+                        <h4>Total Students</h4>
                         <p id="total-students" class="stat-value">0</p>
                     </div>
                     <div class="card stat-card">
-                        <h4>Toplam Öğretmen</h4>
+                        <h4>Total Teachers</h4>
                         <p id="total-teachers" class="stat-value">0</p>
                     </div>
                     <div class="card stat-card">
-                        <h4>Toplam İçerik</h4>
+                        <h4>Total Content</h4>
                         <p id="total-contents" class="stat-value">0</p>
                     </div>
                 </div>
@@ -70,16 +70,16 @@
                 <!-- BÖLÜM 1: GENEL KULLANICI LİSTESİ -->
                 <div id="users-section" class="card table-card">
                     <div class="table-header">
-                        <h3>Sistemdeki Tüm Hesaplar</h3>
-                        <input type="text" id="user-search" placeholder="İsim veya e-posta ile ara...">
+                        <h3>All Accounts in System</h3>
+                        <input type="text" id="user-search" placeholder="Search by name or email...">
                     </div>
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>Ad Soyad</th>
-                                <th>E-posta</th>
-                                <th>Rol</th>
-                                <th>İşlemler</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="user-list-body">
@@ -90,15 +90,15 @@
                 <!-- BÖLÜM 2: ÖĞRETMEN ONAY -->
                 <div id="verification-section" class="card table-card hidden">
                     <div class="table-header">
-                        <h3>Onay Bekleyen Öğretmen Başvuruları</h3>
+                        <h3>Pending Teacher Applications</h3>
                     </div>
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>Ad Soyad</th>
-                                <th>E-posta</th>
-                                <th>Kayıt Tarihi</th>
-                                <th>İşlemler</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="verification-list-body">
@@ -112,27 +112,27 @@
     <!-- KULLANICI DÜZENLEME MODAL -->
     <div id="edit-user-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <h3>Hesap Bilgilerini Güncelle</h3>
+            <h3>Update Account Information</h3>
             <form id="edit-user-form">
                 <input type="hidden" id="edit-user-id">
 
                 <div class="form-group">
-                    <label>Ad Soyad</label>
+                    <label>Full Name</label>
                     <input type="text" id="edit-full-name" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Rolü Değiştir</label>
+                    <label>Change Role</label>
                     <select id="edit-user-role">
-                        <option value="student">Öğrenci</option>
-                        <option value="teacher">Öğretmen</option>
-                        <option value="admin">Yönetici</option>
+                        <option value="student">Student</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="admin">Admin</option>
                     </select>
                 </div>
 
                 <div class="modal-buttons">
-                    <button type="submit" class="cta-button">Değişiklikleri Kaydet</button>
-                    <button type="button" id="close-modal-btn" class="cancel-btn">Vazgeç</button>
+                    <button type="submit" class="cta-button">Save Changes</button>
+                    <button type="button" id="close-modal-btn" class="cancel-btn">Cancel</button>
                 </div>
             </form>
         </div>

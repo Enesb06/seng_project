@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Sınıf Yönetimi - LearnENG.com</title>
+    <title>Class Management - LearnENG.com</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/teacher.css">
@@ -14,66 +14,66 @@
             <div class="logo"><a href="../../teacher.html">LearnENG</a></div>
             <nav>
                 <ul>
-                    <li><a href="../../teacher.html">Anasayfa</a></li>
-                    <li class="active"><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                    <li><a href="student-report.html">Öğrenci Raporları</a></li>
-                    <li><a href="support.html"> Destek</a></li>
-                    <li><a href="../common/settings.html"> Ayarlar</a></li>
+                    <li><a href="../../teacher.html">Home</a></li>
+                    <li class="active"><a href="class-management.html">Class & Homework Management</a></li>
+                    <li><a href="student-report.html">Student Reports</a></li>
+                    <li><a href="support.html"> Support</a></li>
+                    <li><a href="../common/settings.html"> Settings</a></li>
                 </ul>
             </nav>
         </aside>
 
         <div class="main-content">
             <header class="dashboard-header">
-                <h2>Sınıf & Ödev Yönetimi</h2>
+                <h2>Class & Homework Management</h2>
                 <div class="user-info">
                     <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                     <span id="welcome-message"></span>
-                    <button id="logout-button">Çıkış Yap</button>
+                    <button id="logout-button">Logout</button>
                 </div>
             </header>
 
             <main class="content-area">
                 <section class="card">
-                    <h3>Yeni Sınıf Oluştur</h3>
-                    <p style="font-size: 0.8rem; color: #666;">Öğrenciler bu kod ile sınıfınıza katılabilir.</p>
+                    <h3>Create New Class</h3>
+                    <p style="font-size: 0.8rem; color: #666;">Students can join your class with this code.</p>
                     <form id="create-class-form" style="display:flex; gap:10px; margin-top:10px;">
-                        <input type="text" id="class-name" placeholder="Sınıf Adı (Örn: 11-B)" required>
-                        <button type="submit" style="width: auto;">Sınıfı Aç</button>
+                        <input type="text" id="class-name" placeholder="Class Name (E.g: 11-B)" required>
+                        <button type="submit" style="width: auto;">Create Class</button>
                     </form>
                 </section>
 
                 <div class="card" style="margin-top:20px;">
-                    <h3>Oluşturulan Sınıflar</h3>
-                    <ul id="class-list" class="class-list"><li>Yükleniyor...</li></ul>
+                    <h3>Created Classes</h3>
+                    <ul id="class-list" class="class-list"><li>Loading...</li></ul>
                 </div>
 
                 <section class="card" style="margin-top:20px;">
-                    <h3>Ödev Ata</h3>
+                    <h3>Assign Homework</h3>
                     <form id="assign-homework-form">
-                        <label>Sınıf Seçin:</label>
+                        <label>Select Class:</label>
                         <select id="select-class" required></select>
-                        <label>Ödev Başlığı</label>
+                        <label>Homework Title</label>
                         <input type="text" id="hw-title" required>
-                        <label>Ödev açıklaması</label>
-                        <textarea id="hw-description" class="input-field" placeholder="Öğrencilere gösterilecek açıklama..." rows="4"></textarea>
-                        <label>Teslim Tarihi:</label>
+                        <label>Homework Description</label>
+                        <textarea id="hw-description" class="input-field" placeholder="Description to show students..." rows="4"></textarea>
+                        <label>Due Date:</label>
                         <input type="datetime-local" id="hw-due-date" class="date-input" required>
-                        <button type="submit">Ödevi Ata</button>
+                        <button type="submit">Assign Homework</button>
                     </form>
                 </section>
 
                 <section class="card" style="margin-top:20px;">
-                    <h3>Verdiğim Ödevler</h3>
-                    <label>Sınıf seçin:</label>
-                    <select id="my-assignments-class-select"><option value="">Sınıf seçiniz</option></select>
+                    <h3>My Assigned Homework</h3>
+                    <label>Select Class:</label>
+                    <select id="my-assignments-class-select"><option value="">Select Class</option></select>
                     <div id="my-assignments-area" style="margin-top:15px;"></div>
                 </section>
 
                 <section class="card" style="margin-top:20px;">
-                    <h3>Öğrenci Ödev Raporları</h3>
-                    <label>Sınıf seçin:</label>
-                    <select id="report-class-select"><option value="">Sınıf seçiniz</option></select>
+                    <h3>Student Homework Reports</h3>
+                    <label>Select Class:</label>
+                    <select id="report-class-select"><option value="">Select Class</option></select>
                     <div id="student-status-area"></div>
                 </section>
             </main>

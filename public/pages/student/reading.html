@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Okuma Materyalleri - LearnENG.com</title>
+    <title>Reading Materials - LearnENG.com</title>
     
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
@@ -18,20 +18,20 @@
     <div id="preferences-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <button id="close-modal-btn" class="close-button">&times;</button>
-            <h2>Yeni Materyal Oluştur</h2>
-            <p>Sana özel bir okuma materyali oluşturalım.</p>
+            <h2>Create New Material</h2>
+            <p>Let's create a personalized reading material for you.</p>
             <form id="preferences-form">
-                <label for="interest-category">Hangi Konu İlgini Çekiyor?</label>
+                <label for="interest-category">What Topic Interests You?</label>
                 <select id="interest-category" required>
-                    <option value="" disabled selected>-- Bir kategori seç --</option>
-                    <option value="technology">Teknoloji</option>
-                    <option value="science">Bilim</option>
-                    <option value="history">Tarih</option>
-                    <option value="art and culture">Sanat ve Kültür</option>
-                    <option value="travel">Seyahat</option>
-                    <option value="daily life">Günlük Yaşam</option>
+                    <option value="" disabled selected>-- Select a category --</option>
+                    <option value="technology">Technology</option>
+                    <option value="science">Science</option>
+                    <option value="history">History</option>
+                    <option value="art and culture">Art and Culture</option>
+                    <option value="travel">Travel</option>
+                    <option value="daily life">Daily Life</option>
                 </select>
-                <label for="difficulty-level">İngilizce Seviyen Nedir?</label>
+                <label for="difficulty-level">What's Your English Level?</label>
                 <select id="difficulty-level" required>
                     <option value="A1">A1 (Beginner)</option>
                     <option value="A2">A2 (Elementary)</option>
@@ -39,13 +39,13 @@
                     <option value="B2">B2 (Upper-Intermediate)</option>
                     <option value="C1">C1 (Advanced)</option>
                 </select>
-                <label for="content-length">Materyal Uzunluğu Nasıl Olsun?</label>
+                <label for="content-length">What Should Be the Material Length?</label>
                 <select id="content-length" required>
-                    <option value="short">Kısa (~150 kelime)</option>
-                    <option value="medium">Orta (~300 kelime)</option>
-                    <option value="long">Uzun (~500+ kelime)</option>
+                    <option value="short">Short (~150 words)</option>
+                    <option value="medium">Medium (~300 words)</option>
+                    <option value="long">Long (~500+ words)</option>
                 </select>
-                <button type="submit" id="generate-content-btn">Oluştur</button>
+                <button type="submit" id="generate-content-btn">Create</button>
             </form>
         </div>
     </div>
@@ -56,15 +56,15 @@
             <div class="logo"><a href="../../student.html">LearnENG</a></div>
             <nav>
                 <ul>
-                    <li><a href="../../student.html"> Ana Sayfa</a></li>
-<li class="active"><a href="reading.html"> Okuma Materyalleri</a></li>
-<li><a href="favorites.html"> Favorilerim</a></li>
-<li><a href="wordlist.html"> Kelime Listem</a></li>
-<li><a href="quiz.html"> Quiz'lerim</a></li>
-<li><a href="ai-chat.html"> AI Asistan</a></li>
-<li><a href="support.html"> Destek</a></li>
-<li><a href="profile.html"> Profilim & İstatistikler</a></li>
-<li><a href="../common/settings.html"> Ayarlar</a></li>
+                    <li><a href="../../student.html"> Home</a></li>
+<li class="active"><a href="reading.html"> Reading Materials</a></li>
+<li><a href="favorites.html"> Favorites</a></li>
+<li><a href="wordlist.html"> Word List</a></li>
+<li><a href="quiz.html"> Quizzes</a></li>
+<li><a href="ai-chat.html"> AI Assistant</a></li>
+<li><a href="support.html"> Support</a></li>
+<li><a href="profile.html"> My Profile & Statistics</a></li>
+<li><a href="../common/settings.html"> Settings</a></li>
                 </ul>
             </nav>
         </aside>
@@ -73,11 +73,11 @@
         <div class="main-content" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
             <!-- Üst Başlık -->
             <header class="dashboard-header" style="flex-shrink: 0;">
-                <h2>Okuma Materyalleri</h2>
+                <h2>Reading Materials</h2>
                 <<div class="user-info" style="display: flex; align-items: center; gap: 15px;">
         <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
         <span id="welcome-message"></span>
-        <button id="logout-button">Çıkış Yap</button>
+        <button id="logout-button">Logout</button>
     </div>
 </header>
  
@@ -88,15 +88,15 @@
                     <!-- SOL SÜTUN: Liste ve Geçmiş -->
                     <div class="sidebar-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
                         <div style="padding: 15px; border-bottom: 1px solid #eee;">
-                            <h3 style="margin:0; font-size: 1rem;">Materyallerim</h3>
-                            <button id="new-material-btn" class="cta-button" style="margin-top:10px; padding: 5px; width: 100%;">+ Yeni Oluştur</button>
+                            <h3 style="margin:0; font-size: 1rem;">My Materials</h3>
+                            <button id="new-material-btn" class="cta-button" style="margin-top:10px; padding: 5px; width: 100%;">+ Create New</button>
                         </div>
                         
                         <!-- Materyal listesi -->
                         <div id="materials-list" style="flex: 1; overflow-y: auto; padding: 10px;"></div>
                         
                         <div style="padding: 10px 15px; background: #f1f5f9; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
-                            <h3 style="margin:0; font-size: 0.9rem;">📜 Not Geçmişim</h3>
+                            <h3 style="margin:0; font-size: 0.9rem;">📜 Note History</h3>
                         </div>
                         <div id="note-history-list" style="flex: 1; overflow-y: auto; padding: 10px;">
                             <!-- Notu olan yazılar buraya gelecek -->
@@ -107,9 +107,9 @@
                     <div class="reader-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
                         <!-- Okuma Alanı (Metin uzunsa burada kayar) -->
                         <div id="reading-container" class="reading-container" style="flex: 1; overflow-y: auto; padding: 30px;">
-                            <h1 id="reading-title">Lütfen bir yazı seçin</h1>
+                            <h1 id="reading-title">Please select an article</h1>
                             <div id="reading-body" style="font-size: 1.1rem; line-height: 1.8;"></div>
-                            <div id="loader" class="hidden">Yapay zeka yazıyor...</div>
+                            <div id="loader" class="hidden">AI is writing...</div>
  
                             <!-- Sağ alt kalp butonu -->
                             <button id="favorite-btn" class="favorite-btn" type="button">♡</button>
@@ -118,11 +118,11 @@
                         <!-- Not Alanı (Her zaman en altta sabit) -->
                         <div id="note-editor-area" style="flex-shrink: 0; background: #fafafa; border-top: 3px solid #4CAF50; padding: 20px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <h4 style="margin:0;">📝 Bu Yazı İçin Notlarım</h4>
-                                <span id="save-indicator" style="color: green; font-weight: bold; display: none;">Kaydedildi!</span>
+                                <h4 style="margin:0;">📝 My Notes for This Article</h4>
+                                <span id="save-indicator" style="color: green; font-weight: bold; display: none;">Saved!</span>
                             </div>
-                            <textarea id="note-textarea" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; resize: none; font-family: inherit;" placeholder="Bu yazıya özel notlarını yaz..."></textarea>
-                            <button id="save-note-btn" class="cta-button" style="width: 100%; margin-top: 10px; background: #4CAF50;">Notu Kaydet (Ctrl+Enter)</button>
+                            <textarea id="note-textarea" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; resize: none; font-family: inherit;" placeholder="Write your notes for this article..."></textarea>
+                            <button id="save-note-btn" class="cta-button" style="width: 100%; margin-top: 10px; background: #4CAF50;">Save Note (Ctrl+Enter)</button>
                         </div>
                     </div>
  
@@ -135,13 +135,13 @@
     <!-- Çeviri Tooltip'i (GÜNCELLENDİ) -->
     <div id="translation-tooltip">
       <strong id="tooltip-word">Word</strong>
-      <span id="tooltip-meaning" class="meaning">Anlamı yükleniyor...</span>
+      <span id="tooltip-meaning" class="meaning">Loading meaning...</span>
     
     <!-- Butonları bir arada tutan yeni alan -->
       <div class="tooltip-actions" style="display: flex; gap: 8px; margin-top: 8px;">
-          <button id="add-to-wordlist-btn" class="add-btn">Kelime Listeme Ekle</button>
+          <button id="add-to-wordlist-btn" class="add-btn">Add to Word List</button>
         <!-- YENİ EKLENEN HOPARLÖR BUTONU -->
-          <button id="play-pronunciation-btn" class="speak-btn" title="Telaffuzu Dinle">🔊</button>
+          <button id="play-pronunciation-btn" class="speak-btn" title="Listen to Pronunciation">🔊</button>
       </div>
     </div>
  

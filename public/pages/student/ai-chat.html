@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Sohbet - LearnENG.com</title>
+    <title>AI Chat - LearnENG.com</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/ai-chat.css">
@@ -18,15 +18,15 @@
         </div>
         <nav>
             <ul>
-                     <li><a href="../../student.html"> Ana Sayfa</a></li>
-                 <li><a href="reading.html"> Okuma Materyalleri</a></li>
-<li><a href="favorites.html"> Favorilerim</a></li>
-<li><a href="wordlist.html"> Kelime Listem</a></li>
-<li><a href="quiz.html"> Quiz'lerim</a></li>
-<li class="active"><a href="ai-chat.html"> AI Asistan</a></li>
-<li><a href="support.html"> Destek</a></li>
-<li><a href="profile.html"> Profilim & İstatistikler</a></li>
-<li><a href="../common/settings.html"> Ayarlar</a></li>
+                     <li><a href="../../student.html"> Home</a></li>
+                 <li><a href="reading.html"> Reading Materials</a></li>
+<li><a href="favorites.html"> Favorites</a></li>
+<li><a href="wordlist.html"> Word List</a></li>
+<li><a href="quiz.html"> Quizzes</a></li>
+<li class="active"><a href="ai-chat.html"> AI Assistant</a></li>
+<li><a href="support.html"> Support</a></li>
+<li><a href="profile.html"> My Profile & Statistics</a></li>
+<li><a href="../common/settings.html"> Settings</a></li>
             </ul>
         </nav>
     </aside>
@@ -34,11 +34,11 @@
     <!-- MAIN CONTENT -->
     <div class="main-content">
         <header class="dashboard-header">
-            <h2> AI Asistan ile Sohbet Et</h2>
+            <h2> Chat with AI Assistant</h2>
             <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
                 <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
-                <button id="logout-button">Çıkış Yap</button>
+                <button id="logout-button">Logout</button>
             </div>
         </header>
 
@@ -47,10 +47,10 @@
                 <!-- Sol Sütun: Sohbet Geçmişi -->
                <!-- Sol Sütun: Sohbet Geçmişi -->
 <aside class="chat-history-sidebar">
-    <button id="new-chat-btn">+ Yeni Sohbet</button>
+    <button id="new-chat-btn">+ New Chat</button>
 
     <!-- YENİ EKLENEN BAŞLIK -->
-    <h4 class="history-title">Geçmiş Sohbetler</h4>
+    <h4 class="history-title">Chat History</h4>
 
     <div id="history-list">
         <!-- Geçmiş sohbetler buraya JS ile yüklenecek -->
@@ -60,11 +60,11 @@
                 <!-- Sağ Sütun: Aktif Sohbet -->
                 <div class="chat-main">
                     <div id="chat-window" class="chat-window">
-                        <div class="chat-message ai">Merhaba! Yeni bir sohbete başlayalım. İngilizce öğrenme yolculuğunda sana nasıl yardımcı olabilirim?</div>
+                        <div class="chat-message ai">Hello! Let's start a new chat. How can I help you on your English learning journey?</div>
                     </div>
                     <form id="chat-form" class="chat-input-form">
-                        <input id="chat-input" type="text" placeholder="Bir soru sor..." autocomplete="off">
-                        <button id="send-btn" type="submit">Gönder</button>
+                        <input id="chat-input" type="text" placeholder="Ask a question..." autocomplete="off">
+                        <button id="send-btn" type="submit">Send</button>
                     </form>
                 </div>
             </div>

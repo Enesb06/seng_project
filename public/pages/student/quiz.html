@@ -15,15 +15,15 @@
             <div class="logo"><a href="../../student.html">LearnENG</a></div>
             <nav>
                 <ul>
-                    <li><a href="../../student.html"> Ana Sayfa</a></li>
-                    <li><a href="reading.html"> Okuma Materyalleri</a></li>
-                    <li><a href="favorites.html"> Favorilerim</a></li>
-                    <li><a href="wordlist.html"> Kelime Listem</a></li>
-                    <li class="active"><a href="quiz.html"> Quiz'lerim</a></li>
-                    <li><a href="ai-chat.html"> AI Asistan</a></li>
-                    <li><a href="support.html"> Destek</a></li>
-                    <li><a href="profile.html"> Profilim & İstatistikler</a></li>
-                    <li><a href="../common/settings.html"> Ayarlar</a></li>
+                    <li><a href="../../student.html"> Home</a></li>
+                    <li><a href="reading.html"> Reading Materials</a></li>
+                    <li><a href="favorites.html"> Favorites</a></li>
+                    <li><a href="wordlist.html"> Word List</a></li>
+                    <li class="active"><a href="quiz.html"> Quizzes</a></li>
+                    <li><a href="ai-chat.html"> AI Assistant</a></li>
+                    <li><a href="support.html"> Support</a></li>
+                    <li><a href="profile.html"> My Profile & Statistics</a></li>
+                    <li><a href="../common/settings.html"> Settings</a></li>
                 </ul>
             </nav>
         </aside>
@@ -31,40 +31,40 @@
         <!-- MAIN CONTENT -->
         <div class="main-content">
             <header class="dashboard-header">
-                <h2>Kelime Quizi</h2>
+                <h2>Word Quiz</h2>
                 <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
         <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
         <span id="welcome-message"></span>
-        <button id="logout-button">Çıkış Yap</button>
+        <button id="logout-button">Logout</button>
     </div>
 </header>
             
             <main class="content-area">
                 <div id="quiz-intro" class="card">
-                    <h3>Öğrendiğin Kelimeleri Test Et</h3>
-                    <p id="quiz-info-text">Kelimeleriniz taranıyor...</p>
-                    <button id="start-quiz-btn" class="cta-button">Quizi Başlat</button>
+                    <h3>Test Your Learned Words</h3>
+                    <p id="quiz-info-text">Scanning your words...</p>
+                    <button id="start-quiz-btn" class="cta-button">Start Quiz</button>
                 </div>
  
                 <div id="quiz-container" class="card hidden">
-                    <div id="loader" class="hidden">Sorular hazırlanıyor...</div>
+                    <div id="loader" class="hidden">Preparing questions...</div>
                     <div id="question-area">
-                        <h4 id="question-text">Soru buraya gelecek</h4>
+                        <h4 id="question-text">Question will appear here</h4>
                         <div id="options-container" class="options-grid"></div>
-                        <p id="quiz-progress">Soru 1 / 5</p>
+                        <p id="quiz-progress">Question 1 / 5</p>
                     </div>
                 </div>
  
                 <div id="result-area" class="card hidden">
-                    <h3>Quiz Tamamlandı!</h3>
+                    <h3>Quiz Completed!</h3>
                     <p id="score-text"></p>
-                    <button onclick="location.reload()" class="cta-button">Tekrar Dene</button>
+                    <button onclick="location.reload()" class="cta-button">Try Again</button>
                 </div>
 
                 <div id="quiz-history" class="card">
-                    <h3>📜 Quiz Geçmişlerim</h3>
+                    <h3>📜 My Quiz History</h3>
                     <div id="quiz-history-list">
-                        Yükleniyor...
+                        Loading...
                     </div>
                 </div>
 

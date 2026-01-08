@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Destek Merkezi - LearnENG.com</title>
+  <title>Support Center - LearnENG.com</title>
 
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="../../assets/css/dashboard.css">
@@ -19,11 +19,11 @@
     <div class="logo"><a href="../../teacher.html">LearnENG</a></div>
     <nav>
       <ul>
-        <li><a href="../../teacher.html">Ana Sayfa</a></li>
-        <li><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
-        <li><a href="student-report.html">Öğrenci Raporları</a></li>
-        <li class="active"><a href="support.html"> Destek</a></li>
-        <li><a href="../common/settings.html"> Ayarlar</a></li>
+        <li><a href="../../teacher.html">Home</a></li>
+        <li><a href="class-management.html">Class & Homework Management</a></li>
+        <li><a href="student-report.html">Student Reports</a></li>
+        <li class="active"><a href="support.html"> Support</a></li>
+        <li><a href="../common/settings.html"> Settings</a></li>
       </ul>
     </nav>
   </aside>
@@ -33,13 +33,13 @@
 
     <!-- ÜST BAR -->
     <header class="dashboard-header">
-      <h2> Destek &amp; Geri Bildirim</h2>
+      <h2> Support &amp; Feedback</h2>
       <div class="user-info" style="display:flex; align-items:center; gap:15px;">
         <img id="user-avatar"
              src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
              style="width:35px;height:35px;border-radius:50%;border:2px solid #4CAF50;object-fit:cover;">
         <span id="welcome-message"></span>
-        <button id="logout-button">Çıkış Yap</button>
+        <button id="logout-button">Logout</button>
       </div>
     </header>
 
@@ -48,16 +48,16 @@
 
       <!-- YENİ KONU AÇMA -->
       <div class="card" style="padding:20px;">
-        <h3 style="margin-top:0; margin-bottom:12px;">Yeni Destek Talebi Oluştur</h3>
+        <h3 style="margin-top:0; margin-bottom:12px;">Create New Support Request</h3>
 
         <div style="display:flex;flex-direction:column;gap:10px;">
           <div>
             <label for="support-subject"
                    style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
-              Konu Başlığı
+              Subject
             </label>
             <input id="support-subject" type="text"
-                   placeholder="Örn: Sınıf yönetimi sayfası hata veriyor..."
+                   placeholder="E.g: Class management page is giving error..."
                    style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
                           font-size:0.95rem;box-sizing:border-box;">
           </div>
@@ -65,31 +65,31 @@
           <div>
             <label for="support-message"
                    style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
-              Mesajınız
+              Your Message
             </label>
             <textarea id="support-message" rows="4"
-                      placeholder="Sorununuzu veya geri bildiriminizi ayrıntılı şekilde yazın..."
+                      placeholder="Write your issue or feedback in detail..."
                       style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
                              font-size:0.95rem;resize:vertical;min-height:120px;box-sizing:border-box;
                              font-family:inherit;"></textarea>
           </div>
 
           <button id="create-thread" class="cta-button" style="width:100%;margin-top:4px;">
-            Gönder
+            Send
           </button>
         </div>
       </div>
 
       <!-- TALEPLER + CHAT -->
       <div class="card" style="padding:20px;">
-        <h3 style="margin-top:0; margin-bottom:12px;">Geçmiş Destek Taleplerim</h3>
+        <h3 style="margin-top:0; margin-bottom:12px;">My Support Request History</h3>
 
         <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
 
           <!-- SOL: thread list -->
           <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
             <div id="my-threads-list" style="font-size:0.9rem;">
-              Henüz destek talebiniz yok.
+              You don't have any support requests yet.
             </div>
           </div>
 
@@ -97,28 +97,28 @@
           <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#ffffff;">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
               <div>
-                <div id="user-selected-title" style="font-weight:700;">Bir talep seçin</div>
+                <div id="user-selected-title" style="font-weight:700;">Select a request</div>
                 <div id="user-selected-meta" style="font-size:0.8rem; color:#6b7280;">
-                  Mesajları görmek için soldan seç.
+                  Select from the left to see messages.
                 </div>
               </div>
               <span id="user-selected-status"
                     style="display:none; font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#e5e7eb; color:#374151;">
-                Durum
+                Status
               </span>
             </div>
 
             <div id="user-messages-box"
                  style="margin-top:10px; border:1px solid #e5e7eb;border-radius:10px;padding:10px; max-height:260px; overflow-y:auto; font-size:0.9rem;">
-              Bir talep seçtiğinizde mesajlar burada görünecek.
+              Messages will appear here when you select a request.
             </div>
 
             <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
-              <textarea id="user-reply-input" rows="3" placeholder="Mesaj yazın..."
+              <textarea id="user-reply-input" rows="3" placeholder="Write a message..."
                         style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; box-sizing:border-box; font-size:0.9rem; font-family:inherit;"></textarea>
 
               <button id="user-send-btn" class="cta-button" style="align-self:flex-end;">
-                Gönder
+                Send
               </button>
             </div>
           </div>

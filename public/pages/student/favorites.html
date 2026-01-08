@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Favorilerim - LearnENG.com</title>
+    <title>Favorites - LearnENG.com</title>
 
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
@@ -19,15 +19,15 @@
         <div class="logo"><a href="../../student.html">LearnENG</a></div>
         <nav>
             <ul>
-                <li><a href="../../student.html"> Ana Sayfa</a></li>
-<li><a href="reading.html"> Okuma Materyalleri</a></li>
-<li class="active"><a href="favorites.html"> Favorilerim</a></li>
-<li><a href="wordlist.html"> Kelime Listem</a></li>
-<li><a href="quiz.html"> Quiz'lerim</a></li>
-<li><a href="ai-chat.html"> AI Asistan</a></li>
-<li><a href="support.html"> Destek</a></li>
-<li><a href="profile.html"> Profilim & İstatistikler</a></li>
-<li><a href="../common/settings.html"> Ayarlar</a></li>
+                <li><a href="../../student.html"> Home</a></li>
+<li><a href="reading.html"> Reading Materials</a></li>
+<li class="active"><a href="favorites.html"> Favorites</a></li>
+<li><a href="wordlist.html"> Word List</a></li>
+<li><a href="quiz.html"> Quizzes</a></li>
+<li><a href="ai-chat.html"> AI Assistant</a></li>
+<li><a href="support.html"> Support</a></li>
+<li><a href="profile.html"> My Profile & Statistics</a></li>
+<li><a href="../common/settings.html"> Settings</a></li>
             </ul>
         </nav>
     </aside>
@@ -37,28 +37,28 @@
         
         <!-- ÜST BAR (GÜNCELLENDİ: AVATAR EKLENDİ) -->
         <header class="dashboard-header" style="flex-shrink:0;">
-            <h2>⭐ Favori Okuma Materyallerim</h2>
+            <h2>⭐ My Favorite Reading Materials</h2>
             <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
                 <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
-                <button id="logout-button">Çıkış Yap</button>
+                <button id="logout-button">Logout</button>
             </div>
         </header>
 
         <!-- CONTENT -->
         <main class="content-area" style="flex:1;overflow-y:auto;padding:20px;">
             <div class="card" style="padding:20px;">
-                <h3 style="margin-top:0;">Beğendiğin Yazılar</h3>
+                <h3 style="margin-top:0;">Your Favorite Articles</h3>
                 <p style="margin-top:0;color:#6b7280;font-size:0.9rem;">
-                    Okuma sayfasındaki kalp ikonuna bastığın yazılar burada görünür.
+                    Articles you liked by clicking the heart icon on the reading page will appear here.
                 </p>
 
                 <div id="favorites-loading" style="font-size:0.9rem;color:#6b7280;">
-                    Yükleniyor...
+                    Loading...
                 </div>
 
                 <div id="favorites-empty" style="display:none;font-size:0.9rem;color:#9ca3af;">
-                    Henüz favorin yok. Okuma materyallerine gidip sağ alttaki kalp ikonuna tıklayabilirsin.
+                    You don't have any favorites yet. You can go to reading materials and click the heart icon at the bottom right.
                 </div>
 
                 <div id="favorites-list" style="margin-top:15px;display:flex;flex-direction:column;gap:10px;"></div>
@@ -121,7 +121,7 @@
                      + item.title
                      + '</div>';
             html +=     '<div style="font-size:0.8rem;color:#6b7280;">'
-                     + 'Oluşturulma: ' + dateText +
+                     + 'Created: ' + dateText +
                      '</div>';
             html +=   '</div>';
 
@@ -132,7 +132,7 @@
                      + 'padding:6px 10px;'
                      + 'border-radius:6px;'
                      + 'text-decoration:none;'
-                     + 'font-size:0.8rem;">Oku</a>';
+                     + 'font-size:0.8rem;">Read</a>';
 
             html += '</div>';
         });
@@ -174,7 +174,7 @@
 
             if (error) {
                 console.error(error);
-                favoritesListEl.innerHTML = "<p style='color:red;'>Favoriler yüklenirken hata oluştu</p>";
+                favoritesListEl.innerHTML = "<p style='color:red;'>Error loading favorites</p>";
                 return;
             }
 
@@ -186,7 +186,7 @@
         } catch (err) {
             loadingEl.style.display = "none";
             console.error(err);
-            favoritesListEl.innerHTML = "<p style='color:red;'>Beklenmeyen bir hata oluştu</p>";
+            favoritesListEl.innerHTML = "<p style='color:red;'>An unexpected error occurred</p>";
         }
     };
 

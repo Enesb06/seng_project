@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Öğretmen Paneli - LearnENG.com</title>
+    <title>Teacher Panel - LearnENG.com</title>
 
     <!-- CSS Dosyaları -->
     <link rel="stylesheet" href="assets/css/main.css">
@@ -18,14 +18,14 @@
             <div class="logo"><a href="/teacher.html">LearnENG</a></div>
             <nav>
                 <ul>
-                    <li class="active"><a href="/teacher.html">Anasayfa</a></li>
-                    <li><a href="pages/teacher/class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                    <li><a href="pages/teacher/student-report.html">Öğrenci Raporları</a></li>
+                    <li class="active"><a href="/teacher.html">Home</a></li>
+                    <li><a href="pages/teacher/class-management.html">Class & Homework Management</a></li>
+                    <li><a href="pages/teacher/student-report.html">Student Reports</a></li>
 
                     <!-- ✅ DESTEK EKLENDİ -->
-                    <li><a href="pages/teacher/support.html"> Destek</a></li>
+                    <li><a href="pages/teacher/support.html"> Support</a></li>
 
-                    <li><a href="pages/common/settings.html"> Ayarlar</a></li>
+                    <li><a href="pages/common/settings.html"> Settings</a></li>
                 </ul>
             </nav>
         </aside>
@@ -33,25 +33,25 @@
         <!-- ANA İÇERİK -->
         <div class="main-content">
             <header class="dashboard-header">
-                <h2>Öğretmen Özeti</h2>
+                <h2>Teacher Summary</h2>
                 <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
                     <img id="header-avatar"
                          src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
                          style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
-                    <span id="welcome-message">Yükleniyor...</span>
-                    <button id="logout-button">Çıkış Yap</button>
+                    <span id="welcome-message">Loading...</span>
+                    <button id="logout-button">Logout</button>
                 </div>
             </header>
 
             <main class="content-area">
-                <h3>Genel Bakış</h3>
+                <h3>Overview</h3>
                 <div class="stats-grid">
                     <div class="card">
-                        <h4>Aktif Sınıflarım</h4>
+                        <h4>Active Classes</h4>
                         <p id="total-classes" class="stat-value">0</p>
                     </div>
                     <div class="card">
-                        <h4>Toplam Öğrencim</h4>
+                        <h4>Total Students</h4>
                         <p id="total-students" class="stat-value">0</p>
                     </div>
                 </div>

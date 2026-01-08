@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>Destek Talepleri - Admin - LearnENG.com</title>
+  <title>Support Requests - Admin - LearnENG.com</title>
 
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/dashboard.css">
@@ -50,13 +50,13 @@
     <nav>
       <ul>
         <li id="li-users">
-          <a href="admin.html" id="nav-users">Kullanıcı Yönetimi</a>
+          <a href="admin.html" id="nav-users">User Management</a>
         </li>
         <li id="li-verification">
-          <a href="admin.html#verification">Öğretmen Onayları</a>
+          <a href="admin.html#verification">Teacher Approvals</a>
         </li>
         <li id="li-support" class="active">
-          <a href="admin_support.html"> Destek Mesajları </a>
+          <a href="admin_support.html"> Support Messages </a>
         </li>
       </ul>
     </nav>
@@ -65,10 +65,10 @@
   <!-- ANA İÇERİK -->
   <div class="main-content">
     <header class="dashboard-header">
-      <h2>Destek Talepleri</h2>
+      <h2>Support Requests</h2>
       <div class="user-info">
-        <span id="admin-display-name">Yükleniyor...</span>
-        <button id="logout-button">Çıkış Yap</button>
+        <span id="admin-display-name">Loading...</span>
+        <button id="logout-button">Logout</button>
       </div>
     </header>
 
@@ -76,7 +76,7 @@
 
       <!-- ÜST SAYI KARTI -->
       <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 16px;margin-bottom:20px;background:#ffffff;">
-        <h3 style="margin:0 0 4px 0; font-size:0.95rem;">Toplam Destek Talebi</h3>
+        <h3 style="margin:0 0 4px 0; font-size:0.95rem;">Total Support Requests</h3>
         <p id="support-total-count" style="margin:0;font-size:1.5rem;font-weight:600;">0</p>
       </div>
 
@@ -84,10 +84,10 @@
 
         <!-- SOL: TALEP LİSTESİ (ARTIK TABLE DEĞİL) -->
         <div style="flex:1; border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#ffffff;">
-          <h3 style="margin-top:0; margin-bottom:12px; font-size:1rem;">Tüm Destek Talepleri</h3>
+          <h3 style="margin-top:0; margin-bottom:12px; font-size:1rem;">All Support Requests</h3>
 
           <div id="support-threads-list">
-            <div style="padding:8px; text-align:center; color:#6b7280;">Yükleniyor...</div>
+            <div style="padding:8px; text-align:center; color:#6b7280;">Loading...</div>
           </div>
         </div>
 
@@ -96,42 +96,42 @@
 
           <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
             <div>
-              <h3 id="selected-thread-title" style="margin:0; font-size:1rem;">Bir destek talebi seçin</h3>
+              <h3 id="selected-thread-title" style="margin:0; font-size:1rem;">Select a support request</h3>
               <p id="selected-thread-meta" style="margin:2px 0 0 0; font-size:0.8rem; color:#6b7280;">
-                Henüz bir talep seçilmedi.
+                No request selected yet.
               </p>
             </div>
 
             <span id="selected-thread-status-badge"
               style="font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#e5e7eb; color:#374151; display:none;">
-              Durum
+              Status
             </span>
           </div>
 
           <div id="messages-box"
             style="border:1px solid #e5e7eb; border-radius:10px; padding:10px; max-height:320px; overflow-y:auto; font-size:0.9rem;">
-            Bir talep seçtiğinizde, mesajlar burada görünecek.
+            Messages will appear here when you select a request.
           </div>
 
           <div style="margin-top:8px; display:flex; flex-direction:column; gap:8px;">
 
             <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-              <label for="thread-status-select" style="font-size:0.85rem;">Talep Durumu:</label>
+              <label for="thread-status-select" style="font-size:0.85rem;">Request Status:</label>
               <select id="thread-status-select" style="padding:4px 8px; font-size:0.85rem;">
-                <option value="open">Açık</option>
-                <option value="closed">Kapalı</option>
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
               </select>
 
               <button id="update-status-btn" class="cta-button" style="padding:6px 10px; font-size:0.8rem;">
-                Durumu Güncelle
+                Update Status
               </button>
             </div>
 
-            <textarea id="admin-reply-input" rows="3" placeholder="Bu talebe cevap yazın..."
+            <textarea id="admin-reply-input" rows="3" placeholder="Write a reply to this request..."
               style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; box-sizing:border-box; font-size:0.9rem; font-family:inherit;"></textarea>
 
             <button id="send-reply-btn" class="cta-button" style="align-self:flex-end;">
-              Cevabı Gönder
+              Send Reply
             </button>
           </div>
 

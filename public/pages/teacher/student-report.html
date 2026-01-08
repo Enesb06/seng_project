@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Öğrenci Raporları - LearnENG.com</title>
+    <title>Student Reports - LearnENG.com</title>
 
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
@@ -23,11 +23,11 @@
 
         <nav>
             <ul>
-                <li><a href="../../teacher.html">Anasayfa</a></li>
-                <li><a href="class-management.html">Sınıf & Ödev Yönetimi</a></li>
-                <li class="active"><a href="student-report.html">Öğrenci Raporları</a></li>
-                <li><a href="support.html"> Destek</a></li>
-                <li><a href="../common/settings.html"> Ayarlar</a></li>
+                <li><a href="../../teacher.html">Home</a></li>
+                <li><a href="class-management.html">Class & Homework Management</a></li>
+                <li class="active"><a href="student-report.html">Student Reports</a></li>
+                <li><a href="support.html"> Support</a></li>
+                <li><a href="../common/settings.html"> Settings</a></li>
             </ul>
         </nav>
     </aside>
@@ -36,40 +36,40 @@
     <div class="main-content">
 
         <header class="dashboard-header">
-            <h2>Öğrenci Raporları</h2>
+            <h2>Student Reports</h2>
             <div class="user-info">
                 <!-- Avatar -->
                 <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
-                <button id="logout-button">Çıkış Yap</button>
+                    <button id="logout-button">Logout</button>
             </div>
         </header>
 
         <main class="content-area">
 
             <section class="card">
-                <h3>Sınıflarım</h3>
+                <h3>My Classes</h3>
 
-                <label>Sınıf Seç:</label>
+                <label>Select Class:</label>
                 <select id="classSelect">
-                    <option value="">Sınıf seçiniz</option>
+                    <option value="">Select Class</option>
                 </select>
             </section>
 
             <section class="card">
-                <h3>Öğrenci Listesi</h3>
+                <h3>Student List</h3>
 
                 <table class="report-table">
                     <thead>
                         <tr>
-                            <th>Öğrenci</th>
-                            <th>E-posta</th>
-                            <th>Rapor</th>
+                            <th>Student</th>
+                            <th>Email</th>
+                            <th>Report</th>
                         </tr>
                     </thead>
                     <tbody id="studentTable">
                         <tr>
-                            <td colspan="3">Sınıf seçiniz</td>
+                            <td colspan="3">Select Class</td>
                         </tr>
                     </tbody>
                 </table>

@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Onay Bekleniyor - LearnENG.com</title>
+    <title>Pending Approval - LearnENG.com</title>
     <link rel="stylesheet" href="../../assets/css/main.css">
     <style>
         .pending-container {
@@ -25,12 +25,12 @@
     <div class="pending-container">
         <div class="card">
             <div class="icon">⏳</div>
-            <h2>Hesabınız Onay Bekliyor</h2>
-            <p>Öğretmen hesabınız admin tarafından inceleniyor. Onaylandığında sisteme tam erişim sağlayabileceksiniz.</p>
+            <h2>Your Account is Pending Approval</h2>
+            <p>Your teacher account is being reviewed by admin. Once approved, you will have full access to the system.</p>
             
-            <button onclick="checkStatus()" class="btn-refresh">Durumu Kontrol Et</button>
+            <button onclick="checkStatus()" class="btn-refresh">Check Status</button>
             <br>
-            <button id="logout-btn" class="btn-logout">Çıkış Yap</button>
+            <button id="logout-btn" class="btn-logout">Logout</button>
         </div>
     </div>
 
@@ -54,7 +54,7 @@
                 localStorage.setItem('user', JSON.stringify(user));
                 window.location.href = 'dashboard.html'; // Öğretmen paneline
             } else {
-                alert("Henüz onaylanmamış. Lütfen biraz daha bekleyin.");
+                alert("Not yet approved. Please wait a bit longer.");
             }
         };
 
