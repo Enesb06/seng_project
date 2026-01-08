@@ -67,7 +67,7 @@ const renderTable = (users) => {
 
 // --- GLOBAL PENCERE FONKSİYONLARI ---
 window.delUser = async (id) => {
-    if(confirm("Bu kullanıcıyı silmek istediğinize emin misiniz?")) {
+    if(confirm("Are you sure you want to delete this user?")) {
         await _supabase.from('profiles').delete().eq('id', id);
         loadAdminData();
     }
@@ -92,7 +92,7 @@ editForm.onsubmit = async (e) => {
         editModal.classList.add('hidden'); 
         loadAdminData(); 
     } else {
-        alert("Hata: " + error.message);
+        alert("Error: " + error.message);
     }
 };
 
@@ -104,7 +104,7 @@ const setupNavigation = () => {
         verifySection.classList.add('hidden');
         liUsers.classList.add('active');
         liVerify.classList.remove('active');
-        pageTitle.textContent = "Kullanıcı Yönetimi";
+        pageTitle.textContent = "User Management";
         loadAdminData();
     };
 
@@ -114,7 +114,7 @@ const setupNavigation = () => {
         usersSection.classList.add('hidden');
         liVerify.classList.add('active');
         liUsers.classList.remove('active');
-        pageTitle.textContent = "Öğretmen Onayları";
+        pageTitle.textContent = "Teacher Approvals";
         loadPendingTeachers(); // Onay bekleyenleri yükle
     };
 };
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Admin yetki kontrolü
     if(!user || user.role !== 'admin') {
-        alert("Yetkisiz erişim!");
+        alert("Unauthorized access!");
         return window.location.href = 'index.html';
     }
 

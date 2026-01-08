@@ -142,9 +142,9 @@ const getTranslation = async (word) => {
       `https://api.mymemory.translated.net/get?q=${word}&langpair=en|tr`
     );
     const data = await res.json();
-    return data.responseData.translatedText || 'Çeviri bulunamadı';
+    return data.responseData.translatedText || 'Translation not found';
   } catch {
-    return 'Bağlantı hatası';
+    return 'Connection error';
   }
 };
 
@@ -190,7 +190,7 @@ const displayMaterial = async (contentId) => {
       .eq('id', contentId)
       .single();
 
-    if (error || !data) throw error || new Error('İçerik bulunamadı');
+    if (error || !data) throw error || new Error('Content not found');
 
     if (readingTitle) readingTitle.textContent = data.title || '';
     if (readingBody) readingBody.innerHTML = wrapWords(data.body || '');
@@ -229,7 +229,7 @@ const renderHistory = () => {
 
   if (history.length === 0) {
     historyContainer.innerHTML =
-      '<p style="color:#999; font-size:0.8rem; padding:10px;">Henüz not yok.</p>';
+      '<p style="color:#999; font-size:0.8rem; padding:10px;">No notes yet.</p>';
     return;
   }
 
@@ -249,7 +249,7 @@ const renderHistory = () => {
 
 const saveCurrentNote = () => {
   if (!currentEssayId) {
-    alert('Önce bir yazı seçin!');
+    alert('Please select a text first!');
     return;
   }
 
@@ -325,7 +325,7 @@ const handleGenerateNewMaterial = async (e) => {
     await loadUserMaterials();
     await displayMaterial(newContent.id);
   } catch (err) {
-    alert('Hata: ' + (err?.message || err));
+    alert('Error: ' + (err?.message || err));
     console.error(err);
   } finally {
     if (loader) loader.classList.add('hidden');
@@ -345,13 +345,13 @@ const loadUserMaterials = async () => {
   if (error) {
     console.error(error);
     materialsList.innerHTML =
-      '<p style="color:red;font-size:0.85rem;">Materyaller yüklenirken hata oluştu.</p>';
+      '<p style="color:red;font-size:0.85rem;">Error occurred while loading materials.</p>';
     return;
   }
 
   if (!data || data.length === 0) {
     materialsList.innerHTML =
-      '<p style="color:#9ca3af;font-size:0.85rem;">Henüz materyal oluşturmadın.</p>';
+      '<p style="color:#9ca3af;font-size:0.85rem;">You haven't created any materials yet.</p>';
     return;
   }
 
@@ -388,7 +388,7 @@ if (readingBody) {
       if (tooltipWord) tooltipWord.textContent = word;
 
       if (tooltipMeaning) {
-        tooltipMeaning.textContent = 'Çevriliyor...';
+        tooltipMeaning.textContent = 'Translating...';
         tooltipMeaning.textContent = await getTranslation(word);
       }
 
@@ -405,7 +405,7 @@ if (readingBody) {
           });
 
           if (!error) {
-            alert('Kelime eklendi!');
+            alert('Word added!');
             if (tooltip) tooltip.style.display = 'none';
           }
         };
@@ -451,7 +451,7 @@ if (preferencesForm) {
 if (favoriteBtn) {
   favoriteBtn.addEventListener('click', () => {
     if (!currentEssayId) {
-      alert('Önce bir yazı seçin!');
+      alert('Please select a text first!');
       return;
     }
 
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!user) return goHome();
 
   if (welcomeMessageEl) {
-    welcomeMessageEl.innerText = `Hoş geldin, ${user.full_name}!`;
+    welcomeMessageEl.innerText = `Welcome, ${user.full_name}!`;
   }
 
   loadUserMaterials();

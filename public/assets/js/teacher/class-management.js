@@ -1,18 +1,18 @@
 import { _supabase } from '../supabaseClient.js';
 
 /* =====================
-   ELEMENTLER & USER
+   ELEMENTS & USER
 ===================== */
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
 const userAvatar = document.getElementById('user-avatar');
 
-const classSelect = document.getElementById('select-class');              // Ödev atama
-const reportClassSelect = document.getElementById('report-class-select'); // Rapor
+const classSelect = document.getElementById('select-class');              // Assignment
+const reportClassSelect = document.getElementById('report-class-select'); // Report
 const studentStatusArea = document.getElementById('student-status-area');
 const classListDiv = document.getElementById('class-list');
 
-/* 🔵 VERDİĞİM ÖDEVLER */
+/* 🔵 MY ASSIGNMENTS */
 const myAssignmentsClassSelect = document.getElementById('my-assignments-class-select');
 const myAssignmentsArea = document.getElementById('my-assignments-area');
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    welcomeMessage.innerText = `Hoş geldin, ${user.full_name}`;
+    welcomeMessage.innerText = `Welcome, ${user.full_name}`;
     if (userAvatar && user.avatar_url) userAvatar.src = user.avatar_url;
 
     logoutButton.addEventListener('click', () => {
@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =====================
-   YARDIMCI
+   HELPER
 ===================== */
 function generateCode() {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
 /* =====================
-   SINIFLARI YÜKLE
+   LOAD CLASSES
 ===================== */
 async function loadFormData() {
     const { data: classes } = await _supabase
@@ -56,9 +56,9 @@ async function loadFormData() {
         .select('*')
         .eq('teacher_id', user.id);
 
-    classSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
-    reportClassSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
-    myAssignmentsClassSelect.innerHTML = `<option value="">Sınıf seçiniz</option>`;
+    classSelect.innerHTML = `<option value="">Select class</option>`;
+    reportClassSelect.innerHTML = `<option value="">Select class</option>`;
+    myAssignmentsClassSelect.innerHTML = `<option value="">Select class</option>`;
 
     classes.forEach(c => {
         const opt = document.createElement("option");
@@ -72,7 +72,7 @@ async function loadFormData() {
 }
 
 /* =====================
-   SINIF OLUŞTUR
+   CREATE CLASS
 ===================== */
 document.getElementById('create-class-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -89,7 +89,7 @@ document.getElementById('create-class-form').addEventListener('submit', async (e
 });
 
 /* =====================
-   ÖDEV ATA
+   ASSIGN HOMEWORK
 ===================== */
 document.getElementById('assign-homework-form').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -102,24 +102,24 @@ document.getElementById('assign-homework-form').addEventListener('submit', async
         due_date: document.getElementById('hw-due-date').value
     }]);
 
-    alert("Ödev başarıyla atandı!");
+    alert("Assignment successfully assigned!");
     e.target.reset();
 });
 
 /* =====================
-   🔵 VERDİĞİM ÖDEVLER (SINIF SEÇMELİ)
+   🔵 MY ASSIGNMENTS (CLASS SELECTION)
 ===================== */
 myAssignmentsClassSelect.addEventListener('change', (e) => {
     const classId = e.target.value;
     if (!classId) {
-        myAssignmentsArea.innerHTML = "<p>Lütfen bir sınıf seçin.</p>";
+        myAssignmentsArea.innerHTML = "<p>Please select a class.</p>";
         return;
     }
     loadMyAssignments(classId);
 });
 
 async function loadMyAssignments(classId) {
-  myAssignmentsArea.innerHTML = "<p>Yükleniyor...</p>";
+  myAssignmentsArea.innerHTML = "<p>Loading...</p>";
 
   const { data: assignments, error } = await _supabase
     .from('assignments')
@@ -139,12 +139,12 @@ async function loadMyAssignments(classId) {
 
 
   if (error) {
-    myAssignmentsArea.innerHTML = "<p>Ödevler yüklenirken hata oluştu.</p>";
+    myAssignmentsArea.innerHTML = "<p>Error loading assignments.</p>";
     return;
   }
 
   if (!assignments || assignments.length === 0) {
-    myAssignmentsArea.innerHTML = "<p>Bu sınıfa verdiğiniz ödev yok.</p>";
+    myAssignmentsArea.innerHTML = "<p>No assignments for this class.</p>";
     return;
   }
 
@@ -155,10 +155,10 @@ async function loadMyAssignments(classId) {
     return `
       <div class="teacher-hw-item" data-id="${a.id}">
 
-        <strong>Ödev ${i + 1} — ${a.title}</strong>
+        <strong>Assignment ${i + 1} — ${a.title}</strong>
 
         <div class="hw-date">
-          📅 Son Teslim: ${new Date(a.due_date).toLocaleDateString('tr-TR')}
+          📅 Due Date: ${new Date(a.due_date).toLocaleDateString('tr-TR')}
         </div>
 
         ${a.description ? `
@@ -168,12 +168,12 @@ async function loadMyAssignments(classId) {
         ` : ``}
 
         <div style="margin-top:10px;font-size:0.85rem;color:#555;">
-          👥 ${completedCount} / ${totalStudents} tamamladı
+          👥 ${completedCount} / ${totalStudents} completed
         </div>
 
         <div class="hw-actions">
-          <button class="edit-hw-btn" title="Düzenle">✏️</button>
-          <button class="delete-hw-btn" title="Sil">🗑️</button>
+          <button class="edit-hw-btn" title="Edit">✏️</button>
+          <button class="delete-hw-btn" title="Delete">🗑️</button>
         </div>
 
       </div>
@@ -183,7 +183,7 @@ async function loadMyAssignments(classId) {
 
 
 
-/* Açıklama aç / kapa */
+/* Toggle description */
 document.addEventListener('click', (e) => {
     const card = e.target.closest('.teacher-hw-item');
     if (!card) return;
@@ -196,22 +196,22 @@ document.addEventListener('click', (e) => {
 });
 
 /* =====================
-   RAPOR SELECT
+   REPORT SELECT
 ===================== */
 reportClassSelect.addEventListener('change', (e) => {
     const classId = e.target.value;
     if (!classId) {
-        studentStatusArea.innerHTML = "<p>Rapor için bir sınıf seçin.</p>";
+        studentStatusArea.innerHTML = "<p>Select a class for report.</p>";
         return;
     }
     loadStudentProgress(classId);
 });
 
 /* =====================
-   ÖĞRENCİ RAPORU (GÜN BAZLI)
+   STUDENT REPORT (DAY BASED)
 ===================== */
 async function loadStudentProgress(classId) {
-    studentStatusArea.innerHTML = "<p>Yükleniyor...</p>";
+    studentStatusArea.innerHTML = "<p>Loading...</p>";
 
     const { data: students } = await _supabase
         .from("class_members")
@@ -228,9 +228,9 @@ async function loadStudentProgress(classId) {
         .select("assignment_id, student_id, completed_at")
         .in("assignment_id", assignments.map(a => a.id));
 
-    let html = `<table class="report-table"><thead><tr><th>Öğrenci</th>`;
+    let html = `<table class="report-table"><thead><tr><th>Student</th>`;
     assignments.forEach((a, i) => {
-        html += `<th title="${a.description || ''}">Ödev ${i + 1}<br>${a.title}</th>`;
+        html += `<th title="${a.description || ''}">Assignment ${i + 1}<br>${a.title}</th>`;
     });
     html += `</tr></thead><tbody>`;
 
@@ -242,11 +242,11 @@ async function loadStudentProgress(classId) {
             );
 
             if (!c) {
-                html += `<td>❌ Yapılmadı</td>`;
+                html += `<td>❌ Not completed</td>`;
             } else {
                 const due = a.due_date.split('T')[0];
                 const done = c.completed_at.split('T')[0];
-                html += `<td>${done > due ? '🟠 Geç' : '✅ Zamanında'}<br>${new Date(c.completed_at).toLocaleDateString('tr-TR')}</td>`;
+                html += `<td>${done > due ? '🟠 Late' : '✅ On time'}<br>${new Date(c.completed_at).toLocaleDateString('tr-TR')}</td>`;
             }
         });
         html += `</tr>`;
@@ -257,10 +257,10 @@ async function loadStudentProgress(classId) {
 }
 
 /* =====================
-   OLUŞTURULAN SINIFLAR
+   CREATED CLASSES
 ===================== */
 async function loadTeacherClasses() {
-    classListDiv.innerHTML = '<li>Yükleniyor...</li>';
+    classListDiv.innerHTML = '<li>Loading...</li>';
 
     const { data: classes } = await _supabase
         .from('classes')
@@ -281,9 +281,9 @@ document.addEventListener('click', async (e) => {
 
     const assignmentId = card.dataset.id;
 
-    /* 🗑 SİL */
+    /* 🗑 DELETE */
     if (e.target.classList.contains('delete-hw-btn')) {
-        if (!confirm("Bu ödevi silmek istiyor musunuz?")) return;
+        if (!confirm("Do you want to delete this assignment?")) return;
 
         await _supabase
             .from('assignments')
@@ -293,17 +293,17 @@ document.addEventListener('click', async (e) => {
         loadMyAssignments(myAssignmentsClassSelect.value);
     }
 
-    /* ✏️ DÜZENLE AÇ */
+    /* ✏️ OPEN EDIT */
     if (e.target.classList.contains('edit-hw-btn')) {
         card.querySelector('.edit-area').style.display = 'block';
     }
 
-    /* ❌ İPTAL */
+    /* ❌ CANCEL */
     if (e.target.classList.contains('cancel-hw-btn')) {
         card.querySelector('.edit-area').style.display = 'none';
     }
 
-    /* 💾 KAYDET */
+    /* 💾 SAVE */
     if (e.target.classList.contains('save-hw-btn')) {
         const title = card.querySelector('.edit-title').value;
         const description = card.querySelector('.edit-desc').value;
@@ -314,7 +314,7 @@ document.addEventListener('click', async (e) => {
             .update({ title, description, due_date })
             .eq('id', assignmentId);
 
-        alert("Ödev güncellendi ✅");
+        alert("Assignment updated ✅");
         loadMyAssignments(myAssignmentsClassSelect.value);
     }
 });

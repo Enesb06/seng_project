@@ -32,7 +32,7 @@ export const loadPendingTeachers = async () => {
 const renderVerificationTable = (teachers) => {
     verificationListBody.innerHTML = '';
     if (teachers.length === 0) {
-        verificationListBody.innerHTML = '<tr><td colspan="4">Onay bekleyen öğretmen bulunmuyor.</td></tr>';
+        verificationListBody.innerHTML = '<tr><td colspan="4">No teachers pending approval.</td></tr>';
         return;
     }
 
@@ -43,8 +43,8 @@ const renderVerificationTable = (teachers) => {
             <td>${t.email}</td>
             <td>${new Date(t.created_at).toLocaleDateString('tr-TR')}</td>
             <td>
-                <button class="action-btn verify" onclick="window.confirmTeacher('${t.id}')">✅ Onayla</button>
-                <button class="action-btn delete" onclick="window.rejectTeacher('${t.id}')">❌ Reddet</button>
+                <button class="action-btn verify" onclick="window.confirmTeacher('${t.id}')">✅ Approve</button>
+                <button class="action-btn delete" onclick="window.rejectTeacher('${t.id}')">❌ Reject</button>
             </td>
         `;
         verificationListBody.appendChild(row);
@@ -59,14 +59,14 @@ window.confirmTeacher = async (id) => {
         .eq('id', id);
 
     if (!error) {
-        alert("Öğretmen onaylandı!");
+        alert("Teacher approved!");
         loadPendingTeachers(); // Listeyi yenile
         // Eğer dashboard açıksa onu da yenilemek için tetiklenebilir
     }
 };
 
 window.rejectTeacher = async (id) => {
-    if (!confirm("Bu öğretmen başvurusunu reddetmek ve hesabı silmek istiyor musunuz?")) return;
+    if (!confirm("Do you want to reject this teacher application and delete the account?")) return;
     const { error } = await _supabase.from('profiles').delete().eq('id', id);
     if (!error) loadPendingTeachers();
 };

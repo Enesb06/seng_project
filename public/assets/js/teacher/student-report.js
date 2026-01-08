@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (welcomeMessage) {
-        welcomeMessage.innerText = `Hoş geldin, ${user.full_name}`;
+        welcomeMessage.innerText = `Welcome, ${user.full_name}`;
     }
     // Avatarı ayarla (Eğer user objesinde avatar_url varsa kullan, yoksa placeholder kalsın)
     if (userAvatar && user.avatar_url) {
@@ -69,7 +69,7 @@ async function loadClasses() {
   }
 
   classSelect.innerHTML =
-    `<option value="">Sınıf seçiniz</option>` +
+    `<option value="">Select class</option>` +
     data.map(c => `<option value="${c.id}">${c.class_name}</option>`).join("");
 }
 
@@ -77,7 +77,7 @@ async function loadClasses() {
 async function loadStudents(classId) {
   if (!classId) return;
 
-  tableBody.innerHTML = `<tr><td colspan="3">Yükleniyor...</td></tr>`;
+  tableBody.innerHTML = `<tr><td colspan="3">Loading...</td></tr>`;
 
   const { data: members } = await _supabase
     .from("class_members")
@@ -85,7 +85,7 @@ async function loadStudents(classId) {
     .eq("class_id", classId);
 
   if (!members || members.length === 0) {
-    tableBody.innerHTML = `<tr><td colspan="3">Öğrenci yok</td></tr>`;
+    tableBody.innerHTML = `<tr><td colspan="3">No students</td></tr>`;
     return;
   }
 
@@ -101,7 +101,7 @@ async function loadStudents(classId) {
       <td>${s.full_name}</td>
       <td>${s.email}</td>
       <td>
-        <a href="student-detail.html?id=${s.id}">Raporu Gör</a>
+        <a href="student-detail.html?id=${s.id}">View Report</a>
       </td>
     </tr>
   `).join("");

@@ -40,13 +40,13 @@ let selectedThreadData = null;
 let threadsCache = [];
 
 const formatRole = (role) => {
-  if (role === "student") return "Öğrenci";
-  if (role === "teacher") return "Öğretmen";
+  if (role === "student") return "Student";
+  if (role === "teacher") return "Teacher";
   if (role === "admin")   return "Admin";
   return role || "-";
 };
 
-const formatStatusText = (status) => (status === "closed" ? "Kapalı" : "Açık");
+const formatStatusText = (status) => (status === "closed" ? "Closed" : "Open");
 
 const updateStatusBadgeView = (status) => {
   if (!statusBadge) return;
@@ -66,7 +66,7 @@ const updateStatusBadgeView = (status) => {
 const loadMessages = async (threadId) => {
   if (!threadId || !messagesBox) return;
 
-  messagesBox.innerHTML = "<p style='color:#6b7280;'>Mesajlar yükleniyor...</p>";
+  messagesBox.innerHTML = "<p style='color:#6b7280;'>Loading messages...</p>";
 
   const { data, error } = await _supabase
     .from("support_messages")
@@ -75,13 +75,13 @@ const loadMessages = async (threadId) => {
     .order("created_at", { ascending: true });
 
   if (error) {
-    messagesBox.innerHTML =
-      "<p style='color:red;'>Mesajlar yüklenirken hata: " + (error.message || "") + "</p>";
+      messagesBox.innerHTML =
+      "<p style='color:red;'>Error loading messages: " + (error.message || "") + "</p>";
     return;
   }
 
   if (!data || data.length === 0) {
-    messagesBox.innerHTML = "<p style='color:#6b7280;'>Bu talep için hiç mesaj yok.</p>";
+    messagesBox.innerHTML = "<p style='color:#6b7280;'>No messages for this request.</p>";
     return;
   }
 
@@ -121,7 +121,7 @@ const selectThread = (thread) => {
   const activeEl = listEl.querySelector(`[data-thread-id="${thread.id}"]`);
   if (activeEl) activeEl.classList.add("active");
 
-  if (titleEl) titleEl.textContent = thread.subject || "Başlıksız talep";
+  if (titleEl) titleEl.textContent = thread.subject || "Untitled request";
   if (metaEl) {
     metaEl.textContent =
       `${formatRole(thread.created_by_role || "-")} • ` +
@@ -137,8 +137,8 @@ const selectThread = (thread) => {
   const isClosed = thread.status === "closed";
   if (replyInput) replyInput.disabled = isClosed;
   if (replyBtn) replyBtn.disabled = isClosed;
-  if (isClosed && replyInput) replyInput.placeholder = "Talep kapalı. Mesaj gönderemezsiniz.";
-  if (!isClosed && replyInput) replyInput.placeholder = "Bu talebe cevap yazın...";
+  if (isClosed && replyInput) replyInput.placeholder = "Request closed. You cannot send messages.";
+  if (!isClosed && replyInput) replyInput.placeholder = "Reply to this request...";
 };
 
 // ---------------- THREAD LİSTESİNİ YÜKLE ----------------
@@ -146,7 +146,7 @@ const renderThreads = (threads) => {
   if (!listEl) return;
 
   if (!threads || threads.length === 0) {
-    listEl.innerHTML = `<div style="padding:8px; text-align:center; color:#6b7280;">Henüz hiç destek talebi yok.</div>`;
+    listEl.innerHTML = `<div style="padding:8px; text-align:center; color:#6b7280;">No support requests yet.</div>`;
     if (counterEl) counterEl.textContent = "0";
     return;
   }
@@ -158,7 +158,7 @@ const renderThreads = (threads) => {
     return `
       <div class="thread-item" data-thread-id="${t.id}">
         <div class="thread-top">
-          <div class="thread-subject">${escapeHtml(t.subject || "Başlıksız")}</div>
+          <div class="thread-subject">${escapeHtml(t.subject || "Untitled")}</div>
           <span class="${pillClass}">${formatStatusText(t.status)}</span>
         </div>
         <div class="thread-meta">
@@ -183,7 +183,7 @@ const renderThreads = (threads) => {
 const loadThreads = async () => {
   if (!listEl) return;
 
-  listEl.innerHTML = `<div style="padding:8px; text-align:center; color:#6b7280;">Yükleniyor...</div>`;
+  listEl.innerHTML = `<div style="padding:8px; text-align:center; color:#6b7280;">Loading...</div>`;
 
   const { data, error } = await _supabase
     .from("support_threads")
@@ -191,7 +191,7 @@ const loadThreads = async () => {
     .order("created_at", { ascending: false });
 
   if (error) {
-    listEl.innerHTML = `<div style="padding:8px; text-align:center; color:red;">Hata: ${error.message || ""}</div>`;
+    listEl.innerHTML = `<div style="padding:8px; text-align:center; color:red;">Error: ${error.message || ""}</div>`;
     if (counterEl) counterEl.textContent = "0";
     return;
   }
@@ -204,7 +204,7 @@ const loadThreads = async () => {
 if (updateStatusBtn) {
   updateStatusBtn.addEventListener("click", async () => {
     if (!selectedThreadId) {
-      alert("Önce bir destek talebi seçin.");
+      alert("Please select a support request first.");
       return;
     }
     const newStatus = statusSelect?.value || "open";
@@ -215,7 +215,7 @@ if (updateStatusBtn) {
       .eq("id", selectedThreadId);
 
     if (error) {
-      alert("Durum güncellenirken hata: " + (error.message || ""));
+      alert("Error updating status: " + (error.message || ""));
       return;
     }
 
@@ -223,7 +223,7 @@ if (updateStatusBtn) {
     threadsCache = threadsCache.map(t => t.id === selectedThreadId ? { ...t, status: newStatus } : t);
 
     updateStatusBadgeView(newStatus);
-    // seçili thread datasını da güncelle
+    // also update selected thread data
     if (selectedThreadData) selectedThreadData.status = newStatus;
 
     // input enable/disable
@@ -244,17 +244,17 @@ if (updateStatusBtn) {
 if (replyBtn) {
   replyBtn.addEventListener("click", async () => {
     if (!selectedThreadId) {
-      alert("Önce bir destek talebi seçin.");
+      alert("Please select a support request first.");
       return;
     }
     const msg = (replyInput?.value || "").trim();
     if (!msg) {
-      alert("Boş mesaj gönderemezsiniz.");
+      alert("You cannot send an empty message.");
       return;
     }
     const adminUser = JSON.parse(localStorage.getItem("user") || "null");
     if (!adminUser) {
-      alert("Oturum bulunamadı.");
+      alert("Session not found.");
       return;
     }
 
@@ -268,7 +268,7 @@ if (replyBtn) {
       });
 
     if (error) {
-      alert("Mesaj gönderilirken hata: " + (error.message || ""));
+      alert("Error sending message: " + (error.message || ""));
       return;
     }
 

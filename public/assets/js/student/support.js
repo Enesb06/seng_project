@@ -34,7 +34,7 @@ function escapeHtml(str = "") {
     .replaceAll("'", "&#039;");
 }
 
-const formatStatusText = (status) => (status === "closed" ? "Kapalı" : "Açık");
+const formatStatusText = (status) => (status === "closed" ? "Closed" : "Open");
 
 const setStatusBadge = (status) => {
   if (!statusEl) return;
@@ -53,7 +53,7 @@ const setStatusBadge = (status) => {
 const loadMessages = async (threadId) => {
   if (!threadId || !messagesBox) return;
 
-  messagesBox.innerHTML = "<p style='color:#6b7280;'>Mesajlar yükleniyor...</p>";
+  messagesBox.innerHTML = "<p style='color:#6b7280;'>Loading messages...</p>";
 
   const { data, error } = await _supabase
     .from("support_messages")
@@ -62,12 +62,12 @@ const loadMessages = async (threadId) => {
     .order("created_at", { ascending: true });
 
   if (error) {
-    messagesBox.innerHTML = `<p style="color:red;">Hata: ${error.message || ""}</p>`;
+    messagesBox.innerHTML = `<p style="color:red;">Error: ${error.message || ""}</p>`;
     return;
   }
 
   if (!data || data.length === 0) {
-    messagesBox.innerHTML = "<p style='color:#6b7280;'>Henüz mesaj yok.</p>";
+    messagesBox.innerHTML = "<p style='color:#6b7280;'>No messages yet.</p>";
     return;
   }
 
@@ -76,7 +76,7 @@ const loadMessages = async (threadId) => {
                 background:${m.sender_role === "admin" ? "#eff6ff" : "#f9fafb"};
                 border:1px solid #e5e7eb;">
       <div style="font-size:0.8rem;color:#6b7280;margin-bottom:2px;">
-        <strong>${m.sender_role === "admin" ? "Admin" : "Siz"}</strong>
+        <strong>${m.sender_role === "admin" ? "Admin" : "You"}</strong>
         • ${new Date(m.created_at).toLocaleString("tr-TR")}
       </div>
       <div style="font-size:0.9rem;white-space:pre-wrap;">${escapeHtml(m.message)}</div>
@@ -94,7 +94,7 @@ const selectThread = (t) => {
   const active = threadsList.querySelector(`[data-thread-id="${t.id}"]`);
   if (active) active.style.background = "#eff6ff";
 
-  if (titleEl) titleEl.textContent = t.subject || "Başlıksız";
+  if (titleEl) titleEl.textContent = t.subject || "Untitled";
   if (metaEl) metaEl.textContent = new Date(t.created_at).toLocaleString("tr-TR");
 
   setStatusBadge(t.status);
@@ -102,7 +102,7 @@ const selectThread = (t) => {
   const isClosed = t.status === "closed";
   if (replyInput) replyInput.disabled = isClosed;
   if (sendBtn) sendBtn.disabled = isClosed;
-  if (replyInput) replyInput.placeholder = isClosed ? "Talep kapalı. Mesaj gönderemezsiniz." : "Mesaj yazın...";
+  if (replyInput) replyInput.placeholder = isClosed ? "Request closed. You cannot send messages." : "Type a message...";
 
   loadMessages(t.id);
 };
@@ -111,7 +111,7 @@ const renderThreads = (threads) => {
   if (!threadsList) return;
 
   if (!threads || threads.length === 0) {
-    threadsList.innerHTML = `<p style="color:#6b7280;margin:0;">Henüz destek talebiniz yok.</p>`;
+    threadsList.innerHTML = `<p style="color:#6b7280;margin:0;">You don't have any support requests yet.</p>`;
     return;
   }
 
@@ -119,7 +119,7 @@ const renderThreads = (threads) => {
     <div class="u-thread" data-thread-id="${t.id}" style="
       border:1px solid #e5e7eb;border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#ffffff;cursor:pointer;">
       <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;">
-        <div style="font-weight:700;font-size:0.95rem;">${escapeHtml(t.subject || "Başlıksız")}</div>
+        <div style="font-weight:700;font-size:0.95rem;">${escapeHtml(t.subject || "Untitled")}</div>
         <span style="font-size:0.72rem;padding:4px 8px;border-radius:999px;
           background:${t.status === "closed" ? "#fee2e2" : "#dcfce7"};
           color:${t.status === "closed" ? "#b91c1c" : "#166534"};">
@@ -155,7 +155,7 @@ const loadMyThreads = async () => {
     .order("created_at", { ascending: false });
 
   if (error) {
-    threadsList.innerHTML = "Yüklenirken hata oluştu.";
+    threadsList.innerHTML = "Error occurred while loading.";
     return;
   }
 
@@ -173,7 +173,7 @@ if (createBtn) {
     const message = (messageInput?.value || "").trim();
 
     if (!subject || !message) {
-      alert("Başlık ve mesaj boş olamaz!");
+      alert("Subject and message cannot be empty!");
       return;
     }
 
@@ -190,7 +190,7 @@ if (createBtn) {
 
     if (error) {
       console.error(error);
-      alert("Talep oluşturulurken bir hata oluştu.");
+      alert("An error occurred while creating the request.");
       return;
     }
 
@@ -205,7 +205,7 @@ if (createBtn) {
 
     if (msgErr) {
       console.error(msgErr);
-      alert("Mesaj eklenirken hata oluştu.");
+      alert("An error occurred while adding the message.");
       return;
     }
 
@@ -227,13 +227,13 @@ if (sendBtn) {
     if (!user) return;
 
     if (!selectedThreadId) {
-      alert("Önce bir talep seçin.");
+      alert("Please select a request first.");
       return;
     }
 
     const msg = (replyInput?.value || "").trim();
     if (!msg) {
-      alert("Boş mesaj gönderemezsiniz.");
+      alert("You cannot send an empty message.");
       return;
     }
 
@@ -247,7 +247,7 @@ if (sendBtn) {
       });
 
     if (error) {
-      alert("Mesaj gönderilirken hata: " + (error.message || ""));
+      alert("Error sending message: " + (error.message || ""));
       return;
     }
 
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Header Bilgilerini Doldur
   if (welcomeMessage) {
-      welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+      welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
   }
   
   if (userAvatar) {

@@ -27,16 +27,16 @@ const goHome = () => {
 
 /* ========= BADGE TANIMLARI relaxed ========= */
 const BADGES = [
-  { key: 'read_1',   name: 'İlk Metin',   image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', rule: (s) => s.reads >= 1 },
-  { key: 'quiz_1',   name: 'İlk Quiz',    image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png',  rule: (s) => s.quizzes >= 1 },
-  { key: 'read_10',  name: '10. Metin',   image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png', rule: (s) => s.reads >= 10 },
-  { key: 'read_50',  name: '50. Metin',   image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 50 },
-  { key: 'read_100', name: '100. Metin',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 100 },
-  { key: 'read_200', name: '200. Metin',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 200 },
+  { key: 'read_1',   name: 'First Text',   image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', rule: (s) => s.reads >= 1 },
+  { key: 'quiz_1',   name: 'First Quiz',    image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png',  rule: (s) => s.quizzes >= 1 },
+  { key: 'read_10',  name: '10th Text',   image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png', rule: (s) => s.reads >= 10 },
+  { key: 'read_50',  name: '50th Text',   image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 50 },
+  { key: 'read_100', name: '100th Text',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 100 },
+  { key: 'read_200', name: '200th Text',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 200 },
 
-  { key: 'medal_gold',   name: 'Altın Madalya',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583344.png', rule: (s) => s.quizAvg >= 90 },
-  { key: 'medal_silver', name: 'Gümüş Madalya',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583319.png', rule: (s) => s.quizAvg >= 80 && s.quizAvg < 90 },
-  { key: 'medal_bronze', name: 'Bronz Madalya',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583330.png', rule: (s) => s.quizAvg >= 70 && s.quizAvg < 80 },
+  { key: 'medal_gold',   name: 'Gold Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583344.png', rule: (s) => s.quizAvg >= 90 },
+  { key: 'medal_silver', name: 'Silver Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583319.png', rule: (s) => s.quizAvg >= 80 && s.quizAvg < 90 },
+  { key: 'medal_bronze', name: 'Bronze Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583330.png', rule: (s) => s.quizAvg >= 70 && s.quizAvg < 80 },
 ];
 
 const pickMedalKey = (avg) => {
@@ -74,7 +74,7 @@ const loadStudentDashboard = async () => {
   if (!user) return goHome();
   if (user.role !== 'student') return goHome();
 
-  if (welcomeMessage) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+  if (welcomeMessage) welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
 
   // avatar
   if (user.avatar_url) {
@@ -208,8 +208,8 @@ const loadStreak = async (userId) => {
 
     if (streak >= 1) {
       streakHeaderEl.classList.remove('hidden');
-      streakHeaderEl.textContent = `🔥 ${streak} gün`;
-      streakHeaderEl.title = `${streak} gündür üst üste aktif oldun`;
+      streakHeaderEl.textContent = `🔥 ${streak} days`;
+      streakHeaderEl.title = `You have been active for ${streak} consecutive days`;
     } else {
       streakHeaderEl.classList.add('hidden');
       streakHeaderEl.textContent = '';
@@ -240,15 +240,15 @@ const loadMyClassAndHomework = async (studentId) => {
     if (memErr) console.error('membership error:', memErr);
 
     if (!membership) {
-      if (classInfoArea) classInfoArea.innerHTML = "<p>Henüz bir sınıfa katılmadınız.</p>";
+      if (classInfoArea) classInfoArea.innerHTML = "<p>You haven't joined a class yet.</p>";
       if (hwList) hwList.innerHTML = "";
       return;
     }
 
     if (classInfoArea) {
       classInfoArea.innerHTML = `
-        <strong>Sınıf:</strong> ${membership.classes.class_name}
-        <small>(Kod: ${membership.classes.class_code})</small>
+        <strong>Class:</strong> ${membership.classes.class_name}
+        <small>(Code: ${membership.classes.class_code})</small>
       `;
     }
 
@@ -262,7 +262,7 @@ const loadMyClassAndHomework = async (studentId) => {
     if (!hwList) return;
 
     if (!assignments || assignments.length === 0) {
-      hwList.innerHTML = "<p>Bu sınıfa atanmış ödev yok.</p>";
+      hwList.innerHTML = "<p>No assignments for this class.</p>";
       return;
     }
 
@@ -274,13 +274,13 @@ const loadMyClassAndHomework = async (studentId) => {
         <button class="cta-button read-btn"
           data-id="${hw.id}"
           style="width:auto;padding:5px 12px;">
-          Ödevin İçeriğini Oku
+          Read Assignment Content
         </button>
 
         <button class="cta-button complete-btn"
           data-id="${hw.id}"
           style="width:auto;padding:5px 12px;background:#16a34a;margin-left:6px;">
-          Tamamladım
+          Completed
         </button>
       `;
 
@@ -293,11 +293,11 @@ const loadMyClassAndHomework = async (studentId) => {
           <button class="cta-button read-btn"
             data-id="${hw.id}"
             style="width:auto;padding:5px 12px;">
-            Ödevin İçeriğini Oku
+            Read Assignment Content
           </button>
 
           <span style="margin-left:10px;color:${isLate ? 'orange' : 'green'};">
-            ${isLate ? '🟠 Geç Teslim' : '✅ Zamanında'}
+            ${isLate ? '🟠 Late Submission' : '✅ On Time'}
           </span>
         `;
       }
@@ -310,21 +310,21 @@ const loadMyClassAndHomework = async (studentId) => {
           <div style="display:flex;justify-content:space-between;align-items:center;">
             <div>
               <h4 style="margin:0;">${hw.title}</h4>
-              <small>Teslim günü: ${new Date(hw.due_date).toLocaleDateString('tr-TR')}</small>
+              <small>Due date: ${new Date(hw.due_date).toLocaleDateString('tr-TR')}</small>
             </div>
             <div>${statusHTML}</div>
           </div>
 
           <div id="content-${hw.id}"
             style="display:none;margin-top:10px;padding:10px;background:#f9fafb;border-radius:6px;">
-            ${hw.description || "Bu ödev için içerik eklenmemiş."}
+            ${hw.description || "No content added for this assignment."}
           </div>
         </li>
       `;
     }).join('');
   } catch (e) {
     console.error('loadMyClassAndHomework fatal:', e);
-    if (classInfoArea) classInfoArea.innerHTML = "<p>Sınıf bilgisi yüklenemedi.</p>";
+    if (classInfoArea) classInfoArea.innerHTML = "<p>Class information could not be loaded.</p>";
     if (hwList) hwList.innerHTML = "";
   }
 };
@@ -338,7 +338,7 @@ document.addEventListener("click", (e) => {
 
     const open = content.style.display === "block";
     content.style.display = open ? "none" : "block";
-    e.target.textContent = open ? "Ödevin İçeriğini Oku" : "Kapat";
+    e.target.textContent = open ? "Read Assignment Content" : "Close";
   }
 });
 
@@ -357,11 +357,11 @@ document.addEventListener("click", async (e) => {
 
     if (error) {
       console.error('complete-btn insert error:', error);
-      alert("Kaydedilemedi (Supabase). Console'a bak.");
+      alert("Could not save (Supabase). Check console.");
       return;
     }
 
-    alert("Ödev tamamlandı ✔");
+    alert("Assignment completed ✔");
     await loadMyClassAndHomework(user.id);
   }
 });
@@ -374,7 +374,7 @@ const handleJoinClass = async () => {
   const code = (classCodeInput?.value || '').trim().toUpperCase();
 
   if (code.length < 6) {
-    showMessage("6 haneli kod girin", "red");
+    showMessage("Enter 6-digit code", "red");
     return;
   }
 
@@ -387,7 +387,7 @@ const handleJoinClass = async () => {
   if (classErr) console.error('class lookup error:', classErr);
 
   if (!classData) {
-    showMessage("Geçersiz sınıf kodu", "red");
+    showMessage("Invalid class code", "red");
     return;
   }
 
@@ -399,11 +399,11 @@ const handleJoinClass = async () => {
   if (insErr) {
     // aynı sınıfa tekrar katılma vs
     console.error('join insert error:', insErr);
-    showMessage("Katılım kaydedilemedi (zaten katılmış olabilirsin).", "red");
+    showMessage("Could not save participation (you may have already joined).", "red");
     return;
   }
 
-  showMessage(`"${classData.class_name}" sınıfına katıldınız`, "green");
+  showMessage(`You joined class "${classData.class_name}"`, "green");
   setTimeout(() => window.location.reload(), 900);
 };
 
@@ -431,7 +431,7 @@ const subscribeAssignmentsRealtime = (studentId) => {
       'postgres_changes',
       { event: '*', schema: 'public', table: 'assignments' },
       async () => {
-        console.log('📡 Ödev güncellendi → öğrenci ekranı yenileniyor');
+        console.log('📡 Assignment updated → refreshing student screen');
         await loadMyClassAndHomework(studentId);
       }
     )

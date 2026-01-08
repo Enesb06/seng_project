@@ -82,29 +82,29 @@ const loadStreakHeader = async () => {
   }
 
   el.classList.remove('hidden');
-  el.textContent = `🔥 ${streak} Gün`;
-  el.title = `${streak} gündür üst üste giriş yapıyorsunuz 🔥`;
+  el.textContent = `🔥 ${streak} Days`;
+  el.title = `You have been active for ${streak} consecutive days 🔥`;
 };
 
 /* ========= ROZETLER (Profil: sadece kazanılanlar) ========= */
 const getEarnedBadges = ({ reads, quizCount, quizAvg }) => {
   const earned = [];
 
-  // Okuma rozetleri (OKUMA = CONTENTS SAYISI)
-  if (reads >= 1) earned.push({ icon: '📖', name: 'İlk Metin' });
-  if (reads >= 10) earned.push({ icon: '📘', name: '10. Metin' });
-  if (reads >= 50) earned.push({ icon: '📗', name: '50. Metin' });
-  if (reads >= 100) earned.push({ icon: '📕', name: '100. Metin' });
-  if (reads >= 200) earned.push({ icon: '🏅', name: '200. Metin' });
+  // Reading badges (READING = CONTENTS COUNT)
+  if (reads >= 1) earned.push({ icon: '📖', name: 'First Text' });
+  if (reads >= 10) earned.push({ icon: '📘', name: '10th Text' });
+  if (reads >= 50) earned.push({ icon: '📗', name: '50th Text' });
+  if (reads >= 100) earned.push({ icon: '📕', name: '100th Text' });
+  if (reads >= 200) earned.push({ icon: '🏅', name: '200th Text' });
 
-  // Quiz rozetleri
-  if (quizCount >= 1) earned.push({ icon: '🧩', name: 'İlk Quiz' });
+  // Quiz badges
+  if (quizCount >= 1) earned.push({ icon: '🧩', name: 'First Quiz' });
 
   // Madalya (ortalama)
   if (quizCount > 0) {
-    if (quizAvg >= 90 && quizAvg <= 100) earned.push({ icon: '🥇', name: 'Altın Madalya (90-100)' });
-    else if (quizAvg >= 80) earned.push({ icon: '🥈', name: 'Gümüş Madalya (80-89)' });
-    else if (quizAvg >= 70) earned.push({ icon: '🥉', name: 'Bronz Madalya (70-79)' });
+    if (quizAvg >= 90 && quizAvg <= 100) earned.push({ icon: '🥇', name: 'Gold Medal (90-100)' });
+    else if (quizAvg >= 80) earned.push({ icon: '🥈', name: 'Silver Medal (80-89)' });
+    else if (quizAvg >= 70) earned.push({ icon: '🥉', name: 'Bronze Medal (70-79)' });
   }
 
   return earned;
@@ -120,7 +120,7 @@ const initializeProfile = async () => {
 
   // Header
   const welcomeEl = document.getElementById('welcome-message');
-  if (welcomeEl) welcomeEl.textContent = `Hoş geldin, ${user.full_name}!`;
+  if (welcomeEl) welcomeEl.textContent = `Welcome, ${user.full_name}!`;
 
   const avatarEl = document.getElementById('header-avatar');
   if (avatarEl && user.avatar_url) avatarEl.src = user.avatar_url;
@@ -189,7 +189,7 @@ const initializeProfile = async () => {
     quizAvg = Math.round(totalRate / quizCount);
   } else {
     if (historyBody) {
-      historyBody.innerHTML = '<tr><td colspan="4">Henüz quiz çözülmemiş.</td></tr>';
+      historyBody.innerHTML = '<tr><td colspan="4">No quiz taken yet.</td></tr>';
     }
   }
 
@@ -202,7 +202,7 @@ const initializeProfile = async () => {
     const earned = getEarnedBadges({ reads, quizCount, quizAvg });
 
     if (earned.length === 0) {
-      badgesContainer.innerHTML = '<p>Gelişim gösterdikçe rozet kazanacaksın!</p>';
+      badgesContainer.innerHTML = '<p>You will earn badges as you progress!</p>';
     } else {
       badgesContainer.innerHTML = earned.map(b => `
         <div class="badge-item">

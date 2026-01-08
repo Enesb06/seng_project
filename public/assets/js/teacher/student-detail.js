@@ -5,7 +5,7 @@ const params = new URLSearchParams(window.location.search);
 const studentId = params.get("id");
 
 if (!studentId) {
-  alert("Öğrenci ID bulunamadı.");
+  alert("Student ID not found.");
   throw new Error("Student ID missing");
 }
 
@@ -82,14 +82,14 @@ async function loadReadingHistory() {
     .order("created_at", { ascending: false });
 
   if (error) {
-    readingArea.innerHTML = "<p>Okuma geçmişi alınamadı.</p>";
+    readingArea.innerHTML = "<p>Reading history could not be retrieved.</p>";
     return;
   }
 
   readCountEl.textContent = data.length;
 
   if (!data.length) {
-    readingArea.innerHTML = "<p>Okuma geçmişi yok.</p>";
+    readingArea.innerHTML = "<p>No reading history.</p>";
     return;
   }
 
@@ -133,14 +133,14 @@ async function loadWords() {
 
   if (error) {
     console.warn("Kelime verisi alınamadı:", error);
-    wordsArea.innerHTML = "<p>Kelime verisi bulunamadı.</p>";
+    wordsArea.innerHTML = "<p>Word data not found.</p>";
     return;
   }
 
   wordCountEl.textContent = data.length;
 
   if (!data.length) {
-    wordsArea.innerHTML = "<p>Kelime bulunamadı.</p>";
+    wordsArea.innerHTML = "<p>No words found.</p>";
     return;
   }
 
@@ -148,8 +148,8 @@ async function loadWords() {
     <table class="report-table">
       <thead>
         <tr>
-          <th>Kelime</th>
-          <th>Durum</th>
+          <th>Word</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
@@ -158,7 +158,7 @@ async function loadWords() {
             <td>${w.word}</td>
             <td>
               <span class="${w.learning_status === 'learned' ? 'badge-green' : 'badge-gray'}">
-                ${w.learning_status === 'learned' ? 'Öğrenildi' : 'Öğreniliyor'}
+                ${w.learning_status === 'learned' ? 'Learned' : 'Learning'}
               </span>
             </td>
           </tr>
@@ -180,7 +180,7 @@ async function loadQuizResults() {
 
   if (error) {
     console.warn("Quiz verisi alınamadı:", error);
-    quizArea.innerHTML = "<p>Quiz verisi yok.</p>";
+    quizArea.innerHTML = "<p>No quiz data.</p>";
     return;
   }
 
@@ -207,8 +207,8 @@ avgScoreEl.textContent = avg;
     <table class="report-table">
       <thead>
         <tr>
-          <th>Tarih</th>
-          <th>Skor</th>
+          <th>Date</th>
+          <th>Score</th>
         </tr>
       </thead>
       <tbody>

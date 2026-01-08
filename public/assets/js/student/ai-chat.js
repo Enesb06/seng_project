@@ -37,7 +37,7 @@ const renderMessage = (sender, content) => {
 const startNewChat = () => {
     currentSessionId = null;
     conversationHistory = [];
-    chatWindow.innerHTML = `<div class="chat-message ai">Merhaba! Yeni bir sohbete başlayalım. Sana nasıl yardımcı olabilirim?</div>`;
+    chatWindow.innerHTML = `<div class="chat-message ai">Hello! Let's start a new chat. How can I help you?</div>`;
     chatInput.value = '';
     // URL'yi temizle ve sayfayı yeniden yükleme
     history.pushState(null, '', 'ai-chat.html');
@@ -53,7 +53,7 @@ const loadSessionHistory = async (userId) => {
         .order('created_at', { ascending: false });
 
     if (error) {
-        console.error('Sohbet geçmişi yüklenemedi:', error);
+        console.error('Chat history could not be loaded:', error);
         return;
     }
     
@@ -61,14 +61,14 @@ const loadSessionHistory = async (userId) => {
     data.forEach(session => {
         const item = document.createElement('div');
         item.classList.add('history-item');
-        item.textContent = session.title || 'Yeni Sohbet';
+        item.textContent = session.title || 'New Chat';
         item.dataset.sessionId = session.id;
         historyList.appendChild(item);
     });
 };
 
 const loadChatMessages = async (sessionId) => {
-    chatWindow.innerHTML = '<p>Sohbet yükleniyor...</p>';
+    chatWindow.innerHTML = '<p>Loading chat...</p>';
     const { data, error } = await _supabase
         .from('chat_messages')
         .select('sender, content')
@@ -76,7 +76,7 @@ const loadChatMessages = async (sessionId) => {
         .order('created_at', { ascending: true });
     
     if (error) {
-        chatWindow.innerHTML = '<p>Hata: Sohbet yüklenemedi.</p>';
+        chatWindow.innerHTML = '<p>Error: Chat could not be loaded.</p>';
         return;
     }
 
@@ -120,8 +120,8 @@ const handleSendMessage = async (event) => {
             .single();
 
         if (error) {
-            console.error('Yeni sohbet oturumu oluşturulamadı:', error);
-            renderMessage('ai', 'Bir hata oluştu, sohbet başlatılamadı.');
+            console.error('New chat session could not be created:', error);
+            renderMessage('ai', 'An error occurred, chat could not be started.');
             sendBtn.disabled = false;
             return;
         }
@@ -143,7 +143,7 @@ const handleSendMessage = async (event) => {
 
     const typingIndicator = document.createElement('div');
     typingIndicator.classList.add('typing-indicator');
-    typingIndicator.innerText = 'AI düşünüyor...';
+        typingIndicator.innerText = 'AI is thinking...';
     chatWindow.appendChild(typingIndicator);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 
@@ -157,7 +157,7 @@ const handleSendMessage = async (event) => {
             })
         });
 
-        if (!response.ok) throw new Error('AI servisinden hata geldi.');
+        if (!response.ok) throw new Error('Error from AI service.');
 
         const { reply: aiMessage } = await response.json();
         
@@ -172,8 +172,8 @@ const handleSendMessage = async (event) => {
         conversationHistory.push({ role: 'model', parts: [{ text: aiMessage }] });
 
     } catch (error) {
-        console.error('AI Cevap Hatası:', error);
-        renderMessage('ai', 'Üzgünüm, bir sorun oluştu.');
+        console.error('AI Response Error:', error);
+        renderMessage('ai', 'Sorry, a problem occurred.');
     } finally {
         chatWindow.removeChild(typingIndicator);
         sendBtn.disabled = false;
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const user = getUser();
     if (!user) return;
 
-    if (welcomeMessageEl) welcomeMessageEl.innerText = `Hoş geldin, ${user.full_name}!`;
+    if (welcomeMessageEl) welcomeMessageEl.innerText = `Welcome, ${user.full_name}!`;
     if (headerAvatar && user.avatar_url) headerAvatar.src = user.avatar_url;
 
     if (logoutButton) {

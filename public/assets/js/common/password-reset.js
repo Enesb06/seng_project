@@ -12,12 +12,12 @@ newPasswordForm.addEventListener('submit', async (e) => {
     const confirmPassword = confirmPasswordInput.value;
 
     if (newPassword !== confirmPassword) {
-        displayMessage('Şifreler eşleşmiyor!', 'error');
+        displayMessage('Passwords do not match!', 'error');
         return;
     }
 
     if (newPassword.length < 6) {
-        displayMessage('Şifre en az 6 karakter uzunluğunda olmalıdır.', 'error');
+        displayMessage('Password must be at least 6 characters long.', 'error');
         return;
     }
 
@@ -27,9 +27,9 @@ newPasswordForm.addEventListener('submit', async (e) => {
         });
 
         if (error) {
-            displayMessage('Şifre güncellenirken bir hata oluştu: ' + error.message, 'error');
+            displayMessage('An error occurred while updating password: ' + error.message, 'error');
         } else {
-            displayMessage('Şifreniz başarıyla güncellendi! Şimdi giriş yapabilirsiniz.', 'success');
+            displayMessage('Your password has been successfully updated! You can now log in.', 'success');
             newPasswordForm.reset();
             // Kullanıcıyı giriş sayfasına yönlendir
             setTimeout(() => {
@@ -38,7 +38,7 @@ newPasswordForm.addEventListener('submit', async (e) => {
         }
     } catch (err) {
         console.error('Şifre güncelleme sırasında beklenmeyen hata:', err);
-        displayMessage('Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.', 'error');
+        displayMessage('An unexpected error occurred. Please try again.', 'error');
     }
 });
 

@@ -32,8 +32,8 @@ const parseQuizJSON = (text) => {
         const cleaned = text.replace(/```json/g, '').replace(/```/g, '').trim();
         return JSON.parse(cleaned);
     } catch (e) {
-        console.error("Quiz JSON Parse Hatası:", text);
-        throw new Error("AI geçerli bir quiz formatı oluşturamadı.");
+        console.error("Quiz JSON Parse Error:", text);
+        throw new Error("AI could not create a valid quiz format.");
     }
 };
  
@@ -59,16 +59,16 @@ const updateIntroText = async () => {
         const quizCount = Math.min(wordCount, 20); // Max 20 kuralı
  
         if (wordCount < 3) {
-            infoText.innerHTML = `<span style="color: #dc2626;">Listenizde sadece ${wordCount} kelime var. Quiz için en az 3 kelime lazım.</span>`;
+            infoText.innerHTML = `<span style="color: #dc2626;">Your list has only ${wordCount} words. At least 3 words are needed for quiz.</span>`;
             startBtn.disabled = true;
             startBtn.style.opacity = "0.5";
         } else {
-            infoText.textContent = `Listenizdeki "Öğreniyorum" durumundaki kelimelerden ${quizCount} soruluk bir test oluşturulacak.`;
+            infoText.textContent = `A test with ${quizCount} questions will be created from words with "Learning" status in your list.`;
             startBtn.disabled = false;
             startBtn.style.opacity = "1";
         }
     } catch (err) {
-        console.error("Kelime sayısı alınamadı:", err);
+        console.error("Word count could not be retrieved:", err);
     }
 };
  
@@ -94,10 +94,10 @@ const handleStartQuiz = async () => {
         if (dbError) throw dbError;
  
         if (!words || words.length < 3) {
-            throw new Error("Quiz için en az 3 kelime lazım. Şu anki kelime sayın: " + (words ? words.length : 0));
+            throw new Error("At least 3 words are needed for quiz. Your current word count: " + (words ? words.length : 0));
         }
  
-        loader.textContent = `${words.length} kelimelik quiz hazırlanıyor...`;
+        loader.textContent = `Preparing quiz with ${words.length} words...`;
  
         const response = await fetch(QUIZ_API_URL, {
             method: 'POST',
@@ -107,10 +107,10 @@ const handleStartQuiz = async () => {
  
         const responseData = await response.json();
  
-        if (!response.ok) throw new Error(responseData.error || "Sunucu hatası.");
+        if (!response.ok) throw new Error(responseData.error || "Server error.");
  
         if (!responseData.candidates || !responseData.candidates[0].content?.parts[0]?.text) {
-            throw new Error("API'den geçerli içerik gelmedi.");
+            throw new Error("No valid content received from API.");
         }
  
         const rawText = responseData.candidates[0].content.parts[0].text;
@@ -124,7 +124,7 @@ const handleStartQuiz = async () => {
         }
  
     } catch (error) {
-        console.error("Hata:", error);
+        console.error("Error:", error);
         alert(error.message);
         location.reload();
     } finally {
@@ -142,7 +142,7 @@ const showQuestion = () => {
  
     const q = currentQuestions[currentIndex];
     questionText.textContent = q.question;
-    progressText.textContent = `Soru ${currentIndex + 1} / ${currentQuestions.length}`;
+    progressText.textContent = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
     
     optionsContainer.innerHTML = '';
     
@@ -161,10 +161,10 @@ const handleAnswerClick = (selectedIndex) => {
     
     if (selectedIndex === correctIdx) {
         score++;
-        alert("Doğru! 🎉");
+        alert("Correct! 🎉");
     } else {
         const correctText = currentQuestions[currentIndex].options[correctIdx];
-        alert(`Yanlış! ❌ Doğru cevap şuydu: ${correctText}`);
+        alert(`Wrong! ❌ The correct answer was: ${correctText}`);
     }
     
     currentIndex++;
@@ -184,8 +184,8 @@ const showResults = async () => {
     
     scoreText.innerHTML = `
         <div style="font-size: 2rem; margin-bottom: 10px;">${score} / ${total}</div>
-        <div>Başarı Oranın: %${percentage}</div>
-        <p id="save-status" style="font-size: 0.9rem; color: #64748b;">Sonuç kaydediliyor...</p>
+        <div>Success Rate: %${percentage}</div>
+        <p id="save-status" style="font-size: 0.9rem; color: #64748b;">Saving result...</p>
     `;
  
     try {
@@ -200,12 +200,12 @@ const showResults = async () => {
  
         if (error) throw error;
  
-        document.getElementById('save-status').textContent = "✅ Sonuç başarıyla kaydedildi.";
+        document.getElementById('save-status').textContent = "✅ Result saved successfully.";
         document.getElementById('save-status').style.color = "#16a34a";
  
     } catch (err) {
         console.error("Sonuç kaydedilemedi:", err);
-        document.getElementById('save-status').textContent = "❌ Sonuç kaydedilirken bir hata oluştu.";
+        document.getElementById('save-status').textContent = "❌ An error occurred while saving result.";
         document.getElementById('save-status').style.color = "#dc2626";
     }
 };
@@ -213,30 +213,30 @@ const showResults = async () => {
 // --- EVENT LISTENERS ---
 startBtn.addEventListener('click', handleStartQuiz);
  
-// 🚨 GÜNCELLENEN ÇIKIŞ İŞLEVİ (Bu, butona tıklanınca çalışır)
+// 🚨 UPDATED LOGOUT FUNCTION (This runs when button is clicked)
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
-        // quiz.html'den kök dizindeki index.html'e gitmek için
+        // To go from quiz.html to index.html in root directory
         window.location.href = '../../index.html';
     });
 }
  
-// Karşılama mesajı ve Dinamik Yazı Başlatma (GÜNCELLENDİ)
+// Welcome message and Dynamic Text Initialization (UPDATED)
 document.addEventListener('DOMContentLoaded', () => {
     const user = getUser();
  
-    // 🚨 KULLANICI KONTROLÜ VE YÖNLENDİRME (Güvenlik)
+    // 🚨 USER CHECK AND REDIRECT (Security)
     if (!user) {
         window.location.href = '../../index.html';
         return;
     }
  
     if (user && welcomeMessage) {
-        // 🚨 Karşılama mesajını ayarla
-        welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+        // 🚨 Set welcome message
+        welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
         
-        // Dinamik yazıyı güncelle
+        // Update dynamic text
         updateIntroText();
         loadQuizHistory(); 
     }
@@ -246,7 +246,7 @@ if (userAvatar && userAvatar.avatar_url) {
     const imgEl = document.getElementById('header-avatar');
     if(imgEl) imgEl.src = userAvatar.avatar_url;
 }
-// 🆕 QUIZ GEÇMİŞİ
+// 🆕 QUIZ HISTORY
 const loadQuizHistory = async () => {
   const user = getUser();
   if (!user) return;
@@ -262,12 +262,12 @@ const loadQuizHistory = async () => {
     .limit(10);
 
   if (error) {
-    historyArea.innerHTML = "<p>Quiz geçmişi yüklenemedi.</p>";
+    historyArea.innerHTML = "<p>Quiz history could not be loaded.</p>";
     return;
   }
 
   if (!data || data.length === 0) {
-    historyArea.innerHTML = "<p>Henüz quiz geçmişiniz yok.</p>";
+    historyArea.innerHTML = "<p>You don't have quiz history yet.</p>";
     return;
   }
 
@@ -275,9 +275,9 @@ const loadQuizHistory = async () => {
   <table style="width:100%; border-collapse:collapse; margin-top:10px;">
     <thead>
       <tr style="border-bottom:2px solid #e5e7eb;">
-        <th style="text-align:left; padding:8px;">Tarih</th>
-        <th style="text-align:center; padding:8px;">Skor</th>
-        <th style="text-align:center; padding:8px;">Başarı</th>
+        <th style="text-align:left; padding:8px;">Date</th>
+        <th style="text-align:center; padding:8px;">Score</th>
+        <th style="text-align:center; padding:8px;">Success</th>
       </tr>
     </thead>
     <tbody>

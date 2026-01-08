@@ -31,7 +31,7 @@ const initSettings = async () => {
         // --- HEADER BİLGİLERİNİ DOLDUR ---
         const currentAvatarUrl = user.avatar_url || DEFAULT_AVATAR_URL; 
         
-        if (welcomeMessage) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+        if (welcomeMessage) welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
         if (headerAvatar) {
             headerAvatar.src = currentAvatarUrl;
         }
@@ -81,7 +81,7 @@ const initSettings = async () => {
                 "book": "What was the name of your favourite book as a child?"
             };
             
-            const questionLabel = questionMap[profile.security_question] || "Güvenlik sorusu bulunamadı.";
+            const questionLabel = questionMap[profile.security_question] || "Security question not found.";
             document.getElementById('display-security-question').textContent = questionLabel;
             correctSecurityAnswer = profile.security_answer;
         }
@@ -144,9 +144,9 @@ document.getElementById('profile-form').onsubmit = async (e) => {
     if (!error) {
         user.full_name = newName;
         localStorage.setItem('user', JSON.stringify(user));
-        showMsg("İsim güncellendi.");
+        showMsg("Name updated.");
     } else {
-        showMsg("Hata: " + error.message, true);
+        showMsg("Error: " + error.message, true);
     }
 };
 
@@ -155,12 +155,12 @@ document.getElementById('save-avatar-btn').onclick = async () => {
     const { error } = await _supabase.from('profiles').update({ avatar_url: selectedAvatarUrl }).eq('id', user.id);
     
     if (error) {
-        showMsg("Hata: " + error.message, true);
+        showMsg("Error: " + error.message, true);
     } else {
         user.avatar_url = selectedAvatarUrl;
         localStorage.setItem('user', JSON.stringify(user));
         updateHeaderAvatar(selectedAvatarUrl); 
-        showMsg("Avatar başarıyla değiştirildi.");
+        showMsg("Avatar changed successfully.");
     }
 };
 
@@ -172,18 +172,18 @@ document.getElementById('password-form').onsubmit = async (e) => {
     const confirm = document.getElementById('confirm-password').value;
 
     if (typedAnswer.toLowerCase() !== correctSecurityAnswer.toLowerCase()) {
-        showMsg("Güvenlik sorusunun cevabı yanlış!", true);
+        showMsg("Security question answer is incorrect!", true);
         return;
     }
-    if (pass !== confirm) { showMsg("Şifreler eşleşmiyor!", true); return; }
-    if (pass.length < 6) { showMsg("Şifre en az 6 karakter olmalı!", true); return; }
+    if (pass !== confirm) { showMsg("Passwords do not match!", true); return; }
+    if (pass.length < 6) { showMsg("Password must be at least 6 characters!", true); return; }
 
     const { error } = await _supabase.from('profiles').update({ password: pass }).eq('id', user.id);
     if (!error) {
-        showMsg("Şifre başarıyla değiştirildi.");
+        showMsg("Password changed successfully.");
         e.target.reset();
     } else {
-        showMsg("Hata: " + error.message, true);
+        showMsg("Error: " + error.message, true);
     }
 };
 

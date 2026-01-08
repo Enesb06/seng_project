@@ -17,8 +17,8 @@ const speakWord = (word) => {
     audio.play();
 
   } catch (error) {
-    console.error("Telaffuz oynatılırken hata oluştu:", error);
-    alert("Sesli telaffuz şu an kullanılamıyor.");
+    console.error("Error playing pronunciation:", error);
+    alert("Audio pronunciation is currently unavailable.");
   }
 };
 // =======================================================
@@ -37,7 +37,7 @@ const loadWords = async () => {
         .order('added_at', { ascending: false });
  
     if (error) {
-        console.error("Kelime listesi yüklenemedi:", error);
+        console.error("Word list could not be loaded:", error);
         return;
     }
  
@@ -64,11 +64,11 @@ const renderWords = (words) => {
                 <!-- YENİ: İçerik bir div içine alındı -->
                 <div class="word-container">
                     <strong>${item.word}</strong>
-                    <button class="action-btn speak-btn" onclick="speakWord('${item.word}')" title="Telaffuzu Dinle">🔊</button>
+                    <button class="action-btn speak-btn" onclick="speakWord('${item.word}')" title="Listen to Pronunciation">🔊</button>
                 </div>
             </td>
             <td>${item.definition}</td>
-            <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Öğreniyorum' : 'Öğrenildi'}</span></td>
+            <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Learning' : 'Learned'}</span></td>
             <td>${date}</td>
             <td>
                 <button class="action-btn learned-btn" onclick="updateStatus(${item.id}, '${item.learning_status}')">✔️</button>
@@ -98,14 +98,14 @@ const filterData = () => {
  
 // --- SİLME ---
 window.deleteWord = async (id) => {
-    if (!confirm("Bu kelimeyi silmek istediğine emin misin?")) return;
+    if (!confirm("Are you sure you want to delete this word?")) return;
  
     const { error } = await _supabase
         .from('word_list')
         .delete()
         .eq('id', id);
  
-    if (error) alert("Silme hatası: " + error.message);
+    if (error) alert("Delete error: " + error.message);
     else loadWords();
 };
  
@@ -118,7 +118,7 @@ window.updateStatus = async (id, currentStatus) => {
         .update({ learning_status: newStatus })
         .eq('id', id);
  
-    if (error) alert("Güncelleme hatası: " + error.message);
+    if (error) alert("Update error: " + error.message);
     else loadWords();
 };
 
@@ -132,7 +132,7 @@ filterSelect.addEventListener('change', filterData);
 // --- SAYFA BAŞLATMA ---
 document.addEventListener('DOMContentLoaded', () => {
     const user = getUser();
-    if (user) welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+    if (user) welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
     loadWords();
 });
 

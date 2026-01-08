@@ -8,9 +8,9 @@ async function initDashboard() {
         return;
     }
 
-    document.getElementById('welcome-message').innerText = `Hoş geldin, ${user.full_name}`;
+    document.getElementById('welcome-message').innerText = `Welcome, ${user.full_name}`;
 
-    // 1. Sınıf Sayısını Al
+    // 1. Get Class Count
     const { count: classCount } = await _supabase
         .from('classes')
         .select('*', { count: 'exact', head: true })
@@ -18,7 +18,7 @@ async function initDashboard() {
     
     document.getElementById('total-classes').innerText = classCount || 0;
 
-    // 2. Toplam Öğrenci Sayısını Al (Öğretmenin sınıflarındaki benzersiz öğrenciler)
+    // 2. Get Total Student Count (Unique students in teacher's classes)
     const { data: classes } = await _supabase.from('classes').select('id').eq('teacher_id', user.id);
     const classIds = classes.map(c => c.id);
 

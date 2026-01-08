@@ -137,12 +137,12 @@ signupForm.addEventListener('submit', async (e) => {
 
     if (error) {
         if (error.code === '23505') { 
-            alert('Bu e-posta adresi zaten kayıtlı.');
+            alert('This email address is already registered.');
         } else {
-            alert('Kayıt hatası: ' + error.message);
+            alert('Registration error: ' + error.message);
         }
     } else {
-        alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+        alert('Registration successful! You can now log in.');
         displayLoginView();
         signupForm.reset();
     }
@@ -162,7 +162,7 @@ loginForm.addEventListener('submit', async (e) => {
         .single();
 
     if (error || !user) {
-        alert('Giriş hatası: E-posta veya şifre yanlış.');
+        alert('Login error: Email or password is incorrect.');
     } else {
         localStorage.setItem('user', JSON.stringify(user));
         window.location.reload(); 
@@ -181,7 +181,7 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
         const email = forgotEmailInput.value;
         
         if (!email) {
-            alert("Lütfen e-posta adresinizi giriniz.");
+            alert("Please enter your email address.");
             return;
         }
 
@@ -192,13 +192,13 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
             .single();
 
         if (error || !user) {
-            alert('Bu e-posta adresi sistemde kayıtlı değil.');
+            alert('This email address is not registered in the system.');
             return;
         }
 
         const questionData = SECURITY_QUESTIONS.find(q => q.value === user.security_question);
         if (!questionData) {
-            alert('Kayıtlı güvenlik sorununuz bulunamadı. Lütfen yöneticiyle iletişime geçin.');
+            alert('Your registered security question could not be found. Please contact the administrator.');
             return;
         }
 
@@ -208,7 +208,7 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
         forgotQuestionLabel.textContent = questionData.text;
         document.getElementById('forgot-security-question-value').value = user.security_question;
         forgotQuestionArea.classList.remove('hidden');
-        forgotSubmitBtn.textContent = 'Cevapla ve Devam Et';
+        forgotSubmitBtn.textContent = 'Answer and Continue';
 
     } else if (currentResetUserId && !newPasswordArea.classList.contains('hidden')) {
         // --- AŞAMA 3: Şifreyi Güncelleme ---
@@ -216,11 +216,11 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
         const confirmPassword = document.getElementById('confirm-password').value;
 
         if (newPassword !== confirmPassword) {
-            alert('Yeni şifreler eşleşmiyor!');
+            alert('New passwords do not match!');
             return;
         }
         if (newPassword.length < 6) {
-             alert('Şifre en az 6 karakter uzunluğunda olmalıdır.');
+             alert('Password must be at least 6 characters long.');
              return;
         }
 
@@ -230,9 +230,9 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
             .eq('id', currentResetUserId);
 
         if (updateError) {
-            alert('Şifre güncellenirken bir hata oluştu: ' + updateError.message);
+            alert('An error occurred while updating password: ' + updateError.message);
         } else {
-            alert('Şifreniz başarıyla güncellendi! Şimdi giriş yapabilirsiniz.');
+            alert('Your password has been successfully updated! You can now log in.');
             closeModal();
             forgotPasswordForm.reset();
         }
@@ -243,7 +243,7 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
         const question = document.getElementById('forgot-security-question-value').value;
         
         if (!answer) {
-             alert('Lütfen güvenlik sorusunu cevaplayınız.');
+             alert('Please answer the security question.');
              return;
         }
 
@@ -256,13 +256,13 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
             .single();
 
         if (checkError || !userCheck) {
-            alert('Güvenlik sorusunun cevabı yanlış! Lütfen tekrar deneyin.');
+            alert('Security question answer is incorrect! Please try again.');
             return;
         }
 
         // Aşamayı 3'e geçir
         newPasswordArea.classList.remove('hidden');
-        forgotSubmitBtn.textContent = 'Şifreyi Güncelle';
+        forgotSubmitBtn.textContent = 'Update Password';
         document.getElementById('forgot-security-answer').disabled = true;
 
     }
