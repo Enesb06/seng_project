@@ -91,20 +91,20 @@ const getEarnedBadges = ({ reads, quizCount, quizAvg }) => {
   const earned = [];
 
   // Reading badges (READING = CONTENTS COUNT)
-  if (reads >= 1) earned.push({ icon: '📖', name: 'First Text' });
-  if (reads >= 10) earned.push({ icon: '📘', name: '10th Text' });
-  if (reads >= 50) earned.push({ icon: '📗', name: '50th Text' });
-  if (reads >= 100) earned.push({ icon: '📕', name: '100th Text' });
-  if (reads >= 200) earned.push({ icon: '🏅', name: '200th Text' });
+  if (reads >= 1) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'First Text' });
+  if (reads >= 10) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png', name: '10th Text' });
+  if (reads >= 50) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '50th Text' });
+  if (reads >= 100) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '100th Text' });
+  if (reads >= 200) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '200th Text' });
 
   // Quiz badges
-  if (quizCount >= 1) earned.push({ icon: '🧩', name: 'First Quiz' });
+  if (quizCount >= 1) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png', name: 'First Quiz' });
 
   // Madalya (ortalama)
   if (quizCount > 0) {
-    if (quizAvg >= 90 && quizAvg <= 100) earned.push({ icon: '🥇', name: 'Gold Medal (90-100)' });
-    else if (quizAvg >= 80) earned.push({ icon: '🥈', name: 'Silver Medal (80-89)' });
-    else if (quizAvg >= 70) earned.push({ icon: '🥉', name: 'Bronze Medal (70-79)' });
+    if (quizAvg >= 90 && quizAvg <= 100) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583344.png', name: 'Gold Medal (90-100)' });
+    else if (quizAvg >= 80) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583319.png', name: 'Silver Medal (80-89)' });
+    else if (quizAvg >= 70) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583330.png', name: 'Bronze Medal (70-79)' });
   }
 
   return earned;
@@ -205,9 +205,9 @@ const initializeProfile = async () => {
       badgesContainer.innerHTML = '<p>You will earn badges as you progress!</p>';
     } else {
       badgesContainer.innerHTML = earned.map(b => `
-        <div class="badge-item">
-          <span class="badge-icon">${b.icon}</span>
-          <span class="badge-name">${b.name}</span>
+        <div class="badge earned" title="${b.name}">
+          <img src="${b.image}" alt="">
+          <span>${b.name}</span>
         </div>
       `).join('');
     }
