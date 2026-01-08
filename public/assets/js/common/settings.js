@@ -1,5 +1,7 @@
 import { _supabase } from '../supabaseClient.js';
 
+
+
 const user = JSON.parse(localStorage.getItem('user'));
 let selectedAvatarUrl = user?.avatar_url || "";
 let correctSecurityAnswer = ""; 
@@ -152,6 +154,8 @@ document.getElementById('password-form').onsubmit = async (e) => {
         showMsg("Hata: " + error.message, true);
     }
 };
+
+
 
 // Çıkış
 document.getElementById('logout-button').onclick = () => {

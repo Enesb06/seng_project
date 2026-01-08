@@ -16,6 +16,8 @@ const replyInput   = document.getElementById("user-reply-input");
 const sendBtn      = document.getElementById("user-send-btn");
 
 const logoutBtn    = document.getElementById("logout-button");
+const welcomeMessage = document.getElementById("welcome-message");
+const userAvatar = document.getElementById("user-avatar")
 
 const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
 
@@ -262,4 +264,29 @@ if (logoutBtn) {
 }
 
 // Başlat
-loadMyThreads();
+document.addEventListener('DOMContentLoaded', () => {
+  const user = getUser();
+  
+  // 1. Kullanıcı Kontrolü
+  if (!user) {
+      window.location.href = "../../index.html"; // Güvenlik kontrolü
+      return;
+  }
+
+  // 2. Header Bilgilerini Doldur
+  if (welcomeMessage) {
+      welcomeMessage.innerText = `Hoş geldin, ${user.full_name}!`;
+  }
+  
+  if (userAvatar) {
+      if (user.avatar_url) {
+          userAvatar.src = user.avatar_url; // Kayıtlı avatarı kullan
+      } else {
+          // Kayıtlı avatar yoksa isme göre rastgele bir placeholder avatar kullan
+          userAvatar.src = `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.full_name}&mouth=smile&top=shortHair&style=circle`; 
+      }
+  }
+  
+  // 3. Ana Veriyi Yükle
+  loadMyThreads();
+});
