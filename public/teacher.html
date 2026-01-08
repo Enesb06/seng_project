@@ -55,6 +55,29 @@
                         <p id="total-students" class="stat-value">0</p>
                     </div>
                 </div>
+                <h3 style="margin-top: 30px;">My Classes (Click to View Students)</h3>
+                <div class="card">
+                    <!-- Sınıf Listesi Buraya Gelecek -->
+                    <div id="class-list-summary" style="display: flex; flex-direction: column; gap: 10px;">
+                        <p>Classes are loading...</p>
+                    </div>
+                </div>
+
+                <!-- Öğrenci Listesi Modalı -->
+                <div id="student-list-modal" class="hidden" style="
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+                    background: rgba(0,0,0,0.7); z-index: 1000; 
+                    display: flex; justify-content: center; align-items: center;">
+                    
+                    <div class="card" style="width: 90%; max-width: 500px; padding: 20px; text-align: left;">
+                        <h4 id="modal-class-name">Class Students</h4>
+                        <div id="modal-student-list"></div>
+                        <button onclick="document.getElementById('student-list-modal').classList.add('hidden')" 
+                                style="margin-top: 15px; width: auto; padding: 8px 15px; float: right;">
+                            Close
+                        </button>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
