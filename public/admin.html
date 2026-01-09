@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - LearnENG.com</title>
-    
+   
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/admin.css">
-    
+   
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -18,28 +18,28 @@
             <div class="logo">Admin Dashboard</div>
             <nav>
                 <ul>
-                    <li id="li-users" class="active">
+                    <li id="li-users" >
                         <a href="#" id="nav-users">User Management</a>
                     </li>
-
+ 
                     <li id="li-verification">
                         <a href="#" id="nav-verification">
-                            Teacher Approvals 
+                            Teacher Approvals
                             <span id="pending-count" class="badge hidden">0</span>
                         </a>
                     </li>
-
+ 
                     <!-- ✅ YENİ EKLENEN KISIM -->
                     <li>
                         <a href="admin_support.html"> Support Messages</a>
                     </li>
                     <!-- ✅ BİTTİ -->
-
-                    
+ 
+                   
                 </ul>
             </nav>
         </aside>
-
+ 
         <!-- ANA İÇERİK -->
         <div class="main-content">
             <header class="dashboard-header">
@@ -49,7 +49,7 @@
                     <button id="logout-button">Logout</button>
                 </div>
             </header>
-
+ 
             <main class="content-area">
                 <!-- ÜST İSTATİSTİK KARTLARI -->
                 <div class="stats-grid">
@@ -66,9 +66,9 @@
                         <p id="total-contents" class="stat-value">0</p>
                     </div>
                 </div>
-
+ 
                 <!-- BÖLÜM 1: GENEL KULLANICI LİSTESİ -->
-                <div id="users-section" class="card table-card">
+                <div id="users-section" class="card table-card hidden">
                     <div class="table-header">
                         <h3>All Accounts in System</h3>
                         <input type="text" id="user-search" placeholder="Search by name or email...">
@@ -86,9 +86,10 @@
                         </tbody>
                     </table>
                 </div>
-
+ 
                 <!-- BÖLÜM 2: ÖĞRETMEN ONAY -->
                 <div id="verification-section" class="card table-card hidden">
+ 
                     <div class="table-header">
                         <h3>Pending Teacher Applications</h3>
                     </div>
@@ -108,19 +109,19 @@
             </main>
         </div>
     </div>
-
+ 
     <!-- KULLANICI DÜZENLEME MODAL -->
     <div id="edit-user-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h3>Update Account Information</h3>
             <form id="edit-user-form">
                 <input type="hidden" id="edit-user-id">
-
+ 
                 <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" id="edit-full-name" required>
                 </div>
-
+ 
                 <div class="form-group">
                     <label>Change Role</label>
                     <select id="edit-user-role">
@@ -129,7 +130,7 @@
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-
+ 
                 <div class="modal-buttons">
                     <button type="submit" class="cta-button">Save Changes</button>
                     <button type="button" id="close-modal-btn" class="cancel-btn">Cancel</button>
@@ -137,8 +138,10 @@
             </form>
         </div>
     </div>
-
+ 
     <!-- JS -->
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>
+ 
+ 

@@ -1,14 +1,12 @@
 import { _supabase } from '../supabaseClient.js';
-// Yeni eklediğimiz modülü dahil ediyoruz
 import { loadPendingTeachers } from './verification.js';
-
-// --- ELEMENT SEÇİMİ ---
+ 
+// --- ELEMENTS ---
 const userListBody = document.getElementById('user-list-body');
 const userSearch = document.getElementById('user-search');
 const editModal = document.getElementById('edit-user-modal');
 const editForm = document.getElementById('edit-user-form');
-
-// Navigasyon Elemanları
+ 
 const navUsers = document.getElementById('nav-users');
 const navVerify = document.getElementById('nav-verification');
 const usersSection = document.getElementById('users-section');
@@ -16,38 +14,39 @@ const verifySection = document.getElementById('verification-section');
 const pageTitle = document.getElementById('page-title');
 const liUsers = document.getElementById('li-users');
 const liVerify = document.getElementById('li-verification');
-
+ 
 const getUser = () => JSON.parse(localStorage.getItem('user'));
-
-// --- VERİLERİ YÜKLE ---
+ 
+// --- LOAD USERS ---
 const loadAdminData = async () => {
     try {
-        const { data: users, error: userErr } = await _supabase.from('profiles').select('*');
-        if (userErr) throw userErr;
-
-        const { count: contentCount } = await _supabase.from('contents').select('*', { count: 'exact', head: true });
-
+        const { data: users } = await _supabase.from('profiles').select('*');
+        const { count: contentCount } = await _supabase.from('contents')
+            .select('*', { count: 'exact', head: true });
+ 
         document.getElementById('total-students').textContent = users.filter(u => u.role === 'student').length;
         document.getElementById('total-teachers').textContent = users.filter(u => u.role === 'teacher').length;
         document.getElementById('total-contents').textContent = contentCount || 0;
-
+ 
         renderTable(users);
-
-        // Arama kutusunu dinle
+ 
         userSearch.oninput = () => {
             const term = userSearch.value.toLowerCase();
-            renderTable(users.filter(u => u.full_name.toLowerCase().includes(term) || u.email.toLowerCase().includes(term)));
+            renderTable(
+                users.filter(u =>
+                    u.full_name.toLowerCase().includes(term) ||
+                    u.email.toLowerCase().includes(term)
+                )
+            );
         };
-
-        // Onay bekleyenleri de arka planda yükle (Badge sayısını güncellemek için)
+ 
         loadPendingTeachers();
-
-    } catch (err) { 
-        console.error("Veri yükleme hatası:", err); 
+    } catch (err) {
+        console.error("Load error:", err);
     }
 };
-
-// --- TABLOYA YAZDIRMA ---
+ 
+// --- RENDER TABLE ---
 const renderTable = (users) => {
     userListBody.innerHTML = '';
     users.forEach(u => {
@@ -64,80 +63,94 @@ const renderTable = (users) => {
         userListBody.appendChild(row);
     });
 };
-
-// --- GLOBAL PENCERE FONKSİYONLARI ---
+ 
+// --- GLOBAL ACTIONS ---
 window.delUser = async (id) => {
-    if(confirm("Are you sure you want to delete this user?")) {
+    if (confirm("Are you sure you want to delete this user?")) {
         await _supabase.from('profiles').delete().eq('id', id);
         loadAdminData();
     }
 };
-
+ 
 window.openEdit = (id, name, role) => {
     document.getElementById('edit-user-id').value = id;
     document.getElementById('edit-full-name').value = name;
     document.getElementById('edit-user-role').value = role;
     editModal.classList.remove('hidden');
 };
-
-// --- FORM İŞLEMLERİ ---
+ 
 editForm.onsubmit = async (e) => {
     e.preventDefault();
-    const { error } = await _supabase.from('profiles').update({
+    await _supabase.from('profiles').update({
         full_name: document.getElementById('edit-full-name').value,
         role: document.getElementById('edit-user-role').value
     }).eq('id', document.getElementById('edit-user-id').value);
-    
-    if(!error) { 
-        editModal.classList.add('hidden'); 
-        loadAdminData(); 
-    } else {
-        alert("Error: " + error.message);
-    }
+ 
+    editModal.classList.add('hidden');
+    loadAdminData();
 };
-
-// --- NAVİGASYON MANTIĞI ---
+ 
+// --- NAVIGATION ---
 const setupNavigation = () => {
     navUsers.onclick = (e) => {
         e.preventDefault();
-        usersSection.classList.remove('hidden');
-        verifySection.classList.add('hidden');
-        liUsers.classList.add('active');
-        liVerify.classList.remove('active');
-        pageTitle.textContent = "User Management";
-        loadAdminData();
+        window.location.hash = "";
     };
-
+ 
     navVerify.onclick = (e) => {
         e.preventDefault();
-        verifySection.classList.remove('hidden');
-        usersSection.classList.add('hidden');
-        liVerify.classList.add('active');
-        liUsers.classList.remove('active');
-        pageTitle.textContent = "Teacher Approvals";
-        loadPendingTeachers(); // Onay bekleyenleri yükle
+        window.location.hash = "verification";
     };
 };
-
-// --- SAYFA BAŞLATMA VE GÜVENLİK ---
+ 
+// --- HASH ROUTING ---
+const handleHashRouting = () => {
+    const hash = window.location.hash;
+ 
+    if (hash === "#verification") {
+        usersSection.classList.add('hidden');
+        verifySection.classList.remove('hidden');
+ 
+        liUsers.classList.remove('active');
+        liVerify.classList.add('active');
+ 
+        pageTitle.textContent = "Teacher Approvals";
+ 
+        loadPendingTeachers();
+    } else {
+        verifySection.classList.add('hidden');
+        usersSection.classList.remove('hidden');
+ 
+        liVerify.classList.remove('active');
+        liUsers.classList.add('active');
+ 
+        pageTitle.textContent = "User Management";
+ 
+        loadAdminData();
+    }
+};
+ 
+window.addEventListener("hashchange", handleHashRouting);
+ 
+// --- INIT ---
 document.addEventListener('DOMContentLoaded', () => {
     const user = getUser();
-    
-    // Admin yetki kontrolü
-    if(!user || user.role !== 'admin') {
+ 
+    if (!user || user.role !== 'admin') {
         alert("Unauthorized access!");
         return window.location.href = 'index.html';
     }
-
+ 
     document.getElementById('admin-display-name').textContent = user.full_name;
-    
-    // Fonksiyonları çalıştır
-    loadAdminData();
+ 
     setupNavigation();
+    handleHashRouting();
 });
-
-// Çıkış Butonu
-document.getElementById('logout-button').onclick = () => { 
-    localStorage.removeItem('user'); 
-    window.location.href = 'index.html'; 
+ 
+// --- LOGOUT ---
+document.getElementById('logout-button').onclick = () => {
+    localStorage.removeItem('user');
+    window.location.href = 'index.html';
 };
+ 
+ 

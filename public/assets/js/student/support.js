@@ -7,22 +7,13 @@ const createBtn    = document.getElementById("create-thread");
 
 const threadsList  = document.getElementById("my-threads-list");
 
-const titleEl      = document.getElementById("user-selected-title");
-const metaEl       = document.getElementById("user-selected-meta");
-const statusEl     = document.getElementById("user-selected-status");
-
-const messagesBox  = document.getElementById("user-messages-box");
-const replyInput   = document.getElementById("user-reply-input");
-const sendBtn      = document.getElementById("user-send-btn");
-
 const logoutBtn    = document.getElementById("logout-button");
 const welcomeMessage = document.getElementById("welcome-message");
-const userAvatar = document.getElementById("user-avatar")
-const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=base"; 
+const userAvatar = document.getElementById("user-avatar");
+const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=base";
 
 const getUser = () => JSON.parse(localStorage.getItem("user") || "null");
 
-let selectedThreadId = null;
 let threadsCache = [];
 
 function escapeHtml(str = "") {
@@ -36,75 +27,9 @@ function escapeHtml(str = "") {
 
 const formatStatusText = (status) => (status === "closed" ? "Closed" : "Open");
 
-const setStatusBadge = (status) => {
-  if (!statusEl) return;
-  statusEl.style.display = "inline-block";
-  statusEl.textContent = formatStatusText(status);
-
-  if (status === "closed") {
-    statusEl.style.background = "#fee2e2";
-    statusEl.style.color = "#b91c1c";
-  } else {
-    statusEl.style.background = "#dcfce7";
-    statusEl.style.color = "#166534";
-  }
-};
-
-const loadMessages = async (threadId) => {
-  if (!threadId || !messagesBox) return;
-
-  messagesBox.innerHTML = "<p style='color:#6b7280;'>Loading messages...</p>";
-
-  const { data, error } = await _supabase
-    .from("support_messages")
-    .select("*")
-    .eq("thread_id", threadId)
-    .order("created_at", { ascending: true });
-
-  if (error) {
-    messagesBox.innerHTML = `<p style="color:red;">Error: ${error.message || ""}</p>`;
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    messagesBox.innerHTML = "<p style='color:#6b7280;'>No messages yet.</p>";
-    return;
-  }
-
-  messagesBox.innerHTML = data.map((m) => `
-    <div style="margin-bottom:10px;padding:8px 10px;border-radius:8px;
-                background:${m.sender_role === "admin" ? "#eff6ff" : "#f9fafb"};
-                border:1px solid #e5e7eb;">
-      <div style="font-size:0.8rem;color:#6b7280;margin-bottom:2px;">
-        <strong>${m.sender_role === "admin" ? "Admin" : "You"}</strong>
-        • ${new Date(m.created_at).toLocaleString("tr-TR")}
-      </div>
-      <div style="font-size:0.9rem;white-space:pre-wrap;">${escapeHtml(m.message)}</div>
-    </div>
-  `).join("");
-
-  messagesBox.scrollTop = messagesBox.scrollHeight;
-};
-
-const selectThread = (t) => {
-  selectedThreadId = t.id;
-
-  // highlight
-  Array.from(threadsList.querySelectorAll(".u-thread")).forEach(el => el.style.background = "#ffffff");
-  const active = threadsList.querySelector(`[data-thread-id="${t.id}"]`);
-  if (active) active.style.background = "#eff6ff";
-
-  if (titleEl) titleEl.textContent = t.subject || "Untitled";
-  if (metaEl) metaEl.textContent = new Date(t.created_at).toLocaleString("tr-TR");
-
-  setStatusBadge(t.status);
-
-  const isClosed = t.status === "closed";
-  if (replyInput) replyInput.disabled = isClosed;
-  if (sendBtn) sendBtn.disabled = isClosed;
-  if (replyInput) replyInput.placeholder = isClosed ? "Request closed. You cannot send messages." : "Type a message...";
-
-  loadMessages(t.id);
+const goToThread = (threadId) => {
+  // aynı klasörde support-thread.html olacağı için bu şekilde bırakıyoruz
+  window.location.href = `support-thread.html?id=${encodeURIComponent(threadId)}`;
 };
 
 const renderThreads = (threads) => {
@@ -135,13 +60,9 @@ const renderThreads = (threads) => {
   Array.from(threadsList.querySelectorAll(".u-thread")).forEach((el) => {
     el.addEventListener("click", () => {
       const id = el.getAttribute("data-thread-id");
-      const t = threadsCache.find(x => String(x.id) === String(id));
-      if (t) selectThread(t);
+      if (id) goToThread(id);
     });
   });
-
-  // otomatik ilkini aç
-  selectThread(threads[0]);
 };
 
 const loadMyThreads = async () => {
@@ -155,7 +76,7 @@ const loadMyThreads = async () => {
     .order("created_at", { ascending: false });
 
   if (error) {
-    threadsList.innerHTML = "Error occurred while loading.";
+    if (threadsList) threadsList.innerHTML = "Error occurred while loading.";
     return;
   }
 
@@ -212,48 +133,10 @@ if (createBtn) {
     subjectInput.value = "";
     messageInput.value = "";
 
+    // listeyi güncelle ve direkt yeni sayfaya git
     await loadMyThreads();
-
-    // yeni thread'i seç
-    const newest = threadsCache.find(x => x.id === thread.id);
-    if (newest) selectThread(newest);
+    goToThread(thread.id);
   };
-}
-
-// Kullanıcı cevap gönder
-if (sendBtn) {
-  sendBtn.addEventListener("click", async () => {
-    const user = getUser();
-    if (!user) return;
-
-    if (!selectedThreadId) {
-      alert("Please select a request first.");
-      return;
-    }
-
-    const msg = (replyInput?.value || "").trim();
-    if (!msg) {
-      alert("You cannot send an empty message.");
-      return;
-    }
-
-    const { error } = await _supabase
-      .from("support_messages")
-      .insert({
-        thread_id: selectedThreadId,
-        sender_user_id: user.id,
-        sender_role: user.role || "student",
-        message: msg
-      });
-
-    if (error) {
-      alert("Error sending message: " + (error.message || ""));
-      return;
-    }
-
-    replyInput.value = "";
-    loadMessages(selectedThreadId);
-  });
 }
 
 // Logout
@@ -267,27 +150,23 @@ if (logoutBtn) {
 // Başlat
 document.addEventListener('DOMContentLoaded', () => {
   const user = getUser();
-  
-  // 1. Kullanıcı Kontrolü
+
   if (!user) {
-      window.location.href = "../../index.html"; // Güvenlik kontrolü
-      return;
+    window.location.href = "../../index.html";
+    return;
   }
 
-  // 2. Header Bilgilerini Doldur
   if (welcomeMessage) {
-      welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
+    welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
   }
-  
+
   if (userAvatar) {
-      if (user.avatar_url) {
-          userAvatar.src = user.avatar_url; // Kayıtlı avatarı kullan
-      } else {
-          // Kayıtlı avatar yoksa isme göre rastgele bir placeholder avatar kullan
-          userAvatar.src = DEFAULT_AVATAR_URL; 
-      }
+    if (user.avatar_url) {
+      userAvatar.src = user.avatar_url;
+    } else {
+      userAvatar.src = DEFAULT_AVATAR_URL;
+    }
   }
-  
-  // 3. Ana Veriyi Yükle
+
   loadMyThreads();
 });

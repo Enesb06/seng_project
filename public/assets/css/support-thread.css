@@ -1,0 +1,191 @@
+.thread-page { padding: 0 !important; }
+
+.chat-shell{
+  height: calc(100vh - 140px);
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.thread-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  width:100%;
+}
+.thread-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-width:0;
+}
+.back-btn{
+  padding: 8px 12px !important;
+  font-size: 0.9rem !important;
+  border-radius: 999px !important;
+}
+.thread-titlebox{ min-width:0; }
+.thread-subject{
+  font-weight:800;
+  font-size:1.05rem;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.thread-meta{
+  font-size:0.85rem;
+  color:#6b7280;
+  margin-top:2px;
+}
+
+.thread-status-pill{
+  font-size:0.8rem;
+  padding:6px 12px;
+  border-radius:999px;
+  background:#dcfce7;
+  color:#166534;
+}
+.thread-status-pill.closed{
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.thread-actions{
+  padding: 12px 14px;
+  background:#fff;
+  border-bottom:1px solid #e5e7eb;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.thread-actions label{ font-size:0.9rem; color:#374151; }
+.thread-actions select{
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid #d1d5db;
+  font-size:0.95rem;
+}
+.thread-actions .cta-button{
+  padding: 8px 12px !important;      /* ✅ dev bar olmasın */
+  width: auto !important;            /* ✅ full width olmasın */
+  border-radius: 10px !important;
+}
+
+.chat-messages{
+  flex:1;
+  padding:16px;
+  overflow-y:auto;
+  background:#f8fafc;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.msg{
+  max-width: 70%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+}
+.msg .meta{
+  font-size:0.78rem;
+  color:#6b7280;
+  margin-bottom:6px;
+}
+.msg .text{
+  white-space:pre-wrap;
+  font-size:0.95rem;
+  color:#111827;
+}
+
+.msg.me{
+  align-self:flex-end;
+  background:#eff6ff;
+  border-color:#bfdbfe;
+}
+.msg.other{
+  align-self:flex-start;
+  background:#ffffff;
+}
+
+.chat-inputbar{
+  padding:12px;
+  background:#fff;
+  border-top:1px solid #e5e7eb;
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+}
+.chat-inputbar textarea{
+  flex:1;
+  min-height: 64px;                  /* ✅ yazı yeri küçük olmasın */
+  padding:10px 12px;
+  border-radius:12px;
+  border:1px solid #d1d5db;
+  font-size:0.95rem;
+  font-family:inherit;
+  resize: vertical;
+}
+.chat-inputbar .cta-button{
+  padding:12px 16px !important;
+  border-radius:12px !important;
+}
+/* ===== Admin Support Thread UI Fixes ===== */
+
+/* History button too big -> shrink it */
+#back-btn{
+  width: auto !important;
+  padding: 8px 14px !important;
+  font-size: 0.9rem !important;
+  border-radius: 10px !important;
+}
+
+/* Status row: keep select + button side-by-side (no full-width button) */
+#thread-status-select{
+  width: auto !important;
+}
+
+#update-status-btn{
+  width: auto !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px !important;
+  font-size: 0.9rem !important;
+  border-radius: 10px !important;
+}
+
+/* Chat input area bigger + layout nicer */
+.chat-inputbar{
+  display: flex !important;
+  gap: 12px !important;
+  align-items: flex-end !important;
+  padding: 12px !important;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+#chat-input{
+  flex: 1 !important;
+  min-height: 90px !important;     /* yazı yazma yeri büyüsün */
+  resize: vertical !important;
+  padding: 12px 14px !important;
+  border-radius: 12px !important;
+  border: 1px solid #d1d5db !important;
+  font-size: 0.95rem !important;
+  box-sizing: border-box;
+}
+
+#chat-send{
+  width: auto !important;          /* full width olmasın */
+  padding: 10px 16px !important;
+  font-size: 0.95rem !important;
+  border-radius: 12px !important;
+  white-space: nowrap;
+}

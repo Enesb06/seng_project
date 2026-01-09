@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support Chat - LearnENG.com</title>
+
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/support-thread.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+<div class="dashboard-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo"><a href="../../student.html">LearnENG</a></div>
+    <nav>
+      <ul>
+        <li><a href="../../student.html"> Home</a></li>
+        <li><a href="reading.html"> Reading Materials</a></li>
+        <li><a href="favorites.html"> Favorites</a></li>
+        <li><a href="wordlist.html"> Word List</a></li>
+        <li><a href="quiz.html"> Quizzes</a></li>
+        <li><a href="ai-chat.html"> AI Assistant</a></li>
+        <li class="active"><a href="support.html"> Support</a></li>
+        <li><a href="profile.html"> My Profile & Statistics</a></li>
+        <li><a href="../common/settings.html"> Settings</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <div class="main-content">
+    <header class="dashboard-header">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button id="back-btn" class="cta-button" style="padding:8px 12px;">← History</button>
+          <div>
+            <div id="thread-subject" style="font-weight:800;">Loading...</div>
+            <div id="thread-meta" style="font-size:0.85rem; color:#6b7280;"></div>
+          </div>
+        </div>
+        <span id="thread-status" class="thread-status-pill">Open</span>
+      </div>
+    </header>
+
+    <main class="content-area" style="padding:0;">
+      <div class="chat-shell">
+        <div id="chat-messages" class="chat-messages"></div>
+
+        <div class="chat-inputbar">
+          <textarea id="chat-input" rows="2" placeholder="Type a message..."></textarea>
+          <button id="chat-send" class="cta-button">Send</button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script type="module" src="../../assets/js/student/support-thread.js"></script>
+</body>
+</html>

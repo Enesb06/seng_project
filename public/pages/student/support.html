@@ -21,14 +21,14 @@
         <nav>
             <ul>
                 <li><a href="../../student.html"> Home</a></li>
-<li><a href="reading.html"> Reading Materials</a></li>
-<li><a href="favorites.html"> Favorites</a></li>
-<li><a href="wordlist.html"> Word List</a></li>
-<li><a href="quiz.html"> Quizzes</a></li>
-<li><a href="ai-chat.html"> AI Assistant</a></li>
-<li class="active"><a href="support.html"> Support</a></li>
-<li><a href="profile.html"> My Profile & Statistics</a></li>
-<li><a href="../common/settings.html"> Settings</a></li>
+                <li><a href="reading.html"> Reading Materials</a></li>
+                <li><a href="favorites.html"> Favorites</a></li>
+                <li><a href="wordlist.html"> Word List</a></li>
+                <li><a href="quiz.html"> Quizzes</a></li>
+                <li><a href="ai-chat.html"> AI Assistant</a></li>
+                <li class="active"><a href="support.html"> Support</a></li>
+                <li><a href="profile.html"> My Profile & Statistics</a></li>
+                <li><a href="../common/settings.html"> Settings</a></li>
             </ul>
         </nav>
     </aside>
@@ -40,7 +40,6 @@
             <h2> Support &amp; Feedback</h2>
             <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
                 <img id="user-avatar"
-                     
                      style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
                 <span id="welcome-message"></span>
                 <button id="logout-button">Logout</button>
@@ -87,51 +86,14 @@
                 </div>
             </div>
 
-            <!-- KENDİ TALEPLERİ + CHAT -->
+            <!-- KENDİ TALEPLERİ (SADECE LİSTE) -->
             <div class="card" style="padding:20px;">
                 <h3 style="margin-top:0; margin-bottom:12px;">My Support Request History</h3>
 
-                <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
-
-                    <!-- SOL: thread list -->
-                    <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
-                        <div id="my-threads-list" style="font-size:0.9rem;">
-                            You don't have any support requests yet.
-                        </div>
+                <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
+                    <div id="my-threads-list" style="font-size:0.9rem;">
+                        You don't have any support requests yet.
                     </div>
-
-                    <!-- SAĞ: chat -->
-                    <div style="flex:1; min-width:280px; border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#ffffff;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
-                            <div>
-                                <div id="user-selected-title" style="font-weight:700;">Select a request</div>
-                                <div id="user-selected-meta" style="font-size:0.8rem; color:#6b7280;">
-                                    Select from the left to see messages.
-                                </div>
-                            </div>
-                            <span id="user-selected-status"
-                                  style="display:none; font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#e5e7eb; color:#374151;">
-                                Status
-                            </span>
-                        </div>
-
-                        <div id="user-messages-box"
-                             style="margin-top:10px; border:1px solid #e5e7eb;border-radius:10px;padding:10px; max-height:260px; overflow-y:auto; font-size:0.9rem;">
-                            Messages will appear here when you select a request.
-                        </div>
-
-                        <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">
-                            <textarea id="user-reply-input"
-                                      rows="3"
-                                      placeholder="Write a message..."
-                                      style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #d1d5db; box-sizing:border-box; font-size:0.9rem; font-family:inherit;"></textarea>
-
-                            <button id="user-send-btn" class="cta-button" style="align-self:flex-end;">
-                                Send
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
 
