@@ -55,19 +55,10 @@ const formatDate = (dateString) => {
 // ========= KELİME SESLENDİRME (DOĞRU VE SON HALİ) =========
 const speakWord = (word) => {
   try {
-    // HATA BURADAYDI. `getURL` yerine URL'yi kendimiz oluşturuyoruz.
-    // Proje URL'niz ekran görüntüsünden belli: https://infmglbngspopnxrjnfv.supabase.co
     const projectUrl = 'https://infmglbngspopnxrjnfv.supabase.co';
-    
-    // Fonksiyonun tam URL'sini oluşturuyoruz.
     const ttsFunctionUrl = `${projectUrl}/functions/v1/get-pronunciation?text=${encodeURIComponent(word)}`;
-
-    // Bu URL'yi kaynak olarak kullanan yeni bir ses nesnesi oluştur.
     const audio = new Audio(ttsFunctionUrl);
-
-    // Sesi çal.
     audio.play();
-
   } catch (error) {
     console.error("Telaffuz oynatılırken hata oluştu:", error);
     alert("Sesli telaffuz şu an kullanılamıyor.");
@@ -95,17 +86,14 @@ const saveFavorites = (favorites) => {
 
 const updateFavoriteIcon = () => {
   if (!favoriteBtn) return;
-
   if (!currentEssayId) {
     favoriteBtn.classList.remove('active');
     favoriteBtn.innerHTML = '♡';
     favoriteBtn.title = 'Favorilere ekle';
     return;
   }
-
   const favorites = getFavorites();
   const isFav = favorites.includes(String(currentEssayId));
-
   if (isFav) {
     favoriteBtn.classList.add('active');
     favoriteBtn.innerHTML = '♥';
@@ -117,7 +105,6 @@ const updateFavoriteIcon = () => {
   }
 };
 
-// favorites.html için dışarı aç
 window.getReadingFavorites = getFavorites;
 
 /* ========= 1) KELİME ÇEVİRİ ========= */
@@ -148,26 +135,19 @@ const getTranslation = async (word) => {
   }
 };
 
-/* ========= OKUNDU SAY (Supabase) =========
-   Metin sağ panelde render olduysa 1 kere okundu say.
-*/
+/* ========= OKUNDU SAY (Supabase) ========= */
 const markAsRead = async (contentId) => {
-  // --- KONTROL İÇİN BU SATIRI EKLEYİN ---
-  console.log('Okundu olarak işaretlenen metin ID:', contentId); 
-  
+  console.log('Okundu olarak işaretlenen metin ID:', contentId);
   const user = getUser();
   if (!user || !contentId) return;
-
   const payload = {
     student_id: String(user.id),
     content_id: contentId,
     read_at: new Date().toISOString(),
   };
-
   const { error } = await _supabase
     .from('reading_logs')
     .upsert(payload, { onConflict: 'student_id,content_id' });
-
   if (error) console.error('markAsRead error:', error);
 };
 
@@ -176,30 +156,17 @@ const displayMaterial = async (contentId) => {
   try {
     const user = getUser();
     if (!user) return goHome();
-
     currentEssayId = contentId;
-
-    document.querySelectorAll('.material-item')
-      .forEach((el) => el.classList.remove('active'));
+    document.querySelectorAll('.material-item').forEach((el) => el.classList.remove('active'));
     const selected = document.querySelector(`[data-id='${contentId}']`);
     if (selected) selected.classList.add('active');
-
-    const { data, error } = await _supabase
-      .from('contents')
-      .select('*')
-      .eq('id', contentId)
-      .single();
-
+    const { data, error } = await _supabase.from('contents').select('*').eq('id', contentId).single();
     if (error || !data) throw error || new Error('Content not found');
-
     if (readingTitle) readingTitle.textContent = data.title || '';
     if (readingBody) readingBody.innerHTML = wrapWords(data.body || '');
-
     await markAsRead(contentId);
-
     const savedNote = localStorage.getItem(`note_${user.id}_${contentId}`);
     if (noteTextarea) noteTextarea.value = savedNote || '';
-
     updateFavoriteIcon();
   } catch (err) {
     console.error('displayMaterial Hata:', err);
@@ -224,27 +191,16 @@ const getHistoryList = () => {
 const renderHistory = () => {
   const user = getUser();
   if (!user || !historyContainer) return;
-
   const history = getHistoryList();
-
   if (history.length === 0) {
-    historyContainer.innerHTML =
-      '<p style="color:#999; font-size:0.8rem; padding:10px;">No notes yet.</p>';
+    historyContainer.innerHTML = '<p style="color:#999; font-size:0.8rem; padding:10px;">No notes yet.</p>';
     return;
   }
-
-  historyContainer.innerHTML = history
-    .map(
-      (item) => `
-        <div class="history-item"
-             onclick="displayMaterial('${item.id}')"
-             style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
+  historyContainer.innerHTML = history.map((item) => `
+        <div class="history-item" onclick="displayMaterial('${item.id}')" style="padding: 10px; border-bottom: 1px solid #eee; cursor: pointer;">
           <div style="font-weight: bold; font-size: 0.85rem;">${item.title}</div>
           <div style="font-size: 0.7rem; color: #888;">${item.date}</div>
-        </div>
-      `
-    )
-    .join('');
+        </div>`).join('');
 };
 
 const saveCurrentNote = () => {
@@ -252,18 +208,13 @@ const saveCurrentNote = () => {
     alert('Please select a text first!');
     return;
   }
-
   const user = getUser();
   if (!user) return goHome();
-
   const noteText = noteTextarea ? noteTextarea.value : '';
   const title = readingTitle ? readingTitle.textContent : '';
-
   localStorage.setItem(`note_${user.id}_${currentEssayId}`, noteText);
-
   let history = getHistoryList();
   history = history.filter((item) => String(item.id) !== String(currentEssayId));
-
   if (noteText.trim() !== '') {
     history.unshift({
       id: currentEssayId,
@@ -271,15 +222,12 @@ const saveCurrentNote = () => {
       date: new Date().toLocaleDateString('tr-TR'),
     });
   }
-
   localStorage.setItem(`history_${user.id}`, JSON.stringify(history));
-
   const indicator = document.getElementById('save-indicator');
   if (indicator) {
     indicator.style.display = 'block';
     setTimeout(() => (indicator.style.display = 'none'), 2000);
   }
-
   renderHistory();
 };
 
@@ -295,8 +243,9 @@ const handleGenerateNewMaterial = async (e) => {
   const category = document.getElementById('interest-category')?.value;
   const difficulty = document.getElementById('difficulty-level')?.value;
   const length = document.getElementById('content-length')?.value;
+  const textType = document.getElementById('text-type')?.value;
 
-  const promptDetails = `Write a ${length} English reading text about ${category} for ${difficulty} level. Response MUST be ONLY JSON: {"title": "...", "body": "..."}`;
+  const promptDetails = `Write a ${length} English ${textType} about ${category} for ${difficulty} level. Response MUST be ONLY JSON: {"title": "...", "body": "..."}`;
 
   try {
     const response = await fetch(AI_FUNCTION_URL, {
@@ -308,13 +257,32 @@ const handleGenerateNewMaterial = async (e) => {
     const responseData = await response.json();
     const rawText = responseData.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-    const contentData = JSON.parse(cleaned);
+
+    let title, body;
+    try {
+      const parsedData = JSON.parse(cleaned);
+      title = parsedData.title;
+      body = parsedData.body;
+    } catch (parseError) {
+      console.warn("AI response was not valid JSON. Using raw text as body.");
+      body = cleaned;
+    }
+    
+    if (!title) {
+      const firstLetter = textType.charAt(0).toUpperCase();
+      const restOfTextType = textType.slice(1);
+      title = `${firstLetter + restOfTextType} about ${category}`;
+    }
+
+    if (!body) {
+        throw new Error("AI did not return any content. This might be due to a restrictive prompt or a safety filter. Please try rephrasing your request.");
+    }
 
     const { data: newContent, error } = await _supabase
       .from('contents')
       .insert({
-        title: contentData.title,
-        body: contentData.body,
+        title: title,
+        body: body,
         user_id: user.id,
       })
       .select('id')
@@ -325,7 +293,7 @@ const handleGenerateNewMaterial = async (e) => {
     await loadUserMaterials();
     await displayMaterial(newContent.id);
   } catch (err) {
-    alert('Error: ' + (err?.message || err));
+    alert('Error generating content: ' + (err?.message || err));
     console.error(err);
   } finally {
     if (loader) loader.classList.add('hidden');
@@ -335,41 +303,27 @@ const handleGenerateNewMaterial = async (e) => {
 const loadUserMaterials = async () => {
   const user = getUser();
   if (!user || !materialsList) return;
-
   const { data, error } = await _supabase
     .from('contents')
     .select('id, title, created_at')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false });
-
   if (error) {
     console.error(error);
-    materialsList.innerHTML =
-      '<p style="color:red;font-size:0.85rem;">Error occurred while loading materials.</p>';
+    materialsList.innerHTML = '<p style="color:red;font-size:0.85rem;">Error occurred while loading materials.</p>';
     return;
   }
-
   if (!data || data.length === 0) {
-    materialsList.innerHTML =
-      '<p style="color:#9ca3af;font-size:0.85rem;">You havent created any materials yet.</p>';
+    materialsList.innerHTML = '<p style="color:#9ca3af;font-size:0.85rem;">You havent created any materials yet.</p>';
     return;
   }
-
-  materialsList.innerHTML = data
-    .map(
-      (m) => `
-        <div class="material-item"
-             data-id="${m.id}"
-             onclick="displayMaterial('${m.id}')"
-             style="padding:12px 10px;border-bottom:1px solid #e5e7eb;cursor:pointer;">
+  materialsList.innerHTML = data.map((m) => `
+        <div class="material-item" data-id="${m.id}" onclick="displayMaterial('${m.id}')" style="padding:12px 10px;border-bottom:1px solid #e5e7eb;cursor:pointer;">
           <div style="font-weight:600;font-size:0.95rem;">${m.title}</div>
           <div style="font-size:0.75rem;color:#6b7280;">
             ${formatDate(m.created_at)}
           </div>
-        </div>
-      `
-    )
-    .join('');
+        </div>`).join('');
 };
 
 /* ========= EVENT LISTENER'LAR ========= */
@@ -386,37 +340,29 @@ if (readingBody) {
       }
 
       if (tooltipWord) tooltipWord.textContent = word;
-
       if (tooltipMeaning) {
         tooltipMeaning.textContent = 'Translating...';
         tooltipMeaning.textContent = await getTranslation(word);
       }
-
       if (addWordBtn) {
         addWordBtn.onclick = async () => {
           const user = getUser();
           if (!user) return goHome();
-
           const { error } = await _supabase.from('word_list').insert({
             student_id: user.id,
             word,
             definition: tooltipMeaning?.textContent || '',
             learning_status: 'learning',
           });
-
           if (!error) {
             alert('Word added!');
             if (tooltip) tooltip.style.display = 'none';
           }
         };
       }
-
       if (playPronunciationBtn) {
-        playPronunciationBtn.onclick = () => {
-          speakWord(word);
-        };
+        playPronunciationBtn.onclick = () => { speakWord(word); };
       }
-
     } else {
       if (tooltip) tooltip.style.display = 'none';
     }
@@ -454,17 +400,14 @@ if (favoriteBtn) {
       alert('Please select a text first!');
       return;
     }
-
     const favorites = getFavorites();
     const idStr = String(currentEssayId);
-
     if (favorites.includes(idStr)) {
       saveFavorites(favorites.filter((id) => id !== idStr));
     } else {
       favorites.push(idStr);
       saveFavorites(favorites);
     }
-
     updateFavoriteIcon();
   });
 }
@@ -490,4 +433,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const imgEl = document.getElementById('header-avatar');
     if (imgEl) imgEl.src = user.avatar_url;
   }
+
+  // ================= YENİ EKLENEN AKILLI FİLTRELEME KODU =================
+  
+  const categorySelect = document.getElementById('interest-category');
+  const textTypeSelect = document.getElementById('text-type');
+  const allOptionsSource = document.getElementById('all-text-type-options');
+
+  // ======================= BU LİSTE GÜNCELLENDİ =======================
+  const validMappings = {
+    'technology': ['article', 'news report', 'blog post', 'review', 'problem-solution essay', 'email'],
+    'science': ['article', 'news report', 'blog post', 'biography', 'problem-solution essay'],
+    'history': ['article', 'short story', 'biography', 'diary', 'news report'],
+    'art and culture': ['article', 'review', 'blog post', 'biography', 'opinion essay'],
+    'travel': ['blog post', 'diary', 'email', 'review', 'short story'],
+    'daily life': ['short story', 'diary', 'dialogue', 'email', 'blog post', 'fable', 'fairy tale'],
+    'sports': ['article', 'news report', 'biography', 'opinion essay', 'blog post', 'review', 'dialogue'],
+    'nature and environment': ['article', 'news report', 'problem-solution essay', 'blog post', 'fable', 'short story'],
+    'health and wellness': ['article', 'blog post', 'problem-solution essay', 'review', 'dialogue', 'email'],
+    'entertainment': ['review', 'news report', 'blog post', 'biography', 'opinion essay', 'article'],
+    'food and cooking': ['blog post', 'review', 'article', 'short story', 'diary', 'email']
+  };
+  // ======================= GÜNCELLEME SONU =======================
+
+  textTypeSelect.disabled = true;
+
+  categorySelect.addEventListener('change', () => {
+    const selectedCategory = categorySelect.value;
+    const validTypes = validMappings[selectedCategory] || [];
+
+    textTypeSelect.innerHTML = '<option value="" disabled selected>-- Select a text type --</option>';
+
+    if (validTypes.length > 0) {
+      textTypeSelect.disabled = false;
+      
+      validTypes.forEach(typeValue => {
+        const originalOption = allOptionsSource.querySelector(`option[value='${typeValue}']`);
+        if (originalOption) {
+            textTypeSelect.appendChild(originalOption.cloneNode(true));
+        }
+      });
+    } else {
+      textTypeSelect.disabled = true;
+      textTypeSelect.innerHTML = '<option value="" disabled selected>-- First select a category --</option>';
+    }
+  });
+  // ================= YENİ KOD SONU ==========================================
+
 });
