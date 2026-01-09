@@ -29,15 +29,17 @@ const showLoginLink = document.getElementById('show-login-link');
 const showForgotPasswordLink = document.getElementById('show-forgot-password-link');
 const backToLoginLink = document.getElementById('back-to-login-link');
 
-// YENİ ELEMAN SEÇİMLERİ (HTML'e göre güncellendi)
-const signupQuestionLabel = document.getElementById('signup-security-question-label');
-const signupQuestionValue = document.getElementById('security-question-value');
+// 🚨 YENİ ELEMAN SEÇİMLERİ (Kayıt formundaki SELECT kutusu)
+const securityQuestionSelect = document.getElementById('security-question-select'); 
+
+// Şifre sıfırlama elementleri
+// 🚨 İki gereksiz element (signupQuestionLabel, signupQuestionValue) kaldırıldı
 const forgotQuestionArea = document.getElementById('forgot-question-area');
 const forgotQuestionLabel = document.getElementById('forgot-security-question-label');
 const forgotSubmitBtn = document.getElementById('forgot-submit-btn');
 const newPasswordArea = document.getElementById('new-password-area');
 const forgotEmailInput = document.getElementById('forgot-email');
-let currentResetUserId = null; // Şifre sıfırlama aşamasında kullanıcı ID'sini tutacak
+let currentResetUserId = null;
 
 
 // --- MODAL YÖNETİM FONKSİYONLARI ---
@@ -62,9 +64,11 @@ const displayLoginView = () => {
     loginView.classList.remove('hidden');
     openModal();
 };
+
+// 🚨 GÜNCELLENDİ: Kayıt olurken sorunun rastgele atanması yerine, SELECT kutusunu doldur
 const displaySignupView = () => {
     hideAllAuthViews();
-    setRandomSecurityQuestion();
+    fillSecurityQuestionSelect(); // 🚨 Soruları doldur
     signupView.classList.remove('hidden');
     openModal();
 };
@@ -81,19 +85,25 @@ const displayForgotPasswordView = () => {
     openModal();
 };
 
-// --- YARDIMCI: RASTGELE SORU SEÇME ---
-const setRandomSecurityQuestion = () => {
-    if (!signupQuestionLabel || !signupQuestionValue) return;
+// 🚨 YENİ FONKSİYON: SELECT KUTUSUNU DOLDURUR
+const fillSecurityQuestionSelect = () => {
+    if (!securityQuestionSelect) return;
+    
+    // Select kutusunun içeriğini temizle
+    securityQuestionSelect.innerHTML = '<option value="" disabled selected>-- Select a question --</option>';
 
-    const randomIndex = Math.floor(Math.random() * SECURITY_QUESTIONS.length);
-    const selectedQuestion = SECURITY_QUESTIONS[randomIndex];
-
-    signupQuestionLabel.textContent = selectedQuestion.text;
-    signupQuestionValue.value = selectedQuestion.value;
+    SECURITY_QUESTIONS.forEach(q => {
+        const option = document.createElement('option');
+        option.value = q.value;
+        option.textContent = q.text;
+        securityQuestionSelect.appendChild(option);
+    });
 };
 
+// 🚨 RASTGELE SORU SEÇME FONKSİYONU (setRandomSecurityQuestion) VE KULLANIMLARI SİLİNDİ/DEĞİŞTİRİLDİ
 
-// --- OLAY DİNLEYİCİLERİ ---
+
+// --- OLAY DİNLEYİCİLERİ (Aynı Kalır) ---
 showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
 showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); displaySignupView(); });
 closeAuthBtn.addEventListener('click', closeModal);
@@ -106,7 +116,7 @@ backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLo
 
 // --- VERİTABANI İŞLEMLERİ ---
 
-// 1. Kayıt Olma Formu
+// 1. Kayıt Olma Formu (GÜNCELLENDİ)
 signupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fullName = document.getElementById('signup-fullname').value;
@@ -114,8 +124,14 @@ signupForm.addEventListener('submit', async (e) => {
     const password = document.getElementById('signup-password').value;
     const role = document.querySelector('input[name="role"]:checked').value;
     
-    const securityQuestion = document.getElementById('security-question-value').value;
+    // 🚨 GÜVENLİK SORUSU VERİLERİNİ AL (SELECT KUTUSUNDAN ALIYORUZ)
+    const securityQuestion = document.getElementById('security-question-select').value;
     const securityAnswer = document.getElementById('security-answer').value;
+
+    if (!securityQuestion) {
+        alert('Please select a security question!');
+        return;
+    }
 
     const isVerifiedStatus = (role !== 'teacher');
 
@@ -148,7 +164,7 @@ signupForm.addEventListener('submit', async (e) => {
     }
 });
 
-// 2. Giriş Yapma Formu
+// 2. Giriş Yapma Formu (Aynı Kalır)
 loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('login-email').value;
@@ -170,11 +186,9 @@ loginForm.addEventListener('submit', async (e) => {
 });
 
 
-// 🚨 3. Şifre Sıfırlama Butonu (CLICK Olayı - GÜNCELLENDİ)
+// 3. Şifre Sıfırlama Butonu (CLICK Olayı - Aynı Kalır)
 forgotSubmitBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // Sayfanın yenilenmesini engelleyen kritik kod
-
-    // AŞAMA 1, 2, 3 MANTIĞI BURAYA TAŞINDI
+    e.preventDefault();
 
     if (!currentResetUserId) {
         // --- AŞAMA 1: E-posta kontrolü ---
@@ -271,6 +285,9 @@ forgotSubmitBtn.addEventListener('click', async (e) => {
 
 // 4. Sayfa Yüklendiğinde Oturum Kontrolü ve Yönlendirme
 document.addEventListener('DOMContentLoaded', () => {
+    // 🚨 SAYFA YÜKLENİRKEN SELECT KUTULARINI DOLDUR
+    fillSecurityQuestionSelect();
+    
     const userString = localStorage.getItem('user');
     
     if (userString) {

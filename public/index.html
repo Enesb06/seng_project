@@ -69,13 +69,15 @@
                 <input type="password" id="signup-password" placeholder="Password" required>
                 
                 <div class="security-question-area" style="margin-bottom: 15px; text-align: left;">
-                    <label id="signup-security-question-label" for="security-answer" style="font-weight: bold; display: block; margin-bottom: 5px;">Loading Security Question...</label>
-                    <!-- Soru değerini JS ile doldurmak için gizli input -->
-                    <input type="hidden" id="security-question-value">
-                    <input type="text" id="security-answer" placeholder="Security Question Answer" required>
+                    <label for="security-question-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Choose a Security Question</label>
+                    <!-- JS bu select kutusunu dolduracak -->
+                    <select id="security-question-select" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 1rem;">
+                        <!-- Seçenekler JS ile doldurulacak -->
+                        <option value="" disabled selected>-- Bir soru seçin --</option> 
+                    </select>
+                    <input type="text" id="security-answer" placeholder="Answer of the Security Question" required>
                 </div>
-                
-                
+                <!-- 🚨 GÜNCELLENDİ: KULLANICININ SORUYU SEÇTİĞİ ALAN SONU 🚨 -->
                 
                 <div class="role-selection">
                     <label><input type="radio" name="role" value="student" checked> Student</label>
@@ -85,6 +87,10 @@
             </form>
             <p>Already have an account? <a href="#" id="show-login-link">Log in</a></p>
         </div>
+                
+                
+                
+                
 
         <!-- Şifre Sıfırlama Formu -->
         <div id="forgot-password-view" class="hidden">
