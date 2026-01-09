@@ -13,20 +13,20 @@
         .avatar-option { cursor: pointer; border: 3px solid transparent; border-radius: 50%; padding: 5px; width: 70px; height: 70px; object-fit: cover; background: #f8fafc; transition: 0.3s; }
         .avatar-option.selected { border-color: #4CAF50; background: #e8f5e9; transform: scale(1.1); }
         .card label { display: block; margin-top: 15px; font-weight: 600; color: #475569; font-size: 0.9rem; }
-        .card input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; }
+        .card input, .card select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; }
         .card input:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
         .btn-green { background-color: #4CAF50; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
         .btn-red { background-color: #e74c3c; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
         .security-box { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px; }
         #display-security-question { color: #1e293b; font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; display: block; }
         #settings-message { text-align: center; font-weight: bold; margin-top: 20px; min-height: 24px; }
+        .hidden { display: none; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
     <div class="dashboard-container">
-        <!-- SOL MENÜ (Sidebar) -->
         <aside class="sidebar">
             <div class="logo">
                 <a id="logo-link" href="#">LearnENG</a>
@@ -59,11 +59,10 @@
 
                     <h3 class="section-title">Avatar Selection</h3>
                     <div class="avatar-grid" id="avatar-picker">
-                        <img id="default-avatar-option" src = "https://api.dicebear.com/7.x/avataaars/svg?seed=base" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=base">
+                        <img id="default-avatar-option" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=base">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=Aneka">
                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=John" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=John">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Mistu" class="avatar-option" data-url="https://api.dicebear.com/7.x/avataaars/svg?seed=Mistu">
                     </div>
                     <button id="save-avatar-btn" class="btn-green">Save Avatar</button>
 
@@ -71,8 +70,21 @@
                     <form id="password-form" autocomplete="off">
                         <div class="security-box">
                             <label style="margin-top: 0; color: #64748b;">Security Question Verification:</label>
+                            
+                            <!-- Soru varsa burası dolacak -->
                             <span id="display-security-question">Loading...</span>
-                            <input type="text" id="settings-security-answer" name="answer_field" placeholder="Enter your answer here" required autocomplete="one-time-code">
+                            
+                            <!-- Soru yoksa burası açılacak -->
+                            <select id="setup-security-question" class="hidden">
+                                <option value="" disabled selected>-- Select a Security Question to Set --</option>
+                                <option value="pet">What was your first pet's name?</option>
+                                <option value="city">Which city were you born in?</option>
+                                <option value="mother">Your favourite movie?</option>
+                                <option value="car">Model of your first car?</option>
+                                <option value="book">What was the name of your favourite book as a child?</option>
+                            </select>
+
+                            <input type="text" id="settings-security-answer" name="answer_field" placeholder="Enter your answer here" required autocomplete="off">
                         </div>
 
                         <label>New Password</label>

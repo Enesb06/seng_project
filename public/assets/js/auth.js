@@ -1,9 +1,8 @@
 import { _supabase } from './supabaseClient.js';
 
-
-// assets/js/auth.js dosyasının en üstüne ekle
-
+// Güvenlik Soruları Listesi (En başa 'Set Later' eklendi)
 const SECURITY_QUESTIONS = [
+    { value: "none", text: "Set Later (Optional)" },
     { value: "pet", text: "What was your first pet's name?" },
     { value: "city", text: "Which city were you born in?" },
     { value: "mother", text: "Your favourite movie?" },
@@ -11,87 +10,89 @@ const SECURITY_QUESTIONS = [
     { value: "book", text: "What was the name of your favourite book as a child?" }
 ];
 
+// --- YARDIMCI ELEMENT SEÇİCİ (Hata almamak için) ---
+const getEl = (id) => document.getElementById(id);
 
-// --- ELEMENT SEÇİMİ ---
-const showLoginBtn = document.getElementById('show-login-btn');
-const showSignupBtn = document.getElementById('show-signup-btn');
-const closeAuthBtn = document.getElementById('close-auth-btn');
-const authContainer = document.getElementById('auth-container');
-const modalOverlay = document.getElementById('modal-overlay');
-const loginView = document.getElementById('login-view');
-const signupView = document.getElementById('signup-view');
-const forgotPasswordView = document.getElementById('forgot-password-view');
-const loginForm = document.getElementById('login-form');
-const signupForm = document.getElementById('signup-form');
-const forgotPasswordForm = document.getElementById('forgot-password-form');
-const showSignupLink = document.getElementById('show-signup-link');
-const showLoginLink = document.getElementById('show-login-link');
-const showForgotPasswordLink = document.getElementById('show-forgot-password-link');
-const backToLoginLink = document.getElementById('back-to-login-link');
+// --- ELEMENT SEÇİMLERİ ---
+const showLoginBtn = getEl('show-login-btn');
+const showSignupBtn = getEl('show-signup-btn');
+const closeAuthBtn = getEl('close-auth-btn');
+const authContainer = getEl('auth-container');
+const modalOverlay = getEl('modal-overlay');
+const loginView = getEl('login-view');
+const signupView = getEl('signup-view');
+const forgotPasswordView = getEl('forgot-password-view');
+const loginForm = getEl('login-form');
+const signupForm = getEl('signup-form');
+const forgotPasswordForm = getEl('forgot-password-form');
+const showSignupLink = getEl('show-signup-link');
+const showLoginLink = getEl('show-login-link');
+const showForgotPasswordLink = getEl('show-forgot-password-link');
+const backToLoginLink = getEl('back-to-login-link');
 
-// 🚨 YENİ ELEMAN SEÇİMLERİ (Kayıt formundaki SELECT kutusu)
-const securityQuestionSelect = document.getElementById('security-question-select'); 
+const securityQuestionSelect = getEl('security-question-select'); 
+const securityAnswerInput = getEl('security-answer');
 
 // Şifre sıfırlama elementleri
-// 🚨 İki gereksiz element (signupQuestionLabel, signupQuestionValue) kaldırıldı
-const forgotQuestionArea = document.getElementById('forgot-question-area');
-const forgotQuestionLabel = document.getElementById('forgot-security-question-label');
-const forgotSubmitBtn = document.getElementById('forgot-submit-btn');
-const newPasswordArea = document.getElementById('new-password-area');
-const forgotEmailInput = document.getElementById('forgot-email');
+const forgotQuestionArea = getEl('forgot-question-area');
+const forgotQuestionLabel = getEl('forgot-security-question-label');
+const forgotSubmitBtn = getEl('forgot-submit-btn');
+const newPasswordArea = getEl('new-password-area');
+const forgotEmailInput = getEl('forgot-email');
 let currentResetUserId = null;
-
 
 // --- MODAL YÖNETİM FONKSİYONLARI ---
 const hideAllAuthViews = () => {
-    loginView.classList.add('hidden');
-    signupView.classList.add('hidden');
-    forgotPasswordView.classList.add('hidden');
+    if (loginView) loginView.classList.add('hidden');
+    if (signupView) signupView.classList.add('hidden');
+    if (forgotPasswordView) forgotPasswordView.classList.add('hidden');
 };
+
 const openModal = () => {
-    authContainer.classList.remove('hidden');
-    modalOverlay.classList.remove('hidden');
+    if (authContainer) authContainer.classList.remove('hidden');
+    if (modalOverlay) modalOverlay.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 };
+
 const closeModal = () => {
-    authContainer.classList.add('hidden');
-    modalOverlay.classList.add('hidden');
+    if (authContainer) authContainer.classList.add('hidden');
+    if (modalOverlay) modalOverlay.classList.add('hidden');
     document.body.style.overflow = '';
     hideAllAuthViews();
 };
+
 const displayLoginView = () => {
     hideAllAuthViews();
-    loginView.classList.remove('hidden');
+    if (loginView) loginView.classList.remove('hidden');
     openModal();
 };
 
-// 🚨 GÜNCELLENDİ: Kayıt olurken sorunun rastgele atanması yerine, SELECT kutusunu doldur
 const displaySignupView = () => {
     hideAllAuthViews();
-    fillSecurityQuestionSelect(); // 🚨 Soruları doldur
-    signupView.classList.remove('hidden');
+    fillSecurityQuestionSelect();
+    if (signupView) signupView.classList.remove('hidden');
+    // Başlangıçta eğer 'none' seçiliyse inputu gizle
+    if (securityQuestionSelect && securityQuestionSelect.value === "none") {
+        if (securityAnswerInput) securityAnswerInput.style.display = "none";
+    }
     openModal();
 };
 
 const displayForgotPasswordView = () => {
     hideAllAuthViews();
-    forgotPasswordForm.reset();
-    forgotQuestionArea.classList.add('hidden');
-    newPasswordArea.classList.add('hidden');
-    forgotSubmitBtn.textContent = 'Devam Et';
-    forgotEmailInput.disabled = false;
+    if (forgotPasswordForm) forgotPasswordForm.reset();
+    if (forgotQuestionArea) forgotQuestionArea.classList.add('hidden');
+    if (newPasswordArea) newPasswordArea.classList.add('hidden');
+    if (forgotSubmitBtn) forgotSubmitBtn.textContent = 'Continue';
+    if (forgotEmailInput) forgotEmailInput.disabled = false;
     currentResetUserId = null;
-    forgotPasswordView.classList.remove('hidden');
+    if (forgotPasswordView) forgotPasswordView.classList.remove('hidden');
     openModal();
 };
 
-// 🚨 YENİ FONKSİYON: SELECT KUTUSUNU DOLDURUR
 const fillSecurityQuestionSelect = () => {
     if (!securityQuestionSelect) return;
-    
-    // Select kutusunun içeriğini temizle
-    securityQuestionSelect.innerHTML = '<option value="" disabled selected>-- Select a question --</option>';
-
+    securityQuestionSelect.innerHTML = ''; 
     SECURITY_QUESTIONS.forEach(q => {
         const option = document.createElement('option');
         option.value = q.value;
@@ -100,216 +101,152 @@ const fillSecurityQuestionSelect = () => {
     });
 };
 
-// 🚨 RASTGELE SORU SEÇME FONKSİYONU (setRandomSecurityQuestion) VE KULLANIMLARI SİLİNDİ/DEĞİŞTİRİLDİ
+// --- GÜVENLİK SORUSU DEĞİŞİMİ: DİNAMİK REQUIRED KONTROLÜ ---
+if (securityQuestionSelect) {
+    securityQuestionSelect.addEventListener('change', (e) => {
+        if (securityAnswerInput) {
+            if (e.target.value === "none") {
+                securityAnswerInput.style.display = "none"; // Gizle
+                securityAnswerInput.required = false;      // Zorunluluğu kaldır
+                securityAnswerInput.value = "";             // Temizle
+            } else {
+                securityAnswerInput.style.display = "block"; // Göster
+                securityAnswerInput.required = true;       // Zorunlu yap
+            }
+        }
+    });
+}
 
-
-// --- OLAY DİNLEYİCİLERİ (Aynı Kalır) ---
-showLoginBtn.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
-showSignupBtn.addEventListener('click', (e) => { e.preventDefault(); displaySignupView(); });
-closeAuthBtn.addEventListener('click', closeModal);
-modalOverlay.addEventListener('click', closeModal);
-showSignupLink.addEventListener('click', (e) => { e.preventDefault(); displaySignupView(); });
-showLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
-showForgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); displayForgotPasswordView(); });
-backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); displayLoginView(); });
-
+// --- BUTON OLAY DİNLEYİCİLERİ ---
+if (showLoginBtn) showLoginBtn.onclick = (e) => { e.preventDefault(); displayLoginView(); };
+if (showSignupBtn) showSignupBtn.onclick = (e) => { e.preventDefault(); displaySignupView(); };
+if (closeAuthBtn) closeAuthBtn.onclick = closeModal;
+if (modalOverlay) modalOverlay.onclick = closeModal;
+if (showSignupLink) showSignupLink.onclick = (e) => { e.preventDefault(); displaySignupView(); };
+if (showLoginLink) showLoginLink.onclick = (e) => { e.preventDefault(); displayLoginView(); };
+if (showForgotPasswordLink) showForgotPasswordLink.onclick = (e) => { e.preventDefault(); displayForgotPasswordView(); };
+if (backToLoginLink) backToLoginLink.onclick = (e) => { e.preventDefault(); displayLoginView(); };
 
 // --- VERİTABANI İŞLEMLERİ ---
 
-// 1. Kayıt Olma Formu (GÜNCELLENDİ)
-signupForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fullName = document.getElementById('signup-fullname').value;
-    const email = document.getElementById('signup-email').value;
-    const password = document.getElementById('signup-password').value;
-    const role = document.querySelector('input[name="role"]:checked').value;
-    
-    // 🚨 GÜVENLİK SORUSU VERİLERİNİ AL (SELECT KUTUSUNDAN ALIYORUZ)
-    const securityQuestion = document.getElementById('security-question-select').value;
-    const securityAnswer = document.getElementById('security-answer').value;
-
-    if (!securityQuestion) {
-        alert('Please select a security question!');
-        return;
-    }
-
-    const isVerifiedStatus = (role !== 'teacher');
-
-    const { data, error } = await _supabase
-        .from('profiles')
-        .insert([
-            { 
-                full_name: fullName, 
-                email: email, 
-                password: password, 
-                role: role,
-                is_verified: isVerifiedStatus,
-                security_question: securityQuestion,
-                security_answer: securityAnswer
-            }
-        ])
-        .select()
-        .single();
-
-    if (error) {
-        if (error.code === '23505') { 
-            alert('This email address is already registered.');
-        } else {
-            alert('Registration error: ' + error.message);
-        }
-    } else {
-        alert('Registration successful! You can now log in.');
-        displayLoginView();
-        signupForm.reset();
-    }
-});
-
-// 2. Giriş Yapma Formu (Aynı Kalır)
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-
-    const { data: user, error } = await _supabase
-        .from('profiles')
-        .select('*')
-        .eq('email', email)
-        .eq('password', password)
-        .single();
-
-    if (error || !user) {
-        alert('Login error: Email or password is incorrect.');
-    } else {
-        localStorage.setItem('user', JSON.stringify(user));
-        window.location.reload(); 
-    }
-});
-
-
-// 3. Şifre Sıfırlama Butonu (CLICK Olayı - Aynı Kalır)
-forgotSubmitBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-
-    if (!currentResetUserId) {
-        // --- AŞAMA 1: E-posta kontrolü ---
-        const email = forgotEmailInput.value;
+// 1. Kayıt Olma
+if (signupForm) {
+    signupForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const fullName = getEl('signup-fullname').value;
+        const email = getEl('signup-email').value;
+        const password = getEl('signup-password').value;
+        const role = document.querySelector('input[name="role"]:checked').value;
         
-        if (!email) {
-            alert("Please enter your email address.");
+        const securityQuestion = securityQuestionSelect.value;
+        const securityAnswer = securityAnswerInput.value;
+
+        // "none" seçildiyse veritabanına null gönder
+        let finalQuestion = securityQuestion === "none" ? null : securityQuestion;
+        let finalAnswer = securityQuestion === "none" ? null : securityAnswer;
+
+        if (finalQuestion && !finalAnswer) {
+            alert('Please provide an answer for your chosen security question!');
             return;
         }
+
+        const isVerifiedStatus = (role !== 'teacher');
+
+        const { data, error } = await _supabase.from('profiles').insert([{ 
+            full_name: fullName, 
+            email: email, 
+            password: password, 
+            role: role,
+            is_verified: isVerifiedStatus,
+            security_question: finalQuestion,
+            security_answer: finalAnswer
+        }]);
+
+        if (error) {
+            alert(error.code === '23505' ? 'Email already registered.' : 'Error: ' + error.message);
+        } else {
+            alert('Registration successful! You can now log in.');
+            displayLoginView();
+            signupForm.reset();
+        }
+    };
+}
+
+// 2. Giriş Yapma
+if (loginForm) {
+    loginForm.onsubmit = async (e) => {
+        e.preventDefault();
+        const email = getEl('login-email').value;
+        const password = getEl('login-password').value;
 
         const { data: user, error } = await _supabase
             .from('profiles')
-            .select('id, security_question')
+            .select('*')
             .eq('email', email)
+            .eq('password', password)
             .single();
 
         if (error || !user) {
-            alert('This email address is not registered in the system.');
-            return;
-        }
-
-        const questionData = SECURITY_QUESTIONS.find(q => q.value === user.security_question);
-        if (!questionData) {
-            alert('Your registered security question could not be found. Please contact the administrator.');
-            return;
-        }
-
-        // Aşamayı 2'ye geçir
-        currentResetUserId = user.id;
-        forgotEmailInput.disabled = true;
-        forgotQuestionLabel.textContent = questionData.text;
-        document.getElementById('forgot-security-question-value').value = user.security_question;
-        forgotQuestionArea.classList.remove('hidden');
-        forgotSubmitBtn.textContent = 'Answer and Continue';
-
-    } else if (currentResetUserId && !newPasswordArea.classList.contains('hidden')) {
-        // --- AŞAMA 3: Şifreyi Güncelleme ---
-        const newPassword = document.getElementById('new-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
-
-        if (newPassword !== confirmPassword) {
-            alert('New passwords do not match!');
-            return;
-        }
-        if (newPassword.length < 6) {
-             alert('Password must be at least 6 characters long.');
-             return;
-        }
-
-        const { error: updateError } = await _supabase
-            .from('profiles')
-            .update({ password: newPassword })
-            .eq('id', currentResetUserId);
-
-        if (updateError) {
-            alert('An error occurred while updating password: ' + updateError.message);
+            alert('Incorrect email or password.');
         } else {
-            alert('Your password has been successfully updated! You can now log in.');
-            closeModal();
-            forgotPasswordForm.reset();
+            localStorage.setItem('user', JSON.stringify(user));
+            window.location.reload(); 
         }
+    };
+}
 
-    } else if (currentResetUserId) {
-        // --- AŞAMA 2: Güvenlik Sorusunu Kontrol Etme ---
-        const answer = document.getElementById('forgot-security-answer').value;
-        const question = document.getElementById('forgot-security-question-value').value;
-        
-        if (!answer) {
-             alert('Please answer the security question.');
-             return;
+// 3. Şifre Sıfırlama
+if (forgotSubmitBtn) {
+    forgotSubmitBtn.onclick = async (e) => {
+        e.preventDefault();
+
+        if (!currentResetUserId) {
+            const email = forgotEmailInput.value;
+            const { data: user, error } = await _supabase.from('profiles').select('id, security_question').eq('email', email).single();
+
+            if (error || !user) { alert('Email not found.'); return; }
+            if (!user.security_question || user.security_question === 'none') {
+                alert('No security question set. Please contact admin.');
+                return;
+            }
+
+            const qData = SECURITY_QUESTIONS.find(q => q.value === user.security_question);
+            currentResetUserId = user.id;
+            forgotEmailInput.disabled = true;
+            forgotQuestionLabel.textContent = qData.text;
+            getEl('forgot-security-question-value').value = user.security_question;
+            forgotQuestionArea.classList.remove('hidden');
+            forgotSubmitBtn.textContent = 'Verify Answer';
+
+        } else if (!newPasswordArea.classList.contains('hidden')) {
+            const newPass = getEl('new-password').value;
+            const confirmPass = getEl('confirm-password').value;
+            if (newPass !== confirmPass) { alert('Passwords do not match!'); return; }
+            
+            const { error } = await _supabase.from('profiles').update({ password: newPass }).eq('id', currentResetUserId);
+            if (!error) {
+                alert('Password updated! You can log in.');
+                closeModal();
+            }
+        } else {
+            const ans = getEl('forgot-security-answer').value;
+            const qVal = getEl('forgot-security-question-value').value;
+            const { data: check } = await _supabase.from('profiles').select('id').eq('id', currentResetUserId).eq('security_question', qVal).eq('security_answer', ans).single();
+
+            if (!check) { alert('Incorrect answer!'); return; }
+            newPasswordArea.classList.remove('hidden');
+            forgotSubmitBtn.textContent = 'Update Password';
         }
+    };
+}
 
-        const { data: userCheck, error: checkError } = await _supabase
-            .from('profiles')
-            .select('id')
-            .eq('id', currentResetUserId)
-            .eq('security_question', question)
-            .eq('security_answer', answer)
-            .single();
-
-        if (checkError || !userCheck) {
-            alert('Security question answer is incorrect! Please try again.');
-            return;
-        }
-
-        // Aşamayı 3'e geçir
-        newPasswordArea.classList.remove('hidden');
-        forgotSubmitBtn.textContent = 'Update Password';
-        document.getElementById('forgot-security-answer').disabled = true;
-
-    }
-});
-
-
-// 4. Sayfa Yüklendiğinde Oturum Kontrolü ve Yönlendirme
+// 4. Sayfa Yüklendiğinde
 document.addEventListener('DOMContentLoaded', () => {
-    // 🚨 SAYFA YÜKLENİRKEN SELECT KUTULARINI DOLDUR
     fillSecurityQuestionSelect();
-    
-    const userString = localStorage.getItem('user');
-    
-    if (userString) {
-        const user = JSON.parse(userString);
-        
-        switch (user.role) {
-            case 'student': 
-                window.location.href = 'student.html'; 
-                break;
-            case 'teacher': 
-                if (user.is_verified === false) {
-                    window.location.href = 'pages/teacher/pending.html';
-                } else {
-                    window.location.href = 'teacher.html';
-                }
-                break;
-            case 'admin': 
-                window.location.href = 'admin.html'; 
-                break;
-            default: 
-                localStorage.removeItem('user');
-                break;
-        }
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+        if (user.role === 'student') window.location.href = 'student.html';
+        else if (user.role === 'teacher') window.location.href = user.is_verified ? 'teacher.html' : 'pages/teacher/pending.html';
+        else if (user.role === 'admin') window.location.href = 'admin.html';
     }
 });
