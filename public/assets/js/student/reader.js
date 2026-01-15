@@ -272,6 +272,7 @@ const saveCurrentNote = () => {
 };
 
 /* ========= 4) AI MATERYAL OLUŞTURMA & LİSTE ========= */
+/* ========= 4) AI MATERYAL OLUŞTURMA & LİSTE (GÜNCELLENMİŞ FONKSİYON) ========= */
 const handleGenerateNewMaterial = async (e) => {
   e.preventDefault();
   const user = getUser();
@@ -285,10 +286,8 @@ const handleGenerateNewMaterial = async (e) => {
   const length = document.getElementById('content-length')?.value;
   const textType = document.getElementById('text-type')?.value;
 
-  // Diyalog için özel prompt
   const isDialogue = textType === 'dialogue';
   const promptDetails = `Write a ${length} English ${textType} about ${category} for ${difficulty} level. ${isDialogue ? 'Response MUST be ONLY a JSON array of objects like this: [{"speaker": "Name", "dialogue": "Text..."}].' : 'Response MUST be ONLY JSON: {"title": "...", "body": "..."}'}`;
-
 
   try {
     const response = await fetch(AI_FUNCTION_URL, {
@@ -297,6 +296,20 @@ const handleGenerateNewMaterial = async (e) => {
       body: JSON.stringify({ promptDetails }),
     });
 
+    // ========== GÜNCELLEME BURADA BAŞLIYOR ==========
+    // Sunucudan gelen yanıtın başarılı olup olmadığını kontrol et (örn: 200 OK).
+    // Eğer yanıt 400, 500 gibi bir hata kodu içeriyorsa, 'response.ok' false döner.
+    if (!response.ok) {
+      // Sunucunun gönderdiği hata mesajını JSON olarak okumaya çalış.
+      // Supabase function'ınız `{ error: '...' }` formatında bir yanıt gönderir.
+      const errorData = await response.json();
+      // Gerçek hata mesajını 'catch' bloğuna göndermek için bir hata fırlat.
+      // Bu sayede kullanıcıya "AI içerik döndürmedi" yerine gerçek sorunu gösterebiliriz.
+      throw new Error(errorData.error || `Server responded with status: ${response.status}`);
+    }
+    // ========== GÜNCELLEME BURADA BİTİYOR ==========
+
+    // Eğer kod buraya ulaştıysa, sunucudan başarılı bir yanıt gelmiştir.
     const responseData = await response.json();
     const rawText = responseData.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
@@ -340,6 +353,7 @@ const handleGenerateNewMaterial = async (e) => {
     await loadUserMaterials();
     await displayMaterial(newContent.id);
   } catch (err) {
+    // Artık burada Gemini'den veya sunucudan gelen gerçek hata mesajını göreceğiz!
     alert('Error generating content: ' + (err?.message || err));
     console.error(err);
   } finally {
