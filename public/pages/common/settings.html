@@ -10,12 +10,58 @@
         .settings-container { max-width: 650px; margin: 0 auto; padding-bottom: 40px; }
         .section-title { border-bottom: 2px solid #f1f5f9; margin: 30px 0 15px; padding-bottom: 10px; color: #1e293b; font-size: 1.2rem; }
         .avatar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 20px 0; }
-        .avatar-option { cursor: pointer; border: 3px solid transparent; border-radius: 50%; padding: 5px; width: 70px; height: 70px; object-fit: cover; background: #f8fafc; transition: 0.3s; }
-        .avatar-option.selected { border-color: #4CAF50; background: #e8f5e9; transform: scale(1.1); }
+        .avatar-option {
+            cursor: pointer;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            padding: 5px;
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            background: var(--surface);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+        .avatar-option:hover {
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 10px 22px rgba(109, 40, 217, 0.18);
+        }
+        .avatar-option.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            transform: scale(1.08);
+            box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--primary-border);
+        }
         .card label { display: block; margin-top: 15px; font-weight: 600; color: #475569; font-size: 0.9rem; }
         .card input, .card select { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; }
         .card input:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
-        .btn-green { background-color: #4CAF50; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
+        .btn-green {
+            background-color: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            font-weight: bold;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+        }
+
+        .btn-green:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 14px 30px rgba(109, 40, 217, 0.28);
+            transform: translateY(-1px);
+        }
+        /* Card hover effect (Settings) */
+        .card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 40px rgba(109, 40, 217, 0.15);
+            border-color: var(--primary-border);
+        }
         .btn-red { background-color: #e74c3c; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
         .security-box { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px; }
         #display-security-question { color: #1e293b; font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; display: block; }
@@ -40,7 +86,7 @@
             <header class="dashboard-header" style="display: flex; justify-content: space-between; align-items: center;">
                 <h2>Account Settings</h2>
                 <div class="user-info">
-                    <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #4CAF50; object-fit: cover;">
+                    <img id="user-avatar" src="https://via.placeholder.com/40" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #7314c6; object-fit: cover;">
                     <span id="welcome-message"></span>
                     <button id="logout-button">Logout</button>
                 </div>

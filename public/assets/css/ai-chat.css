@@ -21,7 +21,7 @@
 #new-chat-btn {
     width: 100%;
     padding: 10px;
-    background-color: #4CAF50;
+    background-color: #7314c6;
     color: white;
     border: none;
     border-radius: 6px;
@@ -55,7 +55,7 @@
 
 .history-item.active {
     background-color: #e0e0e0;
-    border-color: #4CAF50;
+    border-color: #7314c6;
     font-weight: 600;
 }
 
@@ -89,7 +89,7 @@
 }
 
 .chat-message.user {
-    background-color: #4CAF50;
+    background-color: #7314c6;
     color: white;
     align-self: flex-end;
     border-bottom-right-radius: 4px;
@@ -121,7 +121,7 @@
 
 #send-btn {
     padding: 0 25px;
-    background-color: #4CAF50;
+    background-color: #7314c6;
     color: white;
     border: none;
     border-radius: 8px;

@@ -7,22 +7,32 @@
 
 /* Değişkenler ile renk paletini ve genel ayarları yönetmek daha kolay */
 :root {
-    --primary-color: #0d6efd;
-    --primary-color-hover: #0b5ed7;
-    --secondary-color: #28a745;
-    --secondary-color-hover: #218838;
-    
-    --text-light: #ffffff;
-    --text-dark: #343a40;
-    --text-muted: #6c757d;
+    /* Brand (Purple) */
+    --primary: #6D28D9;
+    --primary-hover: #5B21B6;
+    --primary-soft: #EDE9FE;
+    --primary-border: #C4B5FD;
 
-    --highlight-color: #f8e71c;
+    /* Legacy variable names used in this file */
+    --primary-color: var(--primary);
+    --primary-color-hover: var(--primary-hover);
+    --secondary-color: var(--primary);          /* CTA'larda yeşil yerine mor */
+    --secondary-color-hover: var(--primary-hover);
+
+    /* Text */
+    --text-light: #ffffff;
+    --text-dark: #111827;
+    --text-muted: #6B7280;
+
+    /* Accents / Backgrounds */
+    --highlight-color: #DDD6FE;                 /* hero başlık vurgusu (mor-lila) */
     --background-dark-overlay: rgba(0, 0, 0, 0.65);
-    --background-light: #f8f9fa;
+    --background-light: #F7F7FB;                /* hafif lila-gri */
     --background-white: #ffffff;
-    
-    --border-color: #dee2e6;
-    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+    /* UI */
+    --border-color: #E5E7EB;
+    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.10);
 }
 
 * {
@@ -79,7 +89,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
     border-radius: 50px;
     backdrop-filter: blur(10px);
-    box-shadow: var(--box-shadow);
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
 }
 
 .logo a {
@@ -104,7 +114,7 @@ body {
 }
 
 .main-nav a:hover {
-    color: var(--primary-color);
+    color: var(--primary);
 }
 
 .main-nav .cta-button {
@@ -254,8 +264,8 @@ body {
 
 #auth-container input:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.15);
 }
 
 /* Sadece form içindeki ana butonları (submit) hedef alalım */
@@ -264,7 +274,7 @@ body {
     padding: 12px;
     border: none;
     border-radius: 8px;
-    background-color: var(--primary-color);
+    background-color: var(--primary);
     color: white;
     font-size: 1rem;
     font-weight: 500;
@@ -273,7 +283,7 @@ body {
 }
 
 #auth-container form button:hover {
-    background-color: var(--primary-color-hover);
+    background-color: var(--primary-hover);
     transform: translateY(-2px);
 }
 
@@ -284,7 +294,7 @@ body {
 }
 
 #auth-container a {
-    color: var(--primary-color);
+    color: var(--primary);
     text-decoration: none;
     font-weight: 500;
 }
@@ -373,7 +383,46 @@ body.dashboard-page {
 
 #user-dashboard h3 {
     margin-bottom: 1rem;
-    border-bottom: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary);
     padding-bottom: 0.5rem;
     display: inline-block;
+}
+
+/* ==========================================================================
+   Generic action buttons on forms
+   ========================================================================== */
+button, input[type="submit"] {
+    background-color: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: var(--primary-hover);
+}
+
+/* ===== Purple primary buttons (Settings / Profile) ===== */
+.settings-page button,
+.settings-page input[type="submit"] {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.settings-page button:hover,
+.settings-page input[type="submit"]:hover {
+    background-color: var(--primary-hover);
+}
+
+/* Fallback: any explicit green buttons */
+button[style*="green"],
+button.btn-success {
+    background-color: var(--primary) !important;
+}
+button[style*="green"]:hover,
+button.btn-success:hover {
+    background-color: var(--primary-hover) !important;
 }

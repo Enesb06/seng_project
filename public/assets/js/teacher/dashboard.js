@@ -32,7 +32,7 @@ async function loadClassSummary() {
 
     classListSummary.innerHTML = classes.map(cls => `
         <div class="card class-summary-item" data-class-id="${cls.id}" data-class-name="${cls.class_name}" 
-             style="padding: 15px; cursor: pointer; border-left: 5px solid #4CAF50; margin-bottom: 10px;">
+             style="padding: 15px; cursor: pointer; border-left: 5px solid #7314c6; margin-bottom: 10px;">
             <h4 style="margin: 0;">${cls.class_name} (${cls.class_code})</h4>
             <small>Click to see students</small>
         </div>

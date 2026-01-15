@@ -3,9 +3,10 @@
    ========================= */
 
 body {
-    background-color: #f4f7fa;
+    background-color: var(--bg);
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text);
 }
 
 .dashboard-container {
@@ -16,8 +17,8 @@ body {
 /* SIDEBAR */
 .sidebar {
     width: 260px;
-    background-color: #2c3e50;
-    color: #ecf0f1;
+    background-color: var(--bg-dark);
+    color: var(--light-text-color);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -37,7 +38,7 @@ body {
 }
 
 .sidebar .logo a {
-    color: #ecf0f1;
+    color: #fff;
     font-size: 1.8rem;
     font-weight: bold;
     text-decoration: none;
@@ -56,21 +57,22 @@ body {
 .sidebar nav ul li a {
     display: block;
     padding: 12px 15px;
-    color: #bdc3c7;
-    border-radius: 5px;
+    color: rgba(255, 255, 255, 0.82);
+    border-radius: 10px;
     text-decoration: none;
     transition: background-color 0.3s, color 0.3s;
 }
 
 .sidebar nav ul li a:hover {
-    background-color: #34495e;
+    background-color: rgba(109, 40, 217, 0.18);
     color: #ffffff;
 }
 
 .sidebar nav ul li.active a {
-    background-color: #4CAF50;
+    background-color: var(--primary);
     color: #ffffff;
-    font-weight: bold;
+    font-weight: 700;
+    box-shadow: 0 10px 22px rgba(109, 40, 217, 0.25);
 }
 
 /* MAIN CONTENT */
@@ -84,20 +86,20 @@ body {
 
 /* HEADER */
 .dashboard-header {
-    background-color: #ffffff;
+    background-color: var(--surface);
     padding: 15px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    border-bottom: 1px solid #e0e0e0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--border);
+    box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
 }
 
 .dashboard-header h2 {
     margin: 0;
     font-size: 1.5rem;
-    color: #333;
+    color: var(--text);
 }
 
 .dashboard-header .user-info {
@@ -110,11 +112,12 @@ body {
 
 #welcome-message {
     font-weight: 500;
+    color: var(--muted);
 }
 
 /* LOGOUT */
 #logout-button {
-    background-color: #e74c3c;
+    background-color: var(--error);
     color: white;
     border: none;
     padding: 8px 15px;
@@ -123,10 +126,11 @@ body {
     font-size: 0.9rem;
     transition: background-color 0.3s;
     width: auto;
+    box-shadow: 0 10px 22px rgba(220, 38, 38, 0.18);
 }
 
 #logout-button:hover {
-    background-color: #c0392b;
+    filter: brightness(0.92);
 }
 
 /* 🔥 STREAK CHIP */
@@ -137,10 +141,10 @@ body {
     padding: 6px 10px;
     border-radius: 999px;
     font-size: 0.85rem;
-    font-weight: 600;
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    color: #9a3412;
+    font-weight: 700;
+    background: var(--primary-soft);
+    border: 1px solid var(--primary-border);
+    color: var(--primary);
     white-space: nowrap;
     cursor: default;
 }
@@ -156,7 +160,7 @@ body {
     position: absolute;
     top: 120%;
     right: 0;
-    background: #111827;
+    background: var(--text);
     color: #fff;
     padding: 8px 10px;
     border-radius: 8px;
@@ -169,14 +173,15 @@ body {
 .content-area {
     padding: 30px;
     flex-grow: 1;
+    background: transparent;
 }
 
 .card {
-    background-color: #ffffff;
+    background-color: var(--surface);
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
-    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
 }
 
 /* RESPONSIVE */
@@ -191,8 +196,23 @@ body {
         width: 100%;
         height: auto;
         box-shadow: none;
+        
     }
     .main-content { margin-left: 0; }
     .dashboard-container { flex-direction: column; }
     .dashboard-header { padding: 12px 15px; gap: 10px; }
+}
+
+/* ===== Purple theme polish (Student Dashboard) ===== */
+.sidebar nav ul li a:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
 }
