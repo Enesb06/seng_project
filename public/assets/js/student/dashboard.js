@@ -27,17 +27,18 @@ const goHome = () => {
 
 /* ========= BADGE TANIMLARI relaxed ========= */
 const BADGES = [
-  { key: 'read_1',   name: 'First Text',   image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', rule: (s) => s.reads >= 1 },
-  { key: 'quiz_1',   name: 'First Quiz',    image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png',  rule: (s) => s.quizzes >= 1 },
-  { key: 'read_10',  name: '10th Text',   image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png', rule: (s) => s.reads >= 10 },
-  { key: 'read_50',  name: '50th Text',   image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 50 },
-  { key: 'read_100', name: '100th Text',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 100 },
-  { key: 'read_200', name: '200th Text',  image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', rule: (s) => s.reads >= 200 },
+  { key: 'read_1',   name: 'First Text',   image: 'https://cdn-icons-png.flaticon.com/512/8750/8750754.png',  rule: (s) => s.reads >= 1 },
+  { key: 'quiz_1',   name: 'First Quiz',   image: 'https://cdn-icons-png.flaticon.com/512/10292/10292284.png', rule: (s) => s.quizzes >= 1 },
+  { key: 'read_10',  name: '10th Text',    image: 'https://cdn-icons-png.flaticon.com/512/16175/16175033.png', rule: (s) => s.reads >= 10 },
+  { key: 'read_50',  name: '50th Text',    image: 'https://cdn-icons-png.flaticon.com/512/10552/10552976.png', rule: (s) => s.reads >= 50 },
+  { key: 'read_100', name: '100th Text',   image: 'https://cdn-icons-png.flaticon.com/512/3113/3113049.png',  rule: (s) => s.reads >= 100 },
+  { key: 'read_200', name: '200th Text',   image: 'https://cdn-icons-png.flaticon.com/512/4959/4959279.png',  rule: (s) => s.reads >= 200 },
 
-  { key: 'medal_gold',   name: 'Gold Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583344.png', rule: (s) => s.quizAvg >= 90 },
-  { key: 'medal_silver', name: 'Silver Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583319.png', rule: (s) => s.quizAvg >= 80 && s.quizAvg < 90 },
-  { key: 'medal_bronze', name: 'Bronze Medal',  image: 'https://cdn-icons-png.flaticon.com/512/2583/2583330.png', rule: (s) => s.quizAvg >= 70 && s.quizAvg < 80 },
+  { key: 'medal_gold',   name: 'Gold Medal',   image: 'https://cdn-icons-png.flaticon.com/512/2583/2583381.png', rule: (s) => s.quizAvg >= 90 },
+  { key: 'medal_silver', name: 'Silver Medal', image: 'https://cdn-icons-png.flaticon.com/512/2583/2583350.png', rule: (s) => s.quizAvg >= 80 && s.quizAvg < 90 },
+  { key: 'medal_bronze', name: 'Bronze Medal', image: 'https://cdn-icons-png.flaticon.com/512/2583/2583448.png', rule: (s) => s.quizAvg >= 70 && s.quizAvg < 80 },
 ];
+
 
 const pickMedalKey = (avg) => {
   if (avg >= 90) return 'medal_gold';
