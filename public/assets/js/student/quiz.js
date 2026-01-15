@@ -156,20 +156,47 @@ const showQuestion = () => {
 };
  
 // --- 3. CEVAP KONTROLÜ ---
+// --- 3. CEVAP KONTROLÜ (MODAL VERSION) ---
 const handleAnswerClick = (selectedIndex) => {
     const correctIdx = currentQuestions[currentIndex].correctIndex;
-    
+    const correctText = currentQuestions[currentIndex].options[correctIdx];
+
+    const modal = document.getElementById('quiz-feedback-modal');
+    const modalIcon = document.getElementById('quiz-modal-icon');
+    const modalTitle = document.getElementById('quiz-modal-title');
+    const modalWord = document.getElementById('quiz-modal-word');
+    const modalExpl = document.getElementById('quiz-modal-explanation');
+    const nextBtn = document.getElementById('quiz-modal-next-btn');
+
+    // doğru
     if (selectedIndex === correctIdx) {
-        score++;
-        alert("Correct! 🎉");
-    } else {
-        const correctText = currentQuestions[currentIndex].options[correctIdx];
-        alert(`Wrong! ❌ The correct answer was: ${correctText}`);
-    }
-    
+    score++;
+
+    modal.classList.remove('hidden', 'wrong');
+    modal.classList.add('correct');
+
+    modalTitle.textContent = 'Correct!';
+    modalWord.textContent = `“${correctText}” `;
+    modalExpl.style.display = 'none';
+} 
+else {
+    modal.classList.remove('hidden', 'correct');
+    modal.classList.add('wrong');
+
+    modalTitle.textContent = 'Wrong!';
+    modalWord.textContent = `Correct: “${correctText}”`;
+    modalExpl.style.display = 'none';
+}
+
+nextBtn.onclick = () => {
+    modal.classList.add('hidden');
     currentIndex++;
     showQuestion();
 };
+
+};
+
+
  
 // --- 4. SONUCU GÖSTER VE VERİTABANINA KAYDET ---
 const showResults = async () => {

@@ -1,218 +1,332 @@
-/* =========================
-   assets/css/quiz.css (SAFE PREMIUM)
-   - Only styles your existing ids/classes
-   - Does NOT touch .hidden
-   ========================= */
+/* ===========================================
+   LEARNENG PREMIUM QUIZ THEME (FINAL BUILD)
+   =========================================== */
 
-.quiz-container{
-  max-width: 900px;
+/* Layout */
+.quiz-container, #quiz-container {
+  max-width: 880px;
   margin: 0 auto;
+  padding: 6px;
 }
 
-/* cards */
+/* === Card Upgrade (matches dashboard & wordlist) */
 #quiz-intro.card,
 #quiz-container.card,
 #result-area.card,
-#quiz-history.card{
+#quiz-history.card {
+  background: rgba(255,255,255,0.96);
   border-radius: 18px;
   border: 1px solid rgba(15,23,42,0.08);
   box-shadow: 0 18px 46px rgba(17,24,39,0.08);
-  background: rgba(255,255,255,0.96);
-}
-
-/* subtle top gradient line */
-#quiz-intro.card::before,
-#quiz-container.card::before,
-#result-area.card::before,
-#quiz-history.card::before{
-  content:"";
-  display:block;
-  height: 10px;
-  border-radius: 18px 18px 0 0;
-  background: linear-gradient(90deg, rgba(124,58,237,0.22), rgba(109,40,217,0.10), rgba(34,197,94,0.10));
-}
-
-/* intro text */
-#quiz-intro h3,
-#result-area h3,
-#quiz-history h3{
-  margin: 14px 0 10px;
-  font-size: 1.25rem;
-  font-weight: 1000;
-  color: rgba(15,23,42,0.88);
-  letter-spacing: -0.2px;
-}
-
-#quiz-info-text{
-  margin: 0 0 14px;
-  color: rgba(15,23,42,0.62);
-  font-weight: 700;
-}
-
-/* IMPORTANT: only style the specific buttons you already have */
-#start-quiz-btn,
-#result-area .cta-button{
-  width: 100%;
-  height: 54px;
-  border-radius: 14px !important;
-  border: none !important;
-  cursor: pointer;
-  font-weight: 1000;
-  font-size: 1.05rem;
-
-  color: #fff;
-  background: linear-gradient(90deg, #7c3aed, #6d28d9);
-  box-shadow: 0 18px 38px rgba(109,40,217,0.22);
-  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-}
-
-#start-quiz-btn:hover,
-#result-area .cta-button:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.03);
-  box-shadow: 0 24px 52px rgba(109,40,217,0.26);
-}
-
-#start-quiz-btn:disabled{
-  background: rgba(148,163,184,0.70);
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-/* loader: ONLY your #loader */
-#loader{
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-weight: 900;
-  color: rgba(15,23,42,0.70);
-  background: rgba(109,40,217,0.06);
-  border: 1px solid rgba(109,40,217,0.15);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-#loader::before{
-  content:"";
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 3px solid rgba(109,40,217,0.22);
-  border-top-color: rgba(109,40,217,0.75);
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin{
-  to { transform: rotate(360deg); }
-}
-
-/* question */
-#question-text{
-  margin: 10px 0 14px;
-  font-size: 1.35rem;
-  font-weight: 1000;
-  color: rgba(15,23,42,0.90);
-  letter-spacing: -0.2px;
-  line-height: 1.35;
-}
-
-/* options grid */
-.options-grid{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin: 14px 0 8px;
-}
-
-/* options: ONLY elements that have .option-btn class */
-.option-btn{
-  width: 100%;
-  text-align: left;
-  padding: 16px 16px;
-
-  border-radius: 16px;
-  border: 1px solid rgba(15,23,42,0.10);
-  background: rgba(255,255,255,0.98);
-  box-shadow: 0 12px 22px rgba(17,24,39,0.06);
-
-  font-size: 1.02rem;
-  font-weight: 900;
-  color: rgba(15,23,42,0.80);
-
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+  padding: 26px 28px;
+  margin-bottom: 28px;
   position: relative;
   overflow: hidden;
 }
 
-.option-btn::before{
+/* === Top Header Strip (LearnENG signature strip) */
+#quiz-intro.card::before,
+#quiz-container.card::before,
+#result-area.card::before,
+#quiz-history.card::before {
   content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:8px;
+  border-radius:18px 18px 0 0;
+  background:linear-gradient(
+      90deg,
+      rgba(124,58,237,0.25),
+      rgba(109,40,217,0.18),
+      rgba(34,197,94,0.20)
+  );
+}
+
+/* === Question Title */
+#question-text {
+  font-size:1.40rem;
+  font-weight:1000;
+  letter-spacing:-0.25px;
+  color:rgba(15,23,42,0.92);
+  margin-bottom:20px;
+  line-height:1.45;
+}
+
+/* === Options Grid (4 tiles) */
+.options-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:18px;
+}
+
+/* === Option Tile (componentized) */
+.option-btn {
+  width:100%;
+  text-align:left;
+  padding:18px 20px;
+  border-radius:18px;
+  border:1px solid rgba(15,23,42,0.10);
+  background:rgba(255,255,255,0.98);
+  box-shadow:0 14px 26px rgba(17,24,39,0.06);
+  font-size:1.05rem;
+  font-weight:900;
+  color:rgba(15,23,42,0.80);
+  cursor:pointer;
+  transition:transform .14s ease,
+             box-shadow .14s ease,
+             border-color .14s ease,
+             background .14s ease;
+}
+
+.option-btn:hover {
+  background:rgba(109,40,217,0.06);
+  border-color:rgba(109,40,217,0.35);
+  box-shadow:0 18px 32px rgba(109,40,217,0.12);
+  transform:translateY(-1px);
+}
+
+/* === Correct / Wrong states (matches wordlist chip logic) */
+.option-btn.correct {
+  background:linear-gradient(135deg, rgba(34,197,94,.16), rgba(34,197,94,.06));
+  border-color:rgba(34,197,94,.35);
+  color:#166534;
+}
+
+.option-btn.wrong {
+  background:linear-gradient(135deg, rgba(239,68,68,.16), rgba(239,68,68,.06));
+  border-color:rgba(239,68,68,.35);
+  color:#991b1b;
+}
+
+.option-btn.disabled {
+  opacity:0.55;
+  pointer-events:none;
+}
+
+/* === Quiz Progress Pill (matches badge chips) */
+#quiz-progress {
+  display:inline-flex;
+  align-items:center;
+  padding:8px 14px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:0.92rem;
+  color:rgba(15,23,42,0.70);
+  background:rgba(109,40,217,0.08);
+  border:1px solid rgba(109,40,217,0.14);
+  margin-top:6px;
+}
+
+/* === Result Score */
+#score-text {
+  font-size:2rem;
+  font-weight:1000;
+  color:rgba(15,23,42,0.92);
+  margin-bottom:16px;
+}
+
+/* === CTA Button Upgrade */
+#start-quiz-btn,
+#result-area .cta-button {
+  width:100%;
+  height:54px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-weight:1000;
+  font-size:1.05rem;
+  color:#fff;
+  background:linear-gradient(90deg,#7c3aed,#6d28d9);
+  box-shadow:0 18px 38px rgba(109,40,217,0.22);
+  transition:transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+
+#start-quiz-btn:hover,
+#result-area .cta-button:hover {
+  transform:translateY(-1px);
+  filter:brightness(1.03);
+  box-shadow:0 24px 52px rgba(109,40,217,0.26);
+}
+
+/* === History Section (matches wordlist table style) */
+#quiz-history-list table {
+  width:100%;
+  border-collapse:collapse;
+  font-weight:800;
+  color:rgba(15,23,42,0.75);
+}
+
+#quiz-history-list th {
+  background:rgba(109,40,217,0.06);
+  font-weight:900;
+  color:rgba(15,23,42,0.85);
+  padding:14px 8px;
+  border-bottom:1px solid rgba(15,23,42,0.08);
+}
+
+#quiz-history-list td {
+  padding:14px 8px;
+  border-bottom:1px solid rgba(15,23,42,0.06);
+}
+
+/* === Loader inline chip style */
+#loader {
+  padding:12px 14px;
+  border-radius:14px;
+  font-weight:900;
+  color:rgba(15,23,42,0.70);
+  background:rgba(109,40,217,0.06);
+  border:1px solid rgba(109,40,217,0.15);
+  margin-bottom:12px;
+}
+
+/* === Mobile Responsive */
+@media(max-width:760px){
+  .options-grid{ grid-template-columns:1fr; }
+  #question-text{ font-size:1.18rem; }
+  #score-text{ font-size:1.6rem; }
+}
+/* ================================
+   QUIZ FEEDBACK MODAL (FUN STYLE)
+   ================================ */
+
+.quiz-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* .hidden zaten globalde display:none; veriyor, onu kullanıyoruz. */
+
+.quiz-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(3px);
+}
+
+.quiz-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(420px, 90vw);
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 22px;
+  padding: 22px 22px 18px;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.35);
+  text-align: center;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+/* Üst şerit – LearnENG gradient */
+.quiz-modal-content::before {
+  content: "";
   position: absolute;
   left: 0;
+  right: 0;
   top: 0;
-  bottom: 0;
-  width: 6px;
-  background: rgba(109,40,217,0.12);
+  height: 7px;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(
+    90deg,
+    rgba(124, 58, 237, 0.8),
+    rgba(109, 40, 217, 0.7),
+    rgba(34, 197, 94, 0.7)
+  );
 }
 
-.option-btn:hover{
-  transform: translateY(-1px);
-  border-color: rgba(109,40,217,0.35);
-  background: rgba(109,40,217,0.06);
-  box-shadow: 0 18px 32px rgba(109,40,217,0.14);
-}
-
-.option-btn:focus{
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(109,40,217,0.14), 0 18px 32px rgba(109,40,217,0.14);
-  border-color: rgba(109,40,217,0.45);
-}
-
-/* if your JS adds these classes, nice states */
-.option-btn.correct{
-  border-color: rgba(34,197,94,0.35);
-  background: rgba(34,197,94,0.12);
-}
-.option-btn.correct::before{ background: rgba(34,197,94,0.55); }
-
-.option-btn.wrong{
-  border-color: rgba(239,68,68,0.30);
-  background: rgba(239,68,68,0.10);
-}
-.option-btn.wrong::before{ background: rgba(239,68,68,0.55); }
-
-/* progress pill */
-#quiz-progress{
-  margin-top: 12px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: rgba(109,40,217,0.06);
-  border: 1px solid rgba(109,40,217,0.14);
-  color: rgba(15,23,42,0.62);
-  font-weight: 1000;
-  font-size: 0.92rem;
-}
-
-/* result */
-#score-text{
-  margin: 8px 0 14px;
-  font-weight: 1000;
-  color: rgba(15,23,42,0.82);
-}
-
-/* history: if your JS prints a list of divs */
-#quiz-history-list{
+/* Emoji icon */
+.quiz-modal-icon {
+  font-size: 2.4rem;
   margin-top: 10px;
-  color: rgba(15,23,42,0.70);
-  font-weight: 800;
+  margin-bottom: 8px;
 }
 
-/* mobile */
-@media (max-width: 760px){
-  .options-grid{ grid-template-columns: 1fr; }
-  #question-text{ font-size: 1.18rem; }
+/* Başlık */
+.quiz-modal-title {
+  font-size: 1.3rem;
+  font-weight: 1000;
+  letter-spacing: -0.2px;
+  color: rgba(15, 23, 42, 0.92);
+  margin-bottom: 8px;
+}
+
+/* Word satırı */
+.quiz-modal-word {
+  font-weight: 900;
+  font-size: 1rem;
+  color: rgba(15, 23, 42, 0.80);
+  margin-bottom: 6px;
+}
+
+/* Açıklama – sadece yanlış cevapta dolu olacak */
+.quiz-modal-explanation {
+  font-weight: 700;
+  font-size: 0.94rem;
+  color: rgba(15, 23, 42, 0.70);
+  margin-bottom: 14px;
+}
+
+/* Doğru cevaptaysa açıklamayı gizle (JS ile class ekleyince) */
+.quiz-modal.correct .quiz-modal-explanation {
+  display: none;
+}
+
+/* Correct vs Wrong tema renkleri */
+.quiz-modal.correct .quiz-modal-content {
+  border-color: rgba(34, 197, 94, 0.35);
+  box-shadow: 0 22px 60px rgba(34, 197, 94, 0.32);
+}
+
+.quiz-modal.correct .quiz-modal-icon {
+  /* Fun vibe: konfeti / yıldız */
+  filter: drop-shadow(0 6px 12px rgba(34, 197, 94, 0.45));
+}
+
+.quiz-modal.wrong .quiz-modal-content {
+  border-color: rgba(239, 68, 68, 0.40);
+  box-shadow: 0 22px 60px rgba(239, 68, 68, 0.35);
+}
+
+.quiz-modal.wrong .quiz-modal-icon {
+  filter: drop-shadow(0 6px 12px rgba(239, 68, 68, 0.50));
+}
+
+/* Modal içindeki buton – mevcut cta-button stylını kullanıyoruz,
+   ekstra sadece margin ekliyoruz */
+#quiz-modal-next-btn {
+  margin-top: 4px;
+}
+
+/* Küçük ekranlar */
+@media (max-width: 480px) {
+  .quiz-modal-content {
+    padding: 18px 16px 16px;
+    border-radius: 20px;
+  }
+  .quiz-modal-title {
+    font-size: 1.15rem;
+  }
+}
+.quiz-modal-icon {
+  width: 70px;
+  height: 70px;
+  margin: 10px auto 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Doğru */
+.quiz-modal.correct .quiz-modal-icon {
+  background-image: url("https://cdn-icons-png.flaticon.com/512/190/190411.png");
+}
+
+/* Yanlış */
+.quiz-modal.wrong .quiz-modal-icon {
+  background-image: url("https://cdn-icons-png.flaticon.com/512/10541/10541435.png");
 }

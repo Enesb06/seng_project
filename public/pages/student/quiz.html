@@ -62,13 +62,35 @@
                 </div>
 
                 <div id="quiz-history" class="card">
-                    <h3>📜 My Quiz History</h3>
+                    <h3>My Quiz History</h3>
                     <div id="quiz-history-list">
                         Loading...
                     </div>
                 </div>
 
             </main>
+
+
+            <!-- Quiz Feedback Modal (Fun Style) -->
+        <div id="quiz-feedback-modal" class="quiz-modal hidden">
+        <div class="quiz-modal-backdrop"></div>
+        <div class="quiz-modal-content">
+            <div id="quiz-modal-icon" class="quiz-modal-icon"></div>
+            <h4 id="quiz-modal-title" class="quiz-modal-title">Correct!</h4>
+
+            <p id="quiz-modal-word" class="quiz-modal-word">Word: achievement</p>
+
+            <!-- Bu açıklama sadece yanlış cevapta DOLU olacak -->
+            <p id="quiz-modal-explanation" class="quiz-modal-explanation">
+            Correct meaning: “başarmak”
+            </p>
+
+            <button id="quiz-modal-next-btn" class="cta-button">
+            Next Question →
+            </button>
+        </div>
+        </div>
+
         </div>
     </div>
     <script type="module" src="../../assets/js/student/quiz.js"></script>
