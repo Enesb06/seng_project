@@ -1,32 +1,39 @@
 /* ---- HEADER STİLLERİ ---- */
 .main-header {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95%;
+    max-width: 1400px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
     z-index: 10;
     box-sizing: border-box;
-    transition: background-color 0.3s ease; /* Yumuşak geçiş için eklendi */
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e0e0e0;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
 }
 
-/* Sayfa scroll edildiğinde header'a arkaplan ekleyen class */
 .main-header.scrolled {
-    position: fixed; /* Sayfayla birlikte kaysın */
-    background-color: rgba(44, 62, 80, 0.95); /* Koyu ve hafif transparan bir renk */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    position: fixed;
+    top: 15px;
+    background-color: #ffffff;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border-color: transparent;
 }
-
 
 .main-header .logo a {
-    color: white; 
+    color: #333;
     text-decoration: none;
     font-size: 1.8rem;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: none;
 }
 
 .main-nav ul {
@@ -39,30 +46,33 @@
 }
 
 .main-nav a.btn-login {
-    color: white;
+    color: #333;
     text-decoration: none;
     padding: 10px 15px;
     font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: none;
 }
 
 .main-nav a.cta-button {
-    background-color: #f0ad4e;
+    background-color: #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */
     color: #fff;
     padding: 10px 20px;
     border-radius: 5px;
     text-decoration: none;
     font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease;
+}
+
+.main-nav a.cta-button:hover {
+    background-color: #584fdb; /* Vurgu renginin koyu tonu */
 }
 /* ------------------------------------ */
-
 
 /* Landing Page (index.html) Specific Styles */
 #landing-page {
     position: relative;
-    width: 100%; /* Artık 100vw değil, normal akışta */
-    height: 100vh; /* Ekranı kaplamaya devam ediyor */
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,21 +83,18 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed; /* Scroll sırasında arkaplan sabit kalır, şık bir efekt */
+    background-attachment: fixed;
 }
 
-/* --- BU KISIM TAMAMEN SİLİNDİ --- */
-/* Overlay artık hero section'ın kendisine uygulanacak, tüm sayfaya değil */
 #landing-page .overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgba(0, 0, 0, 0);
     z-index: 1;
 }
-/* ------------------------------------ */
 
 .hero-content {
     position: relative;
@@ -113,33 +120,14 @@
 
 /* Medya Sorguları (Responsive Tasarım) */
 @media (max-width: 768px) {
-    .main-header {
-        flex-direction: column;
-        padding: 15px 20px;
-        gap: 15px;
-        background-color: rgba(0, 0, 0, 0.3);
-        border-radius: 0 0 10px 10px;
-    }
-
-    .hero-content h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero-content p {
-        font-size: 1rem;
-    }
+    .main-header { flex-direction: column; padding: 15px 20px; gap: 15px; background-color: rgba(255, 255, 255, 0.95); }
+    .hero-content h1 { font-size: 2.5rem; }
+    .hero-content p { font-size: 1rem; }
 }
-
 @media (max-width: 480px) {
-    .main-header .logo a {
-        font-size: 1.5rem;
-    }
-
-    .hero-content h1 {
-        font-size: 2rem;
-    }
+    .main-header .logo a { font-size: 1.5rem; }
+    .hero-content h1 { font-size: 2rem; }
 }
-
 
 /* =============================================================== */
 /* ================== YENİ EKLENEN BÖLÜMLER ================== */
@@ -165,7 +153,7 @@
 
 /* Özellikler Bölümü */
 #features {
-    background-color: #f9f9f9;
+    background-color: #D9DCFF; /* ANA TEMA RENGİ GÜNCELLEMESİ */
 }
 
 .features-grid {
@@ -192,53 +180,28 @@
 .feature-card .icon {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: #4CAF50; /* Ana renk teması */
+    color: #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */
 }
 
-.feature-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #333;
-}
-
-.feature-card p {
-    font-size: 1rem;
-    color: #555;
-    line-height: 1.6;
-}
+.feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #333; }
+.feature-card p { font-size: 1rem; color: #555; line-height: 1.6; }
 
 /* Hakkımızda Bölümü */
-#about {
-    background-color: #fff;
-}
-
-#about .container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-#about p {
-    font-size: 1.1rem;
-    line-height: 1.8;
-    color: #555;
-}
+#about { background-color: #fff; }
+#about .container { max-width: 900px; margin: 0 auto; }
+#about p { font-size: 1.1rem; line-height: 1.8; color: #555; }
 
 /* Son Çağrı (CTA) Bölümü */
 #cta {
-    background-color: #34495e; /* Koyu mavi-gri */
+    background-color: #2F2E41; /* KOYU TEMA RENGİ GÜNCELLEMESİ */
     color: #fff;
 }
 
-#cta h2 {
-    color: #fff;
-}
-
-#cta .section-subtitle {
-    color: rgba(255, 255, 255, 0.8);
-}
+#cta h2 { color: #fff; }
+#cta .section-subtitle { color: rgba(255, 255, 255, 0.8); }
 
 #cta .cta-button {
-    background-color: #f0ad4e;
+    background-color: #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */
     color: #fff;
     padding: 15px 30px;
     border-radius: 5px;
@@ -251,29 +214,22 @@
 }
 
 #cta .cta-button:hover {
-    background-color: #ec971f;
+    background-color: #584fdb; /* Vurgu renginin koyu tonu */
 }
 
 /* Footer */
 .main-footer {
-    background-color: #2c3e50;
+    background-color: #2F2E41; /* KOYU TEMA RENGİ GÜNCELLEMESİ */
     color: #bdc3c7;
     text-align: center;
     padding: 20px;
 }
-/* =============================================================== */
-/* =========== YENİ EKLENEN BÖLÜMLERİN STİLLERİ ============ */
-/* =============================================================== */
 
-/* "Kimler İçin?" Bölümü (Öğrenci/Öğretmen) */
-#for-whom {
-    background-color: #fff;
-}
+/* "Kimler İçin?" Bölümü */
+#for-whom { background-color: #fff; }
 
 /* "Nasıl Çalışır?" Bölümü */
-#how-it-works {
-    background-color: #fff;
-}
+#how-it-works { background-color: #fff; }
 
 .steps-container {
     display: flex;
@@ -281,21 +237,15 @@
     gap: 30px;
     max-width: 1200px;
     margin: 60px auto 0 auto;
-    flex-wrap: wrap; /* Mobilde alt alta geçsin */
+    flex-wrap: wrap;
 }
 
-.step-item {
-    flex: 1;
-    min-width: 280px;
-    max-width: 350px;
-    position: relative;
-    padding: 20px;
-}
+.step-item { flex: 1; min-width: 280px; max-width: 350px; position: relative; padding: 20px; }
 
 .step-item .step-number {
     width: 60px;
     height: 60px;
-    background-color: #4CAF50;
+    background-color: #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */
     color: #fff;
     border-radius: 50%;
     display: flex;
@@ -304,281 +254,19 @@
     font-size: 2rem;
     font-weight: bold;
     margin: 0 auto 20px auto;
-    border: 4px solid #e0f2f1; /* Hafif yeşil bir çerçeve */
+    border: 4px solid #D9DCFF; /* ANA TEMA RENGİ GÜNCELLEMESİ */
 }
 
-.step-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.step-item p {
-    color: #555;
-    line-height: 1.6;
-}
+.step-item h3 { font-size: 1.5rem; margin-bottom: 10px; color: #333; }
+.step-item p { color: #555; line-height: 1.6; }
 
 /* "Kullanıcı Yorumları" Bölümü */
 #testimonials {
-    background-color: #f9f9f9;
-}
-
-.testimonials-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.testimonial-card {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-    border-left: 5px solid #4CAF50; /* Sol tarafa vurgu rengi */
-}
-
-.testimonial-card .quote {
-    font-size: 1.1rem;
-    font-style: italic;
-    color: #555;
-    margin-bottom: 20px;
-    line-height: 1.7;
-}
-
-.testimonial-card .author {
-    text-align: right;
-}
-
-.testimonial-card .author strong {
-    display: block;
-    color: #333;
-    font-size: 1.1rem;
-}
-
-.testimonial-card .author span {
-    color: #777;
-    font-size: 0.9rem;
-}
-
-/* Medya Sorguları - Yeni Bölümler İçin */
-@media (max-width: 768px) {
-    .testimonials-grid {
-        grid-template-columns: 1fr; /* Mobilde yorumlar alt alta */
-    }
-}
-/* =============================================================== */
-/* =========== YENİ EKLENEN BÖLÜMLERİN STİLLERİ ============ */
-/* =============================================================== */
-
-/* "Kimler İçin?" Bölümü (Öğrenci/Öğretmen) */
-#for-whom {
-    background-color: #fff;
-}
-
-/* "Nasıl Çalışır?" Bölümü */
-#how-it-works {
-    background-color: #fff;
-}
-
-.steps-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 60px auto 0 auto;
-    flex-wrap: wrap; /* Mobilde alt alta geçsin */
-}
-
-.step-item {
-    flex: 1;
-    min-width: 280px;
-    max-width: 350px;
-    position: relative;
-    padding: 20px;
-}
-
-.step-item .step-number {
-    width: 60px;
-    height: 60px;
-    background-color: #4CAF50;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0 auto 20px auto;
-    border: 4px solid #e0f2f1; /* Hafif yeşil bir çerçeve */
-}
-
-.step-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.step-item p {
-    color: #555;
-    line-height: 1.6;
-}
-
-/* =================================================================== */
-/* ============== KULLANICI YORUMLARI (GÜNCELLENDİ) ================== */
-/* =================================================================== */
-
-#testimonials {
-    background-color: #f9f9f9;
-    padding: 80px 0; /* Kenar boşluklarını sıfırladık */
-}
-
-#testimonials .container {
-    max-width: 100%; /* Konteyner tam genişlikte olsun */
-    padding: 0;
-}
-
-.testimonial-slider-container {
-    width: 100%;
-    overflow: hidden; /* Dışarı taşan kartları gizle */
-    position: relative;
-    /* Kartlar kenarlarda aniden kaybolmasın diye maske ekliyoruz */
-    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-}
-
-.testimonial-slider {
-    display: flex; /* Kartları yan yana diz */
-    /* Animasyon için kartların 2 katı genişlik veriyoruz */
-    width: calc(350px * 24); /* (Kart Genişliği + Margin) * Kart Sayısı * 2 */
-    animation: scrollAnimation 60s linear infinite;
-}
-
-/* Fare üzerine gelince animasyonu durdur */
-.testimonial-slider-container:hover .testimonial-slider {
-    animation-play-state: paused;
-}
-
-@keyframes scrollAnimation {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        /* Slider'ın yarısı kadar sola kaydır (sonsuz döngü için) */
-        transform: translateX(calc(-350px * 12));
-    }
-}
-
-.testimonial-card {
-    width: 320px; /* Kartlara sabit genişlik verdik */
-    flex-shrink: 0; /* Kartların daralmasını engelle */
-    margin: 0 15px; /* Kartlar arası boşluk */
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-    border-left: 5px solid #4CAF50;
-}
-
-.testimonial-card .quote {
-    font-size: 1.05rem;
-    font-style: italic;
-    color: #555;
-    margin-bottom: 20px;
-    line-height: 1.7;
-    height: 150px; /* Kart boyutlarının aynı kalması için sabit yükseklik */
-    overflow: hidden;
-}
-
-.testimonial-card .author {
-    text-align: right;
-}
-
-.testimonial-card .author strong {
-    display: block;
-    color: #333;
-    font-size: 1.1rem;
-}
-
-.testimonial-card .author span {
-    color: #777;
-    font-size: 0.9rem;
-}
-
-/* Mobilde animasyon hızı ve görünüm ayarı */
-@media (max-width: 768px) {
-    .testimonial-slider {
-        animation-duration: 45s; /* Mobilde biraz daha hızlı */
-    }
-}
-/* =============================================================== */
-/* =========== YENİ EKLENEN BÖLÜMLERİN STİLLERİ ============ */
-/* =============================================================== */
-
-/* "Kimler İçin?" Bölümü (Öğrenci/Öğretmen) */
-#for-whom {
-    background-color: #fff;
-}
-
-/* "Nasıl Çalışır?" Bölümü */
-#how-it-works {
-    background-color: #fff;
-}
-
-.steps-container {
-    display: flex;
-    justify-content: space-around;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 60px auto 0 auto;
-    flex-wrap: wrap; /* Mobilde alt alta geçsin */
-}
-
-.step-item {
-    flex: 1;
-    min-width: 280px;
-    max-width: 350px;
-    position: relative;
-    padding: 20px;
-}
-
-.step-item .step-number {
-    width: 60px;
-    height: 60px;
-    background-color: #4CAF50;
-    color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 0 auto 20px auto;
-    border: 4px solid #e0f2f1; /* Hafif yeşil bir çerçeve */
-}
-
-.step-item h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.step-item p {
-    color: #555;
-    line-height: 1.6;
-}
-
-/* "Kullanıcı Yorumları" Bölümü */
-#testimonials {
-    background-color: #f9f9f9;
+    background-color: #D9DCFF; /* ANA TEMA RENGİ GÜNCELLEMESİ */
     padding: 80px 0;
 }
 
-#testimonials .container {
-    max-width: 100%;
-    padding: 0;
-}
+#testimonials .container { max-width: 100%; padding: 0; }
 
 .testimonial-slider-container {
     width: 100%;
@@ -594,9 +282,7 @@
     animation: scrollAnimation 60s linear infinite;
 }
 
-.testimonial-slider-container:hover .testimonial-slider {
-    animation-play-state: paused;
-}
+.testimonial-slider-container:hover .testimonial-slider { animation-play-state: paused; }
 
 @keyframes scrollAnimation {
     0% { transform: translateX(0); }
@@ -611,40 +297,16 @@
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.07);
-    border-left: 5px solid #4CAF50;
+    border-left: 5px solid #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */
 }
 
-.testimonial-card .quote {
-    font-size: 1.05rem;
-    font-style: italic;
-    color: #555;
-    margin-bottom: 20px;
-    line-height: 1.7;
-    height: 150px;
-    overflow: hidden;
-}
+.testimonial-card .quote { font-size: 1.05rem; font-style: italic; color: #555; margin-bottom: 20px; line-height: 1.7; height: 150px; overflow: hidden; }
+.testimonial-card .author { text-align: right; }
+.testimonial-card .author strong { display: block; color: #333; font-size: 1.1rem; }
+.testimonial-card .author span { color: #777; font-size: 0.9rem; }
 
-.testimonial-card .author {
-    text-align: right;
-}
-
-.testimonial-card .author strong {
-    display: block;
-    color: #333;
-    font-size: 1.1rem;
-}
-
-.testimonial-card .author span {
-    color: #777;
-    font-size: 0.9rem;
-}
-
-/* =================================================================== */
-/* ============== YENİ: İSTATİSTİK BÖLÜMÜ STİLLERİ ================== */
-/* =================================================================== */
-#stats {
-    background-color: #fff;
-}
+/* İSTATİSTİK BÖLÜMÜ STİLLERİ */
+#stats { background-color: #fff; }
 
 .stats-grid {
     display: grid;
@@ -654,30 +316,10 @@
     margin: 60px auto 0 auto;
 }
 
-.stat-item {
-    text-align: center;
-    padding: 20px;
-}
-
-.stat-item .icon {
-    font-size: 3rem;
-    color: #4CAF50;
-    margin-bottom: 15px;
-}
-
-.stat-number {
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: #2c3e50; /* Koyu renk */
-    display: block;
-}
-
-.stat-label {
-    font-size: 1.1rem;
-    color: #666;
-    margin-top: 5px;
-}
-
+.stat-item { text-align: center; padding: 20px; }
+.stat-item .icon { font-size: 3rem; color: #6C63FF; /* VURGU RENGİ GÜNCELLEMESİ */ margin-bottom: 15px; }
+.stat-number { font-size: 3.5rem; font-weight: 700; color: #2F2E41; /* KOYU TEMA RENGİ GÜNCELLEMESİ */ display: block; }
+.stat-label { font-size: 1.1rem; color: #666; margin-top: 5px; }
 
 /* Medya Sorguları */
 @media (max-width: 768px) {
