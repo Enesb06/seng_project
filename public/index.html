@@ -4,117 +4,173 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LearnENG.com - Learn English, Enjoy The Journey.</title>
-
-    <!-- CSS Dosyaları -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/landing.css">
     <link rel="stylesheet" href="assets/css/auth-modal.css">
-    
-    <!-- Supabase Kütüphanesi -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
-    <!-- Navigasyon artık ana ortalama alanının DIŞINDA -->
     <header class="main-header">
-        <div class="logo">
-            <a href="#">LearnENG.com</a>
-        </div>
+        <div class="logo"><a href="#">LearnENG.com</a></div>
         <nav class="main-nav">
             <ul>
-                <!-- NOT: CSS'te daha kolay hedeflemek için butonlara class ekledim -->
                 <li><a href="#" id="show-login-btn" class="btn-login">Login</a></li>
                 <li><a href="#" id="show-signup-btn" class="cta-button">Register</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Arka plan ve ana içerik için ana sarmalayıcı -->
-    <main id="landing-page">
-        <div class="overlay"></div>
+    <main>
+        <section id="landing-page">
+            <div class="overlay"></div>
+            <div class="hero-content">
+                <h1>The Future of English Education is Here.</h1>
+                <p>The ultimate platform for students seeking fluency and teachers empowering their classrooms. Personalized, intelligent, and engaging.</p>
+            </div>
+        </section>
 
-        <section class="hero-content">
-            <h1>Improve Your English<br>With AI.</h1>
-            <p>
-                Enhance your vocabulary with personalized reading materials, interactive vocabulary lists, and smart quizzes. Learning is easier and more fun with LearnENG!
-            </p>
+        <section id="for-whom" class="content-section">
+            <div class="container">
+                <h2>A Platform for Every Learning Path</h2>
+                <p class="section-subtitle">Whether you're an independent learner or an educator, LearnENG provides the tools you need to succeed.</p>
+                <div class="features-grid">
+                    <div class="feature-card"><div class="icon">🎓</div><h3>For the Ambitious Student</h3><p>Take control of your learning with AI-powered content perfectly matched to your level and interests. Track your vocabulary, ace quizzes, and achieve fluency faster than ever before.</p></div>
+                    <div class="feature-card"><div class="icon">🏫</div><h3>For the Innovative Teacher</h3><p>Save hours of prep time. Create virtual classrooms, assign personalized reading homework, and monitor student progress with powerful analytics. Effortlessly track quiz results and assignment completion.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stats" class="content-section">
+            <div class="container">
+                <h2>Our Platform in Numbers</h2>
+                <p class="section-subtitle">Join a growing community of passionate learners and educators.</p>
+                <div class="stats-grid">
+                    <div class="stat-item"><div class="icon">📖</div><span class="stat-number" data-target="25000">0</span><p class="stat-label">AI Texts Generated</p></div>
+                    <div class="stat-item"><div class="icon">🎓</div><span class="stat-number" data-target="8000">0</span><p class="stat-label">Active Learners</p></div>
+                    <div class="stat-item"><div class="icon">🏫</div><span class="stat-number" data-target="750">0</span><p class="stat-label">Classrooms Created</p></div>
+                    <div class="stat-item"><div class="icon">🧠</div><span class="stat-number" data-target="50000">0</span><p class="stat-label">Quizzes Completed</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="content-section">
+            <div class="container">
+                <h2>Everything You Need, All in One Place</h2>
+                <p class="section-subtitle">Discover the integrated tools that will revolutionize your English learning and teaching experience.</p>
+                <div class="features-grid">
+                    <div class="feature-card"><div class="icon">📖</div><h3>Limitless Reading Materials</h3><p>Our AI creates unique articles, dialogues, and stories on any topic for any CEFR level. Say goodbye to searching for appropriate texts.</p></div>
+                    <div class="feature-card"><div class="icon">📊</div><h3>Effortless Classroom Management</h3><p>Create classes, invite students, and assign homework in minutes. Our dashboard gives you a bird's-eye view of your entire class's performance.</p></div>
+                    <div class="feature-card"><div class="icon">📈</div><h3>Insightful Progress Analytics</h3><p>Track quiz scores, reading times, and assignment completion for each student. Identify areas of improvement and provide targeted support.</p></div>
+                    <div class="feature-card"><div class="icon">📝</div><h3>Advanced Vocabulary Toolkit</h3><p>Save unknown words directly from texts. Practice with interactive flashcards and track your mastery to ensure new words stick forever.</p></div>
+                    <div class="feature-card"><div class="icon">🤖</div><h3>24/7 AI-Powered Tutor</h3><p>Get instant answers to grammar questions, vocabulary definitions, or complex sentence explanations. Your personal English tutor, available anytime.</p></div>
+                    <div class="feature-card"><div class="icon">🧠</div><h3>Engaging & Smart Quizzes</h3><p>Reinforce learning with intelligent quizzes that test comprehension and vocabulary from the texts, ensuring students truly understand the material.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="content-section">
+            <div class="container">
+                <h2>Get Started in 3 Easy Steps</h2>
+                <p class="section-subtitle">Begin your journey to fluency or a smarter classroom in just a few minutes.</p>
+                <div class="steps-container">
+                    <div class="step-item"><div class="step-number">1</div><h3>Register for Free</h3><p>Create your student or teacher account in seconds. No credit card required.</p></div>
+                    <div class="step-item"><div class="step-number">2</div><h3>Personalize Your Experience</h3><p>Students choose their interests. Teachers create their first classroom and invite students with a simple link.</p></div>
+                    <div class="step-item"><div class="step-number">3</div><h3>Start Learning & Teaching</h3><p>Instantly access AI-generated content, assign homework, and track progress. It's that simple!</p></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="testimonials" class="content-section">
+            <div class="container">
+                <h2>What Our Users Say</h2>
+                <p class="section-subtitle">Trusted by students and educators worldwide.</p>
+                <div class="testimonial-slider-container">
+                    <div class="testimonial-slider">
+                        <!-- Orijinal Yorumlar (10 Adet) -->
+                        <div class="testimonial-card"><p class="quote">"LearnENG has completely changed how I prepare for my classes. I can assign reading homework that is actually interesting for my students and track their progress effortlessly. It's a game-changer!"</p><div class="author"><strong>Maria S.</strong><span>- English Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I finally enjoy reading in English! The AI finds articles about topics I love, like technology and sports, at my exact level. My vocabulary has improved so much in just one month."</p><div class="author"><strong>Ahmet Y.</strong><span>- University Student</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The analytics dashboard is incredibly powerful. I can see which students are struggling and with what topics, allowing me to provide targeted help. It saves me hours of guesswork."</p><div class="author"><strong>David Chen</strong><span>- High School Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The AI tutor is my favorite feature. I can ask it anything about grammar, anytime, and get a clear explanation. It's like having a private teacher 24/7."</p><div class="author"><strong>Elena P.</strong><span>- Self-Learner</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"As a non-native teacher, finding suitable and varied reading material was always a challenge. LearnENG's AI content generator is a lifesaver. My students are more engaged than ever."</p><div class="author"><strong>Javier G.</strong><span>- Language School Instructor</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The one-click word saving and the interactive flashcards are amazing. I've learned more new words in the last two months than I did in the previous year."</p><div class="author"><strong>Fatima K.</strong><span>- Student</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I use LearnENG to create differentiated assignments for my mixed-level classroom. Every student gets a text that challenges them appropriately. The best tool for inclusive education."</p><div class="author"><strong>Sarah W.</strong><span>- Middle School Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I was stuck at a B1 level for years. The personalized reading and quizzes helped me break through that plateau. I feel much more confident in my reading comprehension now."</p><div class="author"><strong>Kenji T.</strong><span>- Business Professional</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"Setting up my class took less than five minutes. The interface is so intuitive for both me and my students. I highly recommend it to any tech-forward educator."</p><div class="author"><strong>Emily R.</strong><span>- Online Tutor</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The variety of topics is fantastic. I can read about Art History, then switch to Health and Wellness. It keeps the learning process fresh and exciting."</p><div class="author"><strong>Chloe L.</strong><span>- Lifelong Learner</span></div></div>
+
+                        <!-- Sonsuz döngü için Yorumların Kopyası -->
+                        <div class="testimonial-card"><p class="quote">"LearnENG has completely changed how I prepare for my classes. I can assign reading homework that is actually interesting for my students and track their progress effortlessly. It's a game-changer!"</p><div class="author"><strong>Maria S.</strong><span>- English Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I finally enjoy reading in English! The AI finds articles about topics I love, like technology and sports, at my exact level. My vocabulary has improved so much in just one month."</p><div class="author"><strong>Ahmet Y.</strong><span>- University Student</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The analytics dashboard is incredibly powerful. I can see which students are struggling and with what topics, allowing me to provide targeted help. It saves me hours of guesswork."</p><div class="author"><strong>David Chen</strong><span>- High School Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The AI tutor is my favorite feature. I can ask it anything about grammar, anytime, and get a clear explanation. It's like having a private teacher 24/7."</p><div class="author"><strong>Elena P.</strong><span>- Self-Learner</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"As a non-native teacher, finding suitable and varied reading material was always a challenge. LearnENG's AI content generator is a lifesaver. My students are more engaged than ever."</p><div class="author"><strong>Javier G.</strong><span>- Language School Instructor</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The one-click word saving and the interactive flashcards are amazing. I've learned more new words in the last two months than I did in the previous year."</p><div class="author"><strong>Fatima K.</strong><span>- Student</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I use LearnENG to create differentiated assignments for my mixed-level classroom. Every student gets a text that challenges them appropriately. The best tool for inclusive education."</p><div class="author"><strong>Sarah W.</strong><span>- Middle School Teacher</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"I was stuck at a B1 level for years. The personalized reading and quizzes helped me break through that plateau. I feel much more confident in my reading comprehension now."</p><div class="author"><strong>Kenji T.</strong><span>- Business Professional</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"Setting up my class took less than five minutes. The interface is so intuitive for both me and my students. I highly recommend it to any tech-forward educator."</p><div class="author"><strong>Emily R.</strong><span>- Online Tutor</span></div></div>
+                        <div class="testimonial-card"><p class="quote">"The variety of topics is fantastic. I can read about Art History, then switch to Health and Wellness. It keeps the learning process fresh and exciting."</p><div class="author"><strong>Chloe L.</strong><span>- Lifelong Learner</span></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cta" class="content-section">
+            <div class="container">
+                <h2>Join the Future of English Education</h2>
+                <p class="section-subtitle">Sign up today and discover a smarter way to learn and teach English.</p>
+                <a href="#" id="show-signup-btn-cta" class="cta-button">Register for Free</a>
+            </div>
         </section>
     </main>
 
-    <!-- Modal açıldığında arkayı karartmak için overlay -->
-    <div id="modal-overlay" class="hidden"></div>
+    <footer class="main-footer">
+        <p>&copy; 2026 LearnENG.com. All Rights Reserved.</p>
+    </footer>
 
-    <!-- GİRİŞ VE KAYIT FORMLARI (MODAL) -->
+    <div id="modal-overlay" class="hidden"></div>
     <div id="auth-container" class="hidden">
         <button id="close-auth-btn" class="close-button">&times;</button>
-        
-        <!-- Giriş Formu -->
-        <div id="login-view" class="hidden">
-            <h2>Log in</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="E-mail" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button type="submit">Log in</button>
-                <p class="forgot-password"><a href="#" id="show-forgot-password-link">Forgot my password</a></p>
-            </form>
-            <p>Don't have an account? <a href="#" id="show-signup-link">Register</a></p>
-        </div>
-
-        <!-- Kayıt Formu (İçerik "Log in" yazıyordu, "Sign Up" olarak düzelttim) -->
-        <div id="signup-view" class="hidden">
-            <h2>Sign Up</h2>
-            <form id="signup-form">
-                <input type="text" id="signup-fullname" placeholder="Name Surname" required>
-                <input type="email" id="signup-email" placeholder="E-mail" required>
-                <input type="password" id="signup-password" placeholder="Password" required>
-                
-                <div class="security-question-area" style="margin-bottom: 15px; text-align: left;">
-                    <label for="security-question-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Choose a Security Question</label>
-                    <!-- JS bu select kutusunu dolduracak -->
-                    <select id="security-question-select" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 1rem;">
-                        <!-- Seçenekler JS ile doldurulacak -->
-                        <option value="" disabled selected>-- Bir soru seçin --</option> 
-                    </select>
-                    <input type="text" id="security-answer" placeholder="Answer of the Security Question" required>
-                </div>
-                <!-- 🚨 GÜNCELLENDİ: KULLANICININ SORUYU SEÇTİĞİ ALAN SONU 🚨 -->
-                
-                <div class="role-selection">
-                    <label><input type="radio" name="role" value="student" checked> Student</label>
-                    <label><input type="radio" name="role" value="teacher"> Teacher</label>
-                </div>
-                <button type="submit">Sign Up</button>
-            </form>
-            <p>Already have an account? <a href="#" id="show-login-link">Log in</a></p>
-        </div>
-                
-                
-                
-                
-
-        <!-- Şifre Sıfırlama Formu -->
-        <div id="forgot-password-view" class="hidden">
-            <h2>Reset Password</h2>
-            <form id="forgot-password-form">
-                <input type="email" id="forgot-email" placeholder="E-mail address" required>
-                <div id="forgot-question-area" style="margin-bottom: 15px; text-align: left;" class="hidden">
-                    <label id="forgot-security-question-label" for="forgot-security-answer" style="font-weight: bold; display: block; margin-bottom: 5px;">[Question Will Appear Here]</label>
-                    <input type="text" id="forgot-security-answer" placeholder="Security Question Answer" required>
-                    <input type="hidden" id="forgot-security-question-value">
-                </div>
-
-                <div id="new-password-area" class="hidden">
-                    <input type="password" id="new-password" placeholder="New Password" required autocomplete = "new-password">
-                    <input type="password" id="confirm-password" placeholder="New Password (Confirm)" required required autocomplete="new-password" >
-                </div>
-                
-                <button type="submit" id="forgot-submit-btn">Continue</button>
-            </form>
-            <p><a href="#" id="back-to-login-link">Go Back to Log in Page</a></p>
-        </div>
+        <div id="login-view" class="hidden"><h2>Log in</h2><form id="login-form"><input type="email" id="login-email" placeholder="E-mail" required><input type="password" id="login-password" placeholder="Password" required><button type="submit">Log in</button><p class="forgot-password"><a href="#" id="show-forgot-password-link">Forgot my password</a></p></form><p>Don't have an account? <a href="#" id="show-signup-link">Register</a></p></div>
+        <div id="signup-view" class="hidden"><h2>Sign Up</h2><form id="signup-form"><input type="text" id="signup-fullname" placeholder="Name Surname" required><input type="email" id="signup-email" placeholder="E-mail" required><input type="password" id="signup-password" placeholder="Password" required><div class="security-question-area" style="margin-bottom: 15px; text-align: left;"><label for="security-question-select" style="font-weight: bold; display: block; margin-bottom: 5px;">Choose a Security Question</label><select id="security-question-select" required style="width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 1rem;"><option value="" disabled selected>-- Bir soru seçin --</option></select><input type="text" id="security-answer" placeholder="Answer of the Security Question" required></div><div class="role-selection"><label><input type="radio" name="role" value="student" checked> Student</label><label><input type="radio" name="role" value="teacher"> Teacher</label></div><button type="submit">Sign up</button></form><p>Already have an account? <a href="#" id="show-login-link">Log in</a></p></div>
+        <div id="forgot-password-view" class="hidden"><h2>Reset Password</h2><form id="forgot-password-form"><input type="email" id="forgot-email" placeholder="E-mail address" required><div id="forgot-question-area" style="margin-bottom: 15px; text-align: left;" class="hidden"><label id="forgot-security-question-label" for="forgot-security-answer" style="font-weight: bold; display: block; margin-bottom: 5px;">[Question Will Appear Here]</label><input type="text" id="forgot-security-answer" placeholder="Security Question Answer" required><input type="hidden" id="forgot-security-question-value"></div><div id="new-password-area" class="hidden"><input type="password" id="new-password" placeholder="New Password" required autocomplete="new-password"><input type="password" id="confirm-password" placeholder="New Password (Confirm)" required autocomplete="new-password"></div><button type="submit" id="forgot-submit-btn">Continue</button></form><p><a href="#" id="back-to-login-link">Go Back to Log in Page</a></p></div>
     </div>
     
-    <!-- JavaScript Dosyası -->
+    <script>
+        const header = document.querySelector('.main-header');
+        window.addEventListener('scroll', () => { window.scrollY > 50 ? header.classList.add('scrolled') : header.classList.remove('scrolled'); });
+        
+        document.getElementById('show-signup-btn-cta').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('show-signup-btn').click(); });
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const statsSection = document.querySelector("#stats");
+            if (!statsSection) return;
+            const numberElements = document.querySelectorAll(".stat-number");
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        numberElements.forEach(el => {
+                            const target = +el.getAttribute('data-target');
+                            const duration = 2000;
+                            let current = 0;
+                            const increment = target / (duration / 16);
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= target) {
+                                    clearInterval(timer);
+                                    el.innerText = target.toLocaleString('en-US') + '+';
+                                } else {
+                                    el.innerText = Math.ceil(current).toLocaleString('en-US');
+                                }
+                            }, 16);
+                        });
+                        observer.unobserve(statsSection);
+                    }
+                });
+            }, { threshold: 0.5 });
+            observer.observe(statsSection);
+        });
+    </script>
     <script type="module" src="assets/js/auth.js"></script>
 </body>
 </html>
