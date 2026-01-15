@@ -8,6 +8,38 @@
     margin-bottom: 40px;
 }
 
+/* ===== Mint stat cards (Teacher Summary Overview) ===== */
+.stats-grid .card.stat-card{
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-grid .card.stat-card::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Mint background + border */
+.stats-grid .card.stat-card.mint{
+    border-color: rgba(16, 185, 129, 0.25);
+}
+
+.stats-grid .card.stat-card.mint::after{
+    background: linear-gradient(
+        135deg,
+        rgba(16, 185, 129, 0.18) 0%,
+        rgba(16, 185, 129, 0.08) 35%,
+        rgba(255, 255, 255, 0) 75%
+    );
+}
+
+/* Mint number (only inside mint cards) */
+.stats-grid .card.stat-card.mint .stat-value{
+    color: rgba(16, 185, 129, 1);
+}
+
 .stats-grid .card h4 {
     color: var(--muted);
     font-size: 1rem;
@@ -254,5 +286,20 @@ input[type="date"] {
 
 .hw-actions button:focus {
     outline: none;
+    box-shadow: 0 0 0 3px var(--primary-soft);
+}
+/* ===== Teacher header (purple avatar ring) ===== */
+.dashboard-header .user-info{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-header .header-avatar{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-border);
+    object-fit: cover;
     box-shadow: 0 0 0 3px var(--primary-soft);
 }
