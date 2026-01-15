@@ -248,3 +248,180 @@
     min-width: 820px;
   }
 }
+/* ACTION: Mark Learned / Move Back butonları */
+.mark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  padding: 0 14px;
+  margin-right: 8px;
+
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+
+  white-space: nowrap;
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+}
+
+/* FINAL MARK BUTTON FIX */
+.mark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 140px;        /* ✔ en önemlisi */
+  height: 42px;            /* ✔ daha net yükseklik */
+  padding: 0 16px;
+
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+  white-space: nowrap;
+
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.mark-learned {
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 12px rgba(22,163,74,0.18);
+}
+
+.mark-revert {
+  background: linear-gradient(180deg, #facc15, #eab308);
+  color: #78350f;
+  box-shadow: 0 6px 12px rgba(234,179,8,0.18);
+}
+
+/* hover */
+.mark-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.word-table tbody tr:hover {
+  background: rgba(109,40,217,0.05);
+  box-shadow: inset 4px 0 0 rgba(109,40,217,0.45);
+}
+
+.tr-learned {
+  opacity: .85;
+  font-style: italic;
+}
+.word-table td:nth-child(4) {
+  color: rgba(15,23,42,0.55);
+  font-weight: 600;
+  font-size: .85rem;
+  letter-spacing: .25px;
+}
+.delete-btn:hover {
+  filter: brightness(1.1);
+}
+
+.mark-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 140px;
+  height: 42px;
+  padding: 0 16px;
+  margin-right: 8px;
+
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: white;
+  white-space: nowrap;
+
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.mark-learned {
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 12px rgba(22,163,74,0.18);
+}
+
+.mark-revert {
+  background: linear-gradient(180deg, #facc15, #eab308);
+  color: #78350f;
+  box-shadow: 0 6px 12px rgba(234,179,8,0.18);
+}
+
+.mark-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.btn-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  pointer-events: none;
+}
+
+.mark-btn .btn-icon {
+  margin-right: 6px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.word-table tbody tr {
+  box-shadow: 0 1px 0 rgba(15,23,42,0.06) inset;
+}
+
+.status-learned {
+  animation: badge-pop .25s ease;
+}
+
+@keyframes badge-pop {
+  0% { transform: scale(.85); opacity: .5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.speak-btn:hover img {
+  filter: brightness(1.1) hue-rotate(240deg);
+}
+
+.word-table td:last-child {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.action-btn,
+.mark-btn,
+.speak-btn {
+  touch-action: manipulation;
+}
+#sort-select {
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(15,23,42,.12);
+  font-weight: 700;
+  color: rgba(15,23,42,.78);
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(17,24,39,0.05);
+}
+
+#sort-select:focus {
+  border-color: rgba(109,40,217,0.35);
+  box-shadow: 0 0 0 4px rgba(109,40,217,0.12), 0 10px 22px rgba(17,24,39,0.06);
+}

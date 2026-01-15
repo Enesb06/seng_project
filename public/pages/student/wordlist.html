@@ -42,13 +42,24 @@
 
             <main class="content-area">
                 <div class="wordlist-controls card">
-                    <input type="text" id="search-word" placeholder="Search word...">
-                    <select id="filter-status">
-                        <option value="all">All Words</option>
-                        <option value="learning">Learning</option>
-                        <option value="learned">Learned</option>
-                    </select>
-                </div>
+                <input type="text" id="search-word" placeholder="Search word...">
+
+                <!-- FILTER -->
+                <select id="filter-status">
+                    <option value="all">All Words</option>
+                    <option value="learning">Learning</option>
+                    <option value="learned">Learned</option>
+                </select>
+
+                <!-- 🆕 SORT DROPDOWN BURAYA GELİYOR -->
+                <select id="sort-select">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="az">A → Z</option>
+                    <option value="za">Z → A</option>
+                </select>
+            </div>
+
 
                 <div class="wordlist-container card">
                     <table class="word-table">
