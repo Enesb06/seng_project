@@ -1,147 +1,134 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en"> <!-- lang="en" yapıldı, I/İ sorununu önler -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - LearnENG.com</title>
-   
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/admin.css">
-   
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- SOL MENÜ (SIDEBAR) -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="logo">Admin Dashboard</div>
             <nav>
                 <ul>
-                    <li id="li-users" >
-                        <a href="#" id="nav-users">User Management</a>
+                    <li id="li-users">
+                        <a href="#users">USER MANAGEMENT</a>
                     </li>
- 
                     <li id="li-verification">
-                        <a href="#" id="nav-verification">
-                            Teacher Approvals
+                        <a href="#verification">
+                            TEACHER APPROVALS
                             <span id="pending-count" class="badge hidden">0</span>
                         </a>
                     </li>
- 
-                    <!-- ✅ YENİ EKLENEN KISIM -->
                     <li>
-                        <a href="admin_support.html"> Support Messages</a>
+                        <a href="admin_support.html">SUPPORT MESSAGES</a>
                     </li>
-                    <!-- ✅ BİTTİ -->
- 
-                   
                 </ul>
             </nav>
         </aside>
- 
-        <!-- ANA İÇERİK -->
+
+        <!-- MAIN CONTENT -->
         <div class="main-content">
             <header class="dashboard-header">
-                <h2 id="page-title">User Management</h2>
+                <h2 id="page-title">Admin Panel</h2>
                 <div class="user-info">
-                    <span id="admin-display-name">Loading...</span>
-                    <button id="logout-button">Logout</button>
+                    <span id="admin-display-name" style="font-weight: 600;">Admin</span>
+                    <button id="logout-button" style="background: var(--error);">LOGOUT</button>
                 </div>
             </header>
- 
+
             <main class="content-area">
-                <!-- ÜST İSTATİSTİK KARTLARI -->
+                <!-- STATS GRID -->
                 <div class="stats-grid">
                     <div class="card stat-card">
-                        <h4>Total Students</h4>
-                        <p id="total-students" class="stat-value">0</p>
+                        <h4>TOTAL STUDENTS</h4>
+                        <span id="total-students" class="stat-value">0</span>
                     </div>
                     <div class="card stat-card">
-                        <h4>Total Teachers</h4>
-                        <p id="total-teachers" class="stat-value">0</p>
+                        <h4>TOTAL TEACHERS</h4>
+                        <span id="total-teachers" class="stat-value">0</span>
                     </div>
                     <div class="card stat-card">
-                        <h4>Total Content</h4>
-                        <p id="total-contents" class="stat-value">0</p>
+                        <h4>ACTIVE CONTENT</h4>
+                        <span id="total-contents" class="stat-value">0</span>
                     </div>
                 </div>
- 
-                <!-- BÖLÜM 1: GENEL KULLANICI LİSTESİ -->
-                <div id="users-section" class="card table-card hidden">
+
+                <!-- USER LIST SECTION -->
+                <div id="users-section" class="table-card hidden">
                     <div class="table-header">
-                        <h3>All Accounts in System</h3>
+                        <h3>SYSTEM USERS</h3>
                         <input type="text" id="user-search" placeholder="Search by name or email...">
                     </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-list-body">
-                        </tbody>
-                    </table>
-                </div>
- 
-                <!-- BÖLÜM 2: ÖĞRETMEN ONAY -->
-                <div id="verification-section" class="card table-card hidden">
- 
-                    <div class="table-header">
-                        <h3>Pending Teacher Applications</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>USER NAME</th>
+                                    <th>EMAIL</th> <!-- Manuel Büyük Yazım (Düzeltildi) -->
+                                    <th>ROLE</th>
+                                    <th style="text-align: right;">ACTIONS</th> <!-- Manuel Büyük Yazım (Düzeltildi) -->
+                                </tr>
+                            </thead>
+                            <tbody id="user-list-body"></tbody>
+                        </table>
                     </div>
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Full Name</th>
-                                <th>Email</th>
-                                <th>Registration Date</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="verification-list-body">
-                        </tbody>
-                    </table>
+                </div>
+
+                <!-- TEACHER APPROVAL SECTION -->
+                <div id="verification-section" class="table-card hidden">
+                    <div class="table-header">
+                        <h3>TEACHER APPLICATIONS</h3>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>TEACHER NAME</th>
+                                    <th>EMAIL</th> <!-- Düzeltildi -->
+                                    <th>JOIN DATE</th> <!-- Manuel Büyük Yazım (Düzeltildi) -->
+                                    <th style="text-align: right;">ACTIONS</th> <!-- Düzeltildi -->
+                                </tr>
+                            </thead>
+                            <tbody id="verification-list-body"></tbody>
+                        </table>
+                    </div>
                 </div>
             </main>
         </div>
     </div>
- 
-    <!-- KULLANICI DÜZENLEME MODAL -->
+
+    <!-- MODAL -->
     <div id="edit-user-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h3>Update Account Information</h3>
+        <div class="modal-content" style="width: 400px; background: white; padding: 30px; border-radius: 20px;">
+            <h3 style="margin-bottom: 20px;">EDIT USER ROLE</h3>
             <form id="edit-user-form">
                 <input type="hidden" id="edit-user-id">
- 
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" id="edit-full-name" required>
+                <div style="margin-bottom: 15px;">
+                    <label style="display:block; font-weight:600; margin-bottom:5px;">FULL NAME</label>
+                    <input type="text" id="edit-full-name" disabled style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
                 </div>
- 
-                <div class="form-group">
-                    <label>Change Role</label>
-                    <select id="edit-user-role">
-                        <option value="student">Student</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="admin">Admin</option>
+                <div style="margin-bottom: 20px;">
+                    <label style="display:block; font-weight:600; margin-bottom:5px;">SELECT ROLE</label>
+                    <select id="edit-user-role" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ddd;">
+                        <option value="student">STUDENT</option>
+                        <option value="teacher">TEACHER</option>
+                        <option value="admin">ADMIN</option>
                     </select>
                 </div>
- 
-                <div class="modal-buttons">
-                    <button type="submit" class="cta-button">Save Changes</button>
-                    <button type="button" id="close-modal-btn" class="cancel-btn">Cancel</button>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" class="cta-button" style="flex:1;">SAVE</button>
+                    <button type="button" onclick="document.getElementById('edit-user-modal').classList.add('hidden')" style="flex:1; background:#f1f5f9; border:none; border-radius:8px; cursor:pointer;">CANCEL</button>
                 </div>
             </form>
         </div>
     </div>
- 
-    <!-- JS -->
+
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>
- 
- 

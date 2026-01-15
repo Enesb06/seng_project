@@ -3,88 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <title>Support Requests - Admin - LearnENG.com</title>
-
   <link rel="stylesheet" href="assets/css/main.css">
   <link rel="stylesheet" href="assets/css/dashboard.css">
   <link rel="stylesheet" href="assets/css/admin.css">
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    .thread-item{
-      border:1px solid #e5e7eb;
-      border-radius:12px;
-      padding:10px 12px;
-      background:#fff;
-      cursor:pointer;
-      transition: .12s ease;
-      margin-bottom:10px;
+    /* Support Page Özel Estetiği */
+    .support-container {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
-    .thread-item:hover{ background:#f8fafc; }
-    .thread-item.active{
-      background:#eff6ff;
-      border-color:#bfdbfe;
+    .thread-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        margin-bottom: 15px;
     }
-    .thread-top{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      margin-bottom:4px;
+    .thread-card:hover {
+        transform: translateX(5px);
+        border-color: var(--primary-border);
+        box-shadow: 0 10px 25px rgba(109, 40, 217, 0.08);
     }
-    .thread-subject{ font-weight:700; font-size:0.95rem; color:#0f172a; }
-    .thread-meta{ font-size:0.78rem; color:#64748b; }
-    .pill{
-      font-size:0.72rem; padding:4px 8px; border-radius:999px;
-      background:#e5e7eb; color:#334155; white-space:nowrap;
+    .thread-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
     }
-    .pill.open{ background:#dcfce7; color:#166534; }
-    .pill.closed{ background:#fee2e2; color:#b91c1c; }
+    .role-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+    .role-icon.student { background: #fef9c3; color: #854d0e; }
+    .role-icon.teacher { background: #dbeafe; color: #1e40af; }
+    
+    .subject-text {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--text);
+        margin-bottom: 4px;
+    }
+    .meta-text {
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+    .status-badge-pill {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    .status-badge-pill.open { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+    .status-badge-pill.closed { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
+
+    .unread-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--primary);
+        border-radius: 50%;
+        margin-right: 10px;
+    }
   </style>
 </head>
-
 <body>
 <div class="dashboard-container">
-
   <aside class="sidebar">
     <div class="logo">Admin Dashboard</div>
     <nav>
       <ul>
-        <li id="li-users">
-          <a href="admin.html" id="nav-users">User Management</a>
-        </li>
-        <li id="li-verification">
-          <a href="admin.html#verification">Teacher Approvals</a>
-        </li>
-        <li id="li-support" class="active">
-          <a href="admin_support.html"> Support Messages </a>
-        </li>
+        <li><a href="admin.html#users">User Management</a></li>
+        <li><a href="admin.html#verification">Teacher Approvals</a></li>
+        <li class="active"><a href="admin_support.html">Support Messages</a></li>
       </ul>
     </nav>
   </aside>
 
   <div class="main-content">
     <header class="dashboard-header">
-      <h2>Support Requests</h2>
+      <h2>Support Inbox</h2>
       <div class="user-info">
-        <span id="admin-display-name">Loading...</span>
-        <button id="logout-button">Logout</button>
+        <span id="admin-display-name" style="font-weight: 600;">Admin</span>
+        <button id="logout-button" style="background: var(--error);">Logout</button>
       </div>
     </header>
 
     <main class="content-area">
-
-      <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 16px;margin-bottom:20px;background:#ffffff;">
-        <h3 style="margin:0 0 4px 0; font-size:0.95rem;">Total Support Requests</h3>
-        <p id="support-total-count" style="margin:0;font-size:1.5rem;font-weight:600;">0</p>
-      </div>
-
-      <!-- SADECE LİSTE -->
-      <div style="border:1px solid #e5e7eb; border-radius:12px; padding:16px; background:#ffffff;">
-        <h3 style="margin-top:0; margin-bottom:12px; font-size:1rem;">All Support Requests</h3>
-
-        <div id="support-threads-list">
-          <div style="padding:8px; text-align:center; color:#6b7280;">Loading...</div>
+      <!-- Filtreleme ve İstatistik Özeti -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h3 style="margin:0;">Active Requests</h3>
+        <div class="card" style="padding: 10px 20px; font-weight: bold; color: var(--primary);">
+            Total: <span id="support-total-count">0</span>
         </div>
       </div>
 
+      <div id="support-threads-list" class="support-container">
+        <!-- JS ile dolacak -->
+        <div style="text-align: center; padding: 50px; color: var(--muted);">Loading messages...</div>
+      </div>
     </main>
   </div>
 </div>
