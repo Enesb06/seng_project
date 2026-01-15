@@ -49,7 +49,12 @@
 
     <main class="content-area" style="padding:0;">
       <div class="chat-shell">
-        <div id="chat-messages" class="chat-messages"></div>
+        <div id="chat-messages" class="chat-messages">
+          <div id="typing-indicator" class="typing" style="display:none;">
+        <span></span><span></span><span></span>
+          </div>
+
+        </div>
 
         <div class="chat-inputbar">
           <textarea id="chat-input" rows="2" placeholder="Type a message..."></textarea>

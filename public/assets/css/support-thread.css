@@ -76,8 +76,8 @@
   color: var(--text);
 }
 .thread-actions .cta-button{
-  padding: 8px 12px !important;      /* ✅ dev bar olmasın */
-  width: auto !important;            /* ✅ full width olmasın */
+  padding: 8px 12px !important;      
+  width: auto !important;            
   border-radius: 10px !important;
 }
 
@@ -129,7 +129,7 @@
 }
 .chat-inputbar textarea{
   flex:1;
-  min-height: 64px;                  /* ✅ yazı yeri küçük olmasın */
+  min-height: 64px;                  
   padding:10px 12px;
   border-radius:12px;
   border:1px solid var(--border);
@@ -158,7 +158,7 @@
   border-radius: 10px !important;
 }
 
-/* Status row: keep select + button side-by-side (no full-width button) */
+
 #thread-status-select{
   width: auto !important;
 }
@@ -179,7 +179,7 @@
   background: var(--primary-hover);
 }
 
-/* Chat input area bigger + layout nicer */
+
 .chat-inputbar{
   display: flex !important;
   gap: 12px !important;
@@ -191,7 +191,7 @@
 
 #chat-input{
   flex: 1 !important;
-  min-height: 90px !important;     /* yazı yazma yeri büyüsün */
+  min-height: 90px !important;     
   resize: vertical !important;
   padding: 12px 14px !important;
   border-radius: 12px !important;
@@ -209,7 +209,7 @@
 }
 
 #chat-send{
-  width: auto !important;          /* full width olmasın */
+  width: auto !important;          
   padding: 10px 16px !important;
   font-size: 0.95rem !important;
   border-radius: 12px !important;
@@ -221,7 +221,7 @@
   background: var(--primary-hover);
 }
 
-/* ===== Purple polish (Support Thread) ===== */
+
 .back-btn,
 #back-btn{
   border: 1px solid var(--primary-border) !important;
@@ -243,3 +243,103 @@
 .msg{
   box-shadow: 0 6px 18px rgba(17, 24, 39, 0.06);
 }
+
+.chat-shell {
+    background: linear-gradient(180deg,
+        #faf9ff 0%,
+        #f5f4fb 40%,
+        #f2f1f8 100%
+    );
+}
+
+.chat-shell {
+    background: linear-gradient(180deg,
+        #faf9ff 0%,
+        #f5f4fb 40%,
+        #f2f1f8 100%
+    );
+}
+
+.msg {
+    border-radius: 18px;
+    padding: 12px 16px;
+    max-width: 62ch;
+}
+.msg.me {
+    background: var(--primary);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+.msg.other {
+    background: white;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-inputbar {
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,.8);
+    border-top: 1px solid rgba(0,0,0,.05);
+    box-shadow: 0 -4px 24px rgba(0,0,0,.04);
+}
+
+#chat-send {
+   background: linear-gradient(135deg, #6d28d9, #9333ea);
+   box-shadow: 0 3px 10px rgba(109,40,217,.25);
+   transition: .2s ease;
+}
+#chat-send:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.07);
+}
+
+.chat-date {
+    align-self: center;
+    margin: 14px 0;
+    font-size: .75rem;
+    opacity: .65;
+}
+
+.msg {
+    animation: fadeUp .25s ease both;
+}
+@keyframes fadeUp {
+    from { opacity:0; transform: translateY(6px); }
+}
+
+#chat-input:focus {
+   box-shadow: 0 0 0 3px rgba(109,40,217,.15);
+}
+
+.chat-shell {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.msg.me {
+    background: linear-gradient(135deg, #EEDAFF 0%, #D9B8FF 100%);
+    color: #2A0D48;
+    border: 1px solid rgba(115,20,198,.2);
+}
+.msg.me .meta {
+    color: rgba(0,0,0,.55);
+}
+
+.support-thread-item {
+    cursor: pointer;
+    transition: .22s;
+}
+
+.support-thread-item:hover {
+    background: rgba(115,20,198,.07);
+    border-color: rgba(115,20,198,.25);
+    box-shadow: 0 3px 12px rgba(115,20,198,.15);
+    transform: translateY(-2px);
+}
+
+
+.support-thread-item:hover b {
+    color: var(--primary);
+    text-shadow: 0 0 5px rgba(115,20,198,.25);
+}
+
+

@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../../assets/css/support.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -35,7 +36,8 @@
 
     <!-- MAIN -->
     <div class="main-content">
-        <!-- ÜST BAR -->
+
+        <!-- HEADER -->
         <header class="dashboard-header">
             <h2> Support &amp; Feedback</h2>
             <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
@@ -45,53 +47,38 @@
                 <button id="logout-button">Logout</button>
             </div>
         </header>
+        <!-- PAGE CONTENT -->
+        <main class="content-area support-layout">
 
-        <!-- ORTALANMIŞ İÇERİK -->
-        <main class="content-area"
-              style="display:flex; flex-direction:column; gap:20px; max-width:850px; margin:0 auto; width:100%;">
+            <!-- NEW REQUEST -->
+            <div class="card support-card">
+                <h3>Create New Support Request</h3>
 
-            <!-- YENİ KONU AÇMA -->
-            <div class="card" style="padding:20px;">
-                <h3 style="margin-top:0; margin-bottom:12px;">Create New Support Request</h3>
-
-                <div style="display:flex;flex-direction:column;gap:10px;">
-                    <div>
-                        <label for="support-subject"
-                               style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
-                            Subject
-                        </label>
-                        <input id="support-subject"
-                               type="text"
-                               placeholder="E.g: Quiz not opening, reading text not visible..."
-                               style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
-                                      font-size:0.95rem;box-sizing:border-box;">
-                    </div>
-
-                    <div>
-                        <label for="support-message"
-                               style="display:block;font-size:0.9rem;font-weight:600;margin-bottom:4px;">
-                            Your Message
-                        </label>
-                        <textarea id="support-message"
-                                  rows="4"
-                                  placeholder="Write your issue or feedback in detail..."
-                                  style="width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d1d5db;
-                                         font-size:0.95rem;resize:vertical;min-height:120px;box-sizing:border-box;
-                                         font-family:inherit;"></textarea>
-                    </div>
-
-                    <button id="create-thread" class="cta-button" style="width:100%;margin-top:4px;">
-                        Send
-                    </button>
+                <div class="support-field">
+                    <label for="support-subject">Subject</label>
+                    <input id="support-subject"
+                           type="text"
+                           placeholder="E.g: Quiz not opening, reading text not visible..."
+                           class="support-input">
                 </div>
+
+                <div class="support-field">
+                    <label for="support-message">Your Message</label>
+                    <textarea id="support-message"
+                              rows="4"
+                              placeholder="Write your issue or feedback in detail..."
+                              class="support-textarea"></textarea>
+                </div>
+
+                <button id="create-thread" class="cta-button support-send">Send</button>
             </div>
 
-            <!-- KENDİ TALEPLERİ (SADECE LİSTE) -->
-            <div class="card" style="padding:20px;">
-                <h3 style="margin-top:0; margin-bottom:12px;">My Support Request History</h3>
+            <!-- HISTORY -->
+            <div class="card support-card">
+                <h3>My Support Request History</h3>
 
-                <div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;background:#f9fafb;">
-                    <div id="my-threads-list" style="font-size:0.9rem;">
+                <div class="support-history-box">
+                    <div id="my-threads-list" class="support-history-empty">
                         You don't have any support requests yet.
                     </div>
                 </div>
@@ -101,8 +88,6 @@
     </div>
 </div>
 
-<!-- JS (Dış Dosya) -->
 <script type="module" src="../../assets/js/student/support.js"></script>
-
 </body>
 </html>
