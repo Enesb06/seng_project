@@ -219,3 +219,8 @@
     justify-content: center;
     font-size: 1.1em; /* İkonu biraz büyüt */
 }
+/* assets/css/reading.css dosyasının sonuna ekleyin */
+
+.dialogue-line {
+  margin-bottom: 0.8rem; /* Konuşma satırları arasına boşluk ekler */
+}

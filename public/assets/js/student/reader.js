@@ -151,27 +151,67 @@ const markAsRead = async (contentId) => {
   if (error) console.error('markAsRead error:', error);
 };
 
+// ======================= BU FONKSİYON GÜNCELLENDİ =======================
 /* ========= 2) MATERYAL GÖRÜNTÜLEME ========= */
 const displayMaterial = async (contentId) => {
   try {
     const user = getUser();
     if (!user) return goHome();
+
     currentEssayId = contentId;
+
     document.querySelectorAll('.material-item').forEach((el) => el.classList.remove('active'));
     const selected = document.querySelector(`[data-id='${contentId}']`);
     if (selected) selected.classList.add('active');
+
     const { data, error } = await _supabase.from('contents').select('*').eq('id', contentId).single();
+
     if (error || !data) throw error || new Error('Content not found');
+
     if (readingTitle) readingTitle.textContent = data.title || '';
-    if (readingBody) readingBody.innerHTML = wrapWords(data.body || '');
+
+    const contentBody = data.body || '';
+
+    // --- YENİ EKLENEN DİYALOG KONTROLÜ ---
+    try {
+      // Gelen metni JSON olarak ayrıştırmayı dene
+      let dialogueData = JSON.parse(contentBody);
+      
+      // Bazen AI [[...]] şeklinde çift dizi gönderebilir, bunu düzeltelim
+      if (Array.isArray(dialogueData) && dialogueData.length > 0 && Array.isArray(dialogueData[0])) {
+        dialogueData = dialogueData[0];
+      }
+
+      // Eğer geçerli bir diyalog formatıysa (dizi ve içinde speaker/dialogue olan objeler)
+      if (Array.isArray(dialogueData) && dialogueData.length > 0 && dialogueData[0].speaker && dialogueData[0].dialogue) {
+        // Diyalogu HTML olarak formatla
+        const formattedDialogue = dialogueData.map(line => 
+          `<p class="dialogue-line"><strong>${line.speaker}:</strong> ${wrapWords(line.dialogue)}</p>`
+        ).join('');
+        if (readingBody) readingBody.innerHTML = formattedDialogue;
+      } else {
+        // JSON ama beklenen format değilse, normal metin gibi davran
+        throw new Error("Not a dialogue format");
+      }
+    } catch (e) {
+      // JSON değilse, bu normal bir metindir. Eskisi gibi devam et.
+      if (readingBody) readingBody.innerHTML = wrapWords(contentBody);
+    }
+    // --- KONTROL SONU ---
+
     await markAsRead(contentId);
+
     const savedNote = localStorage.getItem(`note_${user.id}_${contentId}`);
     if (noteTextarea) noteTextarea.value = savedNote || '';
+
     updateFavoriteIcon();
   } catch (err) {
     console.error('displayMaterial Hata:', err);
+    if (readingBody) readingBody.innerHTML = '<p style="color:red;">Could not load this material.</p>';
   }
 };
+// ======================= GÜNCELLEME SONU =======================
+
 
 window.displayMaterial = displayMaterial;
 
@@ -245,7 +285,10 @@ const handleGenerateNewMaterial = async (e) => {
   const length = document.getElementById('content-length')?.value;
   const textType = document.getElementById('text-type')?.value;
 
-  const promptDetails = `Write a ${length} English ${textType} about ${category} for ${difficulty} level. Response MUST be ONLY JSON: {"title": "...", "body": "..."}`;
+  // Diyalog için özel prompt
+  const isDialogue = textType === 'dialogue';
+  const promptDetails = `Write a ${length} English ${textType} about ${category} for ${difficulty} level. ${isDialogue ? 'Response MUST be ONLY a JSON array of objects like this: [{"speaker": "Name", "dialogue": "Text..."}].' : 'Response MUST be ONLY JSON: {"title": "...", "body": "..."}'}`;
+
 
   try {
     const response = await fetch(AI_FUNCTION_URL, {
@@ -259,13 +302,21 @@ const handleGenerateNewMaterial = async (e) => {
     const cleaned = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
 
     let title, body;
-    try {
-      const parsedData = JSON.parse(cleaned);
-      title = parsedData.title;
-      body = parsedData.body;
-    } catch (parseError) {
-      console.warn("AI response was not valid JSON. Using raw text as body.");
-      body = cleaned;
+    
+    if (isDialogue) {
+        body = cleaned; // Diyalog için ham JSON'u body olarak sakla
+        const firstLetter = textType.charAt(0).toUpperCase();
+        const restOfTextType = textType.slice(1);
+        title = `${firstLetter + restOfTextType} about ${category}`;
+    } else {
+        try {
+          const parsedData = JSON.parse(cleaned);
+          title = parsedData.title;
+          body = parsedData.body;
+        } catch (parseError) {
+          console.warn("AI response was not valid JSON. Using raw text as body.");
+          body = cleaned;
+        }
     }
     
     if (!title) {
@@ -280,11 +331,7 @@ const handleGenerateNewMaterial = async (e) => {
 
     const { data: newContent, error } = await _supabase
       .from('contents')
-      .insert({
-        title: title,
-        body: body,
-        user_id: user.id,
-      })
+      .insert({ title, body, user_id: user.id })
       .select('id')
       .single();
 
@@ -332,13 +379,11 @@ if (readingBody) {
     if (e.target.classList.contains('word')) {
       const word = e.target.dataset.word;
       const rect = e.target.getBoundingClientRect();
-
       if (tooltip) {
         tooltip.style.left = `${rect.left + window.scrollX}px`;
         tooltip.style.top = `${rect.top + window.scrollY - 95}px`;
         tooltip.style.display = 'flex';
       }
-
       if (tooltipWord) tooltipWord.textContent = word;
       if (tooltipMeaning) {
         tooltipMeaning.textContent = 'Translating...';
@@ -371,7 +416,6 @@ if (readingBody) {
 
 const saveBtn = document.getElementById('save-note-btn');
 if (saveBtn) saveBtn.onclick = saveCurrentNote;
-
 if (noteTextarea) {
   noteTextarea.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && e.ctrlKey) {
@@ -384,15 +428,9 @@ if (noteTextarea) {
 const newMaterialBtn = document.getElementById('new-material-btn');
 const closeModalBtn  = document.getElementById('close-modal-btn');
 
-if (newMaterialBtn && preferencesModal) {
-  newMaterialBtn.onclick = () => preferencesModal.classList.remove('hidden');
-}
-if (closeModalBtn && preferencesModal) {
-  closeModalBtn.onclick = () => preferencesModal.classList.add('hidden');
-}
-if (preferencesForm) {
-  preferencesForm.onsubmit = handleGenerateNewMaterial;
-}
+if (newMaterialBtn && preferencesModal) newMaterialBtn.onclick = () => preferencesModal.classList.remove('hidden');
+if (closeModalBtn && preferencesModal) closeModalBtn.onclick = () => preferencesModal.classList.add('hidden');
+if (preferencesForm) preferencesForm.onsubmit = handleGenerateNewMaterial;
 
 if (favoriteBtn) {
   favoriteBtn.addEventListener('click', () => {
@@ -412,18 +450,14 @@ if (favoriteBtn) {
   });
 }
 
-if (logoutButton) {
-  logoutButton.addEventListener('click', goHome);
-}
+if (logoutButton) logoutButton.addEventListener('click', goHome);
 
 /* ========= SAYFA BAŞLATICI ========= */
 document.addEventListener('DOMContentLoaded', () => {
   const user = getUser();
   if (!user) return goHome();
 
-  if (welcomeMessageEl) {
-    welcomeMessageEl.innerText = `Welcome, ${user.full_name}!`;
-  }
+  if (welcomeMessageEl) welcomeMessageEl.innerText = `Welcome, ${user.full_name}!`;
 
   loadUserMaterials();
   renderHistory();
@@ -434,13 +468,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (imgEl) imgEl.src = user.avatar_url;
   }
 
-  // ================= YENİ EKLENEN AKILLI FİLTRELEME KODU =================
-  
   const categorySelect = document.getElementById('interest-category');
   const textTypeSelect = document.getElementById('text-type');
   const allOptionsSource = document.getElementById('all-text-type-options');
 
-  // ======================= BU LİSTE GÜNCELLENDİ =======================
   const validMappings = {
     'technology': ['article', 'news report', 'blog post', 'review', 'problem-solution essay', 'email'],
     'science': ['article', 'news report', 'blog post', 'biography', 'problem-solution essay'],
@@ -454,30 +485,22 @@ document.addEventListener('DOMContentLoaded', () => {
     'entertainment': ['review', 'news report', 'blog post', 'biography', 'opinion essay', 'article'],
     'food and cooking': ['blog post', 'review', 'article', 'short story', 'diary', 'email']
   };
-  // ======================= GÜNCELLEME SONU =======================
 
   textTypeSelect.disabled = true;
 
   categorySelect.addEventListener('change', () => {
     const selectedCategory = categorySelect.value;
     const validTypes = validMappings[selectedCategory] || [];
-
     textTypeSelect.innerHTML = '<option value="" disabled selected>-- Select a text type --</option>';
-
     if (validTypes.length > 0) {
       textTypeSelect.disabled = false;
-      
       validTypes.forEach(typeValue => {
         const originalOption = allOptionsSource.querySelector(`option[value='${typeValue}']`);
-        if (originalOption) {
-            textTypeSelect.appendChild(originalOption.cloneNode(true));
-        }
+        if (originalOption) textTypeSelect.appendChild(originalOption.cloneNode(true));
       });
     } else {
       textTypeSelect.disabled = true;
       textTypeSelect.innerHTML = '<option value="" disabled selected>-- First select a category --</option>';
     }
   });
-  // ================= YENİ KOD SONU ==========================================
-
 });
