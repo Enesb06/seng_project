@@ -303,3 +303,10 @@ input[type="date"] {
     object-fit: cover;
     box-shadow: 0 0 0 3px var(--primary-soft);
 }
+.student-reports-page .card{
+    margin-bottom: 32px;
+  }
+  
+  .student-reports-page .card-spaced{
+    margin-bottom: 40px;
+  }
