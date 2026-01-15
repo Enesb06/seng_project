@@ -1,266 +1,359 @@
-/* --- GENEL KART STİLLERİ --- */
-.card {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    width: 100%;
+/* =========================
+   STUDENT HOME PAGE (student.html)
+   Only CSS polish - NO JS/HTML changes
+   ========================= */
+
+/* Page spacing + background harmony */
+.content-area {
+  padding: 30px;
 }
 
-h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    color: #333;
+/* ---------- Overview stats cards (3 cards) ---------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 14px;
 }
 
-/* --- MODAL STİLLERİ --- */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    opacity: 1;
-    transition: opacity 0.3s ease-in-out;
+/* Base style for stat cards */
+.stats-grid > .card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 16px 18px 34px; /* bottom space for progress bar */
+  box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
+  min-height: 105px;
 }
 
-.modal-overlay.hidden {
-    opacity: 0;
-    pointer-events: none; /* Gizliyken tıklamaları engelle */
+/* Headline */
+.stats-grid > .card h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  color: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.modal-content {
-    background: #fff;
-    padding: 30px 40px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+/* Mini subtitle under title (CSS generated) */
+.stats-grid > .card h4::after {
+  content: "";
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(15, 23, 42, 0.45);
+  margin-top: 4px;
 }
 
-.modal-content h2 {
-    margin-top: 0;
-    text-align: center;
-    color: #333;
+/* Number style */
+.stats-grid > .card .stat-value {
+  margin: 12px 0 0;
+  font-size: 2.3rem;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.85);
+  line-height: 1;
 }
 
-.modal-content p {
-    text-align: center;
-    color: #666;
-    margin-bottom: 25px;
+/* Progress track */
+.stats-grid > .card::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 14px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
 }
 
-.modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+/* Progress fill (default, overridden per card) */
+.stats-grid > .card::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: 14px;
+  height: 6px;
+  border-radius: 999px;
+  width: 60%;
+  background: rgba(16, 185, 129, 0.95);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15);
 }
 
-.modal-content label {
-    font-weight: bold;
-    color: #555;
-    font-size: 0.9rem;
+/* Card 1: Read Materials (green) */
+.stats-grid > .card:nth-child(1) {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(255, 255, 255, 0.8));
+}
+.stats-grid > .card:nth-child(1) h4::before {
+  content: "📚";
+  font-size: 1.2rem;
+}
+.stats-grid > .card:nth-child(1) h4::after {
+  content: "Keep reading ✨";
+}
+.stats-grid > .card:nth-child(1)::after {
+  width: 70%;
+  background: rgba(16, 185, 129, 0.95);
 }
 
-.modal-content select, .modal-content button {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    background-color: #f9f9f9;
+/* Card 2: Learned Words (blue) */
+.stats-grid > .card:nth-child(2) {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(255, 255, 255, 0.85));
+}
+.stats-grid > .card:nth-child(2) h4::before {
+  content: "🧠";
+  font-size: 1.2rem;
+}
+.stats-grid > .card:nth-child(2) h4::after {
+  content: "Vocabulary power ⚡";
+}
+.stats-grid > .card:nth-child(2)::after {
+  width: 25%;
+  background: rgba(59, 130, 246, 0.95);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
 }
 
-.modal-content button {
-    background-color: var(--primary-color); /* main.css'den gelen değişkeni kullanır */
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    border: none;
-    margin-top: 10px;
+/* Card 3: Quiz Success (purple) */
+.stats-grid > .card:nth-child(3) {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 255, 255, 0.85));
+}
+.stats-grid > .card:nth-child(3) h4::before {
+  content: "🏆";
+  font-size: 1.15rem;
+}
+.stats-grid > .card:nth-child(3) h4::after {
+  content: "You’re on fire 🔥";
+}
+.stats-grid > .card:nth-child(3)::after {
+  width: 94%;
+  background: rgba(168, 85, 247, 0.95);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.15);
 }
 
-.modal-content button:hover {
-    background-color: var(--primary-dark-color); /* main.css'den gelen değişkeni kullanır */
+/* Responsive stats */
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-
-/* --- ANA SAYFA DÜZENİ (GRID) --- */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 25px;
+/* ---------- My Class and Homework card ---------- */
+.content-area > .card {
+  border-radius: 16px;
 }
 
-.main-column, .side-column {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+/* Homework list grid (2 columns like photo) */
+.homework-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 14px;
 }
 
-/* --- İÇERİK KARTI STİLLERİ --- */
-#generated-content-card {
-    min-height: 300px;
+@media (max-width: 900px) {
+  .homework-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-#content-display h4 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    color: #2c3e50;
+/* Homework item polish (override inline borders nicely) */
+.homework-grid .hw-item {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 26px rgba(17, 24, 39, 0.06);
+  padding: 16px !important;
 }
 
-#content-display p {
-    white-space: pre-wrap; /* Satır sonlarını ve boşlukları korur */
-    line-height: 1.7;
-    color: #34495e;
-}
-
-/* İçerik Yükleyici Animasyonu */
-#content-loader {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    color: #7f8c8d;
-}
-
-.loader-animation {
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin-top: 15px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
-/* --- TERCİH KARTI STİLLERİ --- */
-#preferences-card p {
-    margin: 10px 0;
-    color: #555;
-}
-
-#preferences-card span {
-    font-weight: 500;
-    color: #333;
-    text-transform: capitalize;
-}
-
-#preferences-card button {
-    width: 100%;
-    padding: 11px;
-    margin-top: 8px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.95rem;
-    transition: all 0.2s ease;
-}
-
-#edit-preferences-btn {
-    background-color: #e9ecef;
-    color: #495057;
-    border: 1px solid #dee2e6;
-}
-#edit-preferences-btn:hover {
-    background-color: #dee2e6;
-}
-
-#generate-new-content-btn {
-    background-color: var(--primary-color);
-    color: white;
-}
-#generate-new-content-btn:hover {
-    background-color: var(--primary-dark-color);
-}
-
-#generate-new-content-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-    color: #666;
+/* Homework title + due date */
+.homework-grid .hw-item h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: rgba(15, 23, 42, 0.85);
 }
 
 
-/* --- ROZET KARTI STİLLERİ --- */
+/* ===============================
+   FIX: Homework Read button size
+   =============================== */
+
+.homework-grid .read-btn{
+  padding: 8px 14px !important;   /* küçült */
+  font-size: 0.9rem !important;   /* yazıyı incelt */
+  font-weight: 700 !important;
+  min-height: 38px !important;
+  height: auto !important;
+
+  border-radius: 999px !important;
+  box-shadow: 0 6px 14px rgba(227,161,31,0.25) !important;
+}
+
+/* Buton hover'da da büyümesin */
+.homework-grid .read-btn:hover{
+  transform: translateY(-1px) scale(1) !important;
+}
+
+/* On Time badge ile daha dengeli hizalama */
+.homework-grid .hw-item > div:last-child{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+/* Completed button (green) – only shown when not done */
+.homework-grid .complete-btn {
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 10px 16px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+  background: linear-gradient(180deg, #22c55e, #16a34a) !important;
+  box-shadow: 0 10px 22px rgba(22, 163, 74, 0.22);
+}
+.homework-grid .complete-btn:hover {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+}
+
+/* On Time / Late badge look */
+.homework-grid .hw-item span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.86rem;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+.homework-grid .hw-item span[style*="orange"] {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+/* Homework content panel when opened */
+.homework-grid [id^="content-"] {
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+  background: rgba(248, 250, 252, 0.9) !important;
+  border-radius: 12px !important;
+  color: rgba(15, 23, 42, 0.75);
+  font-weight: 600;
+}
+
+/* ---------- Badges row (small tiles like photo) ---------- */
+.badges-container.card {
+  border-radius: 16px;
+}
+
 .badge-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 14px;
+  padding: 10px 6px 4px;
+  overflow-x: auto;
+  align-items: center;
+  justify-content: flex-start;
+  scroll-snap-type: x mandatory;
 }
 
+.badge-list::-webkit-scrollbar {
+  height: 8px;
+}
+.badge-list::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 999px;
+}
+.badge-list::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.06);
+  border-radius: 999px;
+}
+
+/* Badge tile */
 .badge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    width: 80px;
+  scroll-snap-align: start;
+  width: 86px;
+  min-width: 86px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 16px;
+  padding: 10px 10px 8px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .badge img {
-    width: 50px;
-    height: 50px;
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto 6px;
+  filter: saturate(1.05);
 }
 
 .badge span {
-    font-size: 0.8rem;
-    color: #555;
-    text-align: center;
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 900;
+  color: rgba(15, 23, 42, 0.7);
+  line-height: 1.1;
 }
 
-
-/* --- RESPONSIVE DÜZENLEMELER --- */
-@media (max-width: 992px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr; /* Sütunları alt alta dizer */
-    }
+/* Earned vs locked like photo */
+.badge.earned {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14), rgba(255, 255, 255, 0.95));
+  border-color: rgba(16, 185, 129, 0.22);
+}
+.badge.locked {
+  opacity: 0.55;
+  filter: grayscale(0.2);
 }
 
-@media (max-width: 768px) {
-    .main-content {
-        padding: 15px;
-    }
+/* Hover lift */
+.badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(109, 40, 217, 0.12);
 }
 
-.join-controls {
-    display: flex;
-    gap: 10px;
+/* ===============================
+   FIX: Join Class overflow / taşma
+   =============================== */
+
+.join-controls{
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;          /* ✅ sığmazsa alt satıra geç */
+  width: 100%;
 }
 
-.join-controls input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-align: center;
+.join-controls input{
+  flex: 1 1 320px;          /* ✅ büyür-küçülür, başlangıç 320 */
+  min-width: 220px;         /* ✅ aşırı küçülmesin */
+  max-width: 520px;         /* ✅ input çok uzamasın (görseldeki gibi) */
+  height: 52px;
+  border-radius: 14px;
 }
 
-.join-controls button {
-    width: auto;
-    padding: 10px 20px;
-    background-color: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
+.join-controls button{
+  flex: 1 1 240px;          /* ✅ sığmazsa aşağı iner, satıra uyumlu */
+  min-width: 180px;         /* ✅ çok minik olmasın */
+  max-width: 100%;          /* ✅ asla sayfadan taşmasın */
+  height: 52px;
+  border-radius: 14px;
 }
 
-.join-controls button:hover {
-    background-color: #2563eb;
+/* Daha dar ekranlarda otomatik alt alta (temiz) */
+@media (max-width: 720px){
+  .join-controls input,
+  .join-controls button{
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
+

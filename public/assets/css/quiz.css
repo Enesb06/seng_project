@@ -1,71 +1,218 @@
-/* assets/css/quiz.css */
+/* =========================
+   assets/css/quiz.css (SAFE PREMIUM)
+   - Only styles your existing ids/classes
+   - Does NOT touch .hidden
+   ========================= */
 
-.quiz-container {
-    max-width: 800px;
-    margin: 0 auto;
+.quiz-container{
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* Soru Metni */
-#question-text {
-    font-size: 1.4rem;
-    color: #1e293b; /* Koyu lacivert/siyah tonu */
-    margin-bottom: 25px;
-    line-height: 1.4;
-    font-weight: 700;
+/* cards */
+#quiz-intro.card,
+#quiz-container.card,
+#result-area.card,
+#quiz-history.card{
+  border-radius: 18px;
+  border: 1px solid rgba(15,23,42,0.08);
+  box-shadow: 0 18px 46px rgba(17,24,39,0.08);
+  background: rgba(255,255,255,0.96);
 }
 
-/* Seçenekler Izgarası */
-.options-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin: 20px 0;
+/* subtle top gradient line */
+#quiz-intro.card::before,
+#quiz-container.card::before,
+#result-area.card::before,
+#quiz-history.card::before{
+  content:"";
+  display:block;
+  height: 10px;
+  border-radius: 18px 18px 0 0;
+  background: linear-gradient(90deg, rgba(124,58,237,0.22), rgba(109,40,217,0.10), rgba(34,197,94,0.10));
 }
 
-/* Seçenek Butonları */
-.option-btn {
-    padding: 18px;
-    background-color: #ffffff;
-    border: 2px solid #e2e8f0;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    color: #334155; /* Net okunur koyu gri/mavi */
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-    text-align: left;
+/* intro text */
+#quiz-intro h3,
+#result-area h3,
+#quiz-history h3{
+  margin: 14px 0 10px;
+  font-size: 1.25rem;
+  font-weight: 1000;
+  color: rgba(15,23,42,0.88);
+  letter-spacing: -0.2px;
 }
 
-/* Butonun üzerine gelince */
-.option-btn:hover {
-    border-color: #3b82f6;
-    background-color: #f0f7ff;
-    color: #1d4ed8; /* Üzerine gelince biraz daha belirgin mavi yazı */
+#quiz-info-text{
+  margin: 0 0 14px;
+  color: rgba(15,23,42,0.62);
+  font-weight: 700;
 }
 
-/* Soru İlerleme Yazısı */
-#quiz-progress {
-    margin-top: 20px;
-    color: #64748b;
-    font-size: 0.95rem;
-    text-align: center;
-    font-weight: 600;
+/* IMPORTANT: only style the specific buttons you already have */
+#start-quiz-btn,
+#result-area .cta-button{
+  width: 100%;
+  height: 54px;
+  border-radius: 14px !important;
+  border: none !important;
+  cursor: pointer;
+  font-weight: 1000;
+  font-size: 1.05rem;
+
+  color: #fff;
+  background: linear-gradient(90deg, #7c3aed, #6d28d9);
+  box-shadow: 0 18px 38px rgba(109,40,217,0.22);
+  transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
 }
 
-/* Sonuç Ekranı Yazıları */
-#result-area h3 {
-    color: #1e293b;
-    margin-bottom: 15px;
+#start-quiz-btn:hover,
+#result-area .cta-button:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+  box-shadow: 0 24px 52px rgba(109,40,217,0.26);
 }
 
-#score-text {
-    color: #0f172a;
-    font-weight: bold;
+#start-quiz-btn:disabled{
+  background: rgba(148,163,184,0.70);
+  box-shadow: none;
+  cursor: not-allowed;
 }
 
-/* Mobilde butonlar alt alta gelsin */
-@media (max-width: 600px) {
-    .options-grid {
-        grid-template-columns: 1fr;
-    }
+/* loader: ONLY your #loader */
+#loader{
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-weight: 900;
+  color: rgba(15,23,42,0.70);
+  background: rgba(109,40,217,0.06);
+  border: 1px solid rgba(109,40,217,0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#loader::before{
+  content:"";
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 3px solid rgba(109,40,217,0.22);
+  border-top-color: rgba(109,40,217,0.75);
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+/* question */
+#question-text{
+  margin: 10px 0 14px;
+  font-size: 1.35rem;
+  font-weight: 1000;
+  color: rgba(15,23,42,0.90);
+  letter-spacing: -0.2px;
+  line-height: 1.35;
+}
+
+/* options grid */
+.options-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 14px 0 8px;
+}
+
+/* options: ONLY elements that have .option-btn class */
+.option-btn{
+  width: 100%;
+  text-align: left;
+  padding: 16px 16px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.98);
+  box-shadow: 0 12px 22px rgba(17,24,39,0.06);
+
+  font-size: 1.02rem;
+  font-weight: 900;
+  color: rgba(15,23,42,0.80);
+
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.option-btn::before{
+  content:"";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: rgba(109,40,217,0.12);
+}
+
+.option-btn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(109,40,217,0.35);
+  background: rgba(109,40,217,0.06);
+  box-shadow: 0 18px 32px rgba(109,40,217,0.14);
+}
+
+.option-btn:focus{
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(109,40,217,0.14), 0 18px 32px rgba(109,40,217,0.14);
+  border-color: rgba(109,40,217,0.45);
+}
+
+/* if your JS adds these classes, nice states */
+.option-btn.correct{
+  border-color: rgba(34,197,94,0.35);
+  background: rgba(34,197,94,0.12);
+}
+.option-btn.correct::before{ background: rgba(34,197,94,0.55); }
+
+.option-btn.wrong{
+  border-color: rgba(239,68,68,0.30);
+  background: rgba(239,68,68,0.10);
+}
+.option-btn.wrong::before{ background: rgba(239,68,68,0.55); }
+
+/* progress pill */
+#quiz-progress{
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(109,40,217,0.06);
+  border: 1px solid rgba(109,40,217,0.14);
+  color: rgba(15,23,42,0.62);
+  font-weight: 1000;
+  font-size: 0.92rem;
+}
+
+/* result */
+#score-text{
+  margin: 8px 0 14px;
+  font-weight: 1000;
+  color: rgba(15,23,42,0.82);
+}
+
+/* history: if your JS prints a list of divs */
+#quiz-history-list{
+  margin-top: 10px;
+  color: rgba(15,23,42,0.70);
+  font-weight: 800;
+}
+
+/* mobile */
+@media (max-width: 760px){
+  .options-grid{ grid-template-columns: 1fr; }
+  #question-text{ font-size: 1.18rem; }
 }
