@@ -126,6 +126,10 @@ const initializeProfile = async () => {
   const avatarEl = document.getElementById('header-avatar');
   if (avatarEl && user.avatar_url) avatarEl.src = user.avatar_url;
 
+  // ✅ Profil kartı avatarı (header ile aynı avatar)
+  const profileAvatarEl = document.getElementById('profile-avatar');
+  if (profileAvatarEl && user.avatar_url) profileAvatarEl.src = user.avatar_url;
+
   // Kişisel bilgiler
   const nameEl = document.getElementById('profile-name');
   const emailEl = document.getElementById('profile-email');
