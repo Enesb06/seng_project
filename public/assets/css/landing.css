@@ -101,21 +101,39 @@
     z-index: 2; 
     max-width: 800px;
     padding: 20px;
+    /* ---- YENİ DEĞİŞİKLİK ---- */
+    text-align: left; /* İçeriği sola yasladık */
 }
 
 .hero-content h1 {
     font-size: 3.5rem;
     margin-bottom: 0.5em;
     line-height: 1.2;
-    color: white;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+    /* ---- DEĞİŞİKLİKLER ---- */
+    color: #2F2E41;      /* Rengi koyu tema rengiyle güncelledik */
+    text-shadow: none;   /* Gölgeyi kaldırdık, daha net bir görünüm için */
+    position: relative;  /* Çizgi için konumlandırma referansı */
+    padding-bottom: 20px; /* Çizgi için boşluk */
+}
+
+/* ---- YENİ EKLENEN KOD: Başlık Altı Çizgisi ---- */
+.hero-content h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 150px; /* Çizginin uzunluğu */
+    height: 5px;  /* Çizginin kalınlığı */
+    background-color: #6C63FF; /* Vurgu rengimizi kullandık */
+    border-radius: 2px;
 }
 
 .hero-content p {
     font-size: 1.3rem;
     margin-bottom: 2em;
-    color: rgba(255, 255, 255, 0.95);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    /* ---- DEĞİŞİKLİKLER ---- */
+    color: #2F2E41;      /* Rengi koyu tema rengiyle güncelledik */
+    text-shadow: none;   /* Gölgeyi kaldırdık */
 }
 
 /* Medya Sorguları (Responsive Tasarım) */
