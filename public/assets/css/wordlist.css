@@ -1,81 +1,250 @@
+/* =========================
+   WORDLIST.CSS (FINAL)
+   ========================= */
+
+/* --- Controls --- */
 .wordlist-controls {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding: 15px;
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 16px;
 }
 
-.wordlist-controls input, .wordlist-controls select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    outline: none;
+.wordlist-controls input,
+.wordlist-controls select {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid rgba(15,23,42,0.12);
+  border-radius: 12px;
+  outline: none;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 10px 22px rgba(17,24,39,0.05);
+  font-weight: 700;
+  color: rgba(15,23,42,0.78);
 }
 
-.wordlist-controls input { flex: 1; }
+.wordlist-controls input { 
+  flex: 1; 
+}
 
-.word-table {
+.wordlist-controls input::placeholder{
+  color: rgba(15,23,42,0.35);
+  font-weight: 600;
+}
+
+.wordlist-controls input:focus,
+.wordlist-controls select:focus{
+  border-color: rgba(109,40,217,0.35);
+  box-shadow: 0 0 0 4px rgba(109,40,217,0.12), 0 10px 22px rgba(17,24,39,0.06);
+}
+
+.wordlist-controls select{
+  cursor: pointer;
+  font-weight: 800;
+}
+
+/* mobil */
+@media (max-width: 720px){
+  .wordlist-controls{
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .wordlist-controls input,
+  .wordlist-controls select{
     width: 100%;
-    border-collapse: collapse;
-    text-align: left;
+  }
 }
 
-.word-table th, .word-table td {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+/* --- Wordlist container card (table inside) --- */
+.wordlist-container.card{
+  padding: 0 !important;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(15,23,42,0.08);
+  box-shadow: 0 14px 40px rgba(17,24,39,0.08);
 }
 
-/* Tüm hücreleri dikey olarak ortalamak için bu kural kalıyor */
+/* --- Table --- */
+.word-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.word-table th,
 .word-table td {
-    vertical-align: middle;
+  padding: 18px;
+  border-bottom: 1px solid rgba(15,23,42,0.06);
 }
 
-.status-badge {
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
+/* header */
+.word-table thead th{
+  background: rgba(109,40,217,0.06);
+  color: rgba(15,23,42,0.80);
+  font-weight: 900;
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
-.status-learning { background: #fef9c3; color: #854d0e; }
-.status-learned { background: #dcfce7; color: #166534; }
-
-.action-btn {
-    border: none;
-    padding: 6px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 5px;
+/* rows */
+.word-table tbody tr{
+  background: rgba(255,255,255,0.96);
+  transition: background 0.15s ease;
 }
 
-.delete-btn { background: #fee2e2; color: #991b1b; }
-.learned-btn { background: #dcfce7; color: #166534; }
+.word-table tbody tr:nth-child(even){
+  background: rgba(255,255,255,0.90);
+}
 
-.hidden { display: none; }
+.word-table tbody tr:hover{
+  background: rgba(109,40,217,0.05);
+}
 
+/* word column stronger */
+.word-table tbody td:first-child{
+  font-weight: 900;
+  color: rgba(15,23,42,0.88);
+}
 
-/* --- GÜNCELLEME: YENİ KURAL --- */
-/* Flex hizalamasını td yerine içindeki div'e uyguluyoruz */
+/* Keep vertical middle */
+.word-table td {
+  vertical-align: middle;
+}
+
+/* --- Word + speak alignment --- */
 .word-container {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Kelime ile buton arasına boşluk koy */
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-
-
-/* Yeni Hoparlör Butonu Stili */
+/* Speak button */
 .speak-btn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem; /* İkonu biraz büyüt */
-    padding: 0 5px;
-    line-height: 1;
-    opacity: 0.6;
-    transition: opacity 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  /* ikon kaybolmasın */
+  font-size: 1.15rem;
+  line-height: 1;
+  padding: 6px 8px;
+  border-radius: 10px;
+
+  opacity: 0.65;
+  transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
 .speak-btn:hover {
-    opacity: 1;
+  opacity: 1;
+  background: rgba(109,40,217,0.08);
+  transform: translateY(-1px);
+}
+
+/* --- Status badge (chip) --- */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 900;
+  border: 1px solid transparent;
+}
+
+.status-learning { 
+  background: rgba(245, 158, 11, 0.14); 
+  color: #92400e; 
+  border-color: rgba(245, 158, 11, 0.22);
+}
+.status-learning::before{ content: "🟡"; }
+
+.status-learned { 
+  background: rgba(34, 197, 94, 0.14); 
+  color: #166534; 
+  border-color: rgba(34, 197, 94, 0.22);
+}
+.status-learned::before{ content: "✅"; }
+
+/* --- Actions: ICONS MUST STAY VISIBLE --- */
+/* Bu kısım: çöp kutusu & tik KAYBOLMASIN diye net ayarlı */
+.word-table td:last-child{
+  white-space: nowrap;
+}
+
+/* action btn base */
+.action-btn {
+  border: 0;
+  cursor: pointer;
+
+  /* ikon ortalansın */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;          /* screenshot gibi blok */
+  height: 42px;
+
+  border-radius: 10px;
+  margin-right: 8px;
+
+  /* ikon kaybolmasın */
+  font-size: 1.1rem;
+  line-height: 1;
+  font-weight: 900;
+  opacity: 1;
+
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* learned (green) */
+.learned-btn { 
+  background: #dcfce7; 
+  color: #166534; 
+  box-shadow: 0 10px 18px rgba(22,163,74,0.10);
+  border: 1px solid rgba(22,163,74,0.18);
+}
+
+/* delete (red) */
+.delete-btn { 
+  background: #fee2e2; 
+  color: #991b1b; 
+  box-shadow: 0 10px 18px rgba(220,38,38,0.08);
+  border: 1px solid rgba(220,38,38,0.16);
+}
+
+.action-btn:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+}
+
+/* Eğer ikon font-awesome vs ise kesin görünmesi için */
+.action-btn i,
+.action-btn svg{
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+/* --- Empty text --- */
+#no-words {
+  padding: 18px 20px;
+  border-top: 1px solid rgba(15,23,42,0.08);
+  background: rgba(109,40,217,0.05);
+  color: rgba(15,23,42,0.60);
+  font-weight: 800;
+}
+
+.hidden { display: none; }
+
+/* --- Small screens: allow horizontal scroll (table) --- */
+@media (max-width: 860px){
+  .wordlist-container.card{
+    overflow-x: auto;
+  }
+  .word-table{
+    min-width: 820px;
+  }
 }
