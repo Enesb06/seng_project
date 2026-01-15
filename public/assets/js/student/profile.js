@@ -90,25 +90,26 @@ const loadStreakHeader = async () => {
 const getEarnedBadges = ({ reads, quizCount, quizAvg }) => {
   const earned = [];
 
-  // Reading badges (READING = CONTENTS COUNT)
-  if (reads >= 1) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png', name: 'First Text' });
-  if (reads >= 10) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2921/2921148.png', name: '10th Text' });
-  if (reads >= 50) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '50th Text' });
-  if (reads >= 100) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '100th Text' });
-  if (reads >= 200) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/1995/1995574.png', name: '200th Text' });
+  // Reading badges
+  if (reads >= 1)   earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/8750/8750754.png',  name: 'First Text' });
+  if (reads >= 10)  earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/16175/16175033.png', name: '10th Text' });
+  if (reads >= 50)  earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/10552/10552976.png', name: '50th Text' });
+  if (reads >= 100) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/3113/3113049.png',  name: '100th Text' });
+  if (reads >= 200) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/4959/4959279.png',  name: '200th Text' });
 
   // Quiz badges
-  if (quizCount >= 1) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/899/899624.png', name: 'First Quiz' });
+  if (quizCount >= 1) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/10292/10292284.png', name: 'First Quiz' });
 
-  // Madalya (ortalama)
+  // Medals by average
   if (quizCount > 0) {
-    if (quizAvg >= 90 && quizAvg <= 100) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583344.png', name: 'Gold Medal (90-100)' });
-    else if (quizAvg >= 80) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583319.png', name: 'Silver Medal (80-89)' });
-    else if (quizAvg >= 70) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583330.png', name: 'Bronze Medal (70-79)' });
+    if (quizAvg >= 90) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583381.png', name: 'Gold Medal (90-100)' });
+    else if (quizAvg >= 80) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583350.png', name: 'Silver Medal (80-89)' });
+    else if (quizAvg >= 70) earned.push({ image: 'https://cdn-icons-png.flaticon.com/512/2583/2583448.png', name: 'Bronze Medal (70-79)' });
   }
 
   return earned;
 };
+
 
 /* ========= PROFİL ========= */
 const initializeProfile = async () => {
