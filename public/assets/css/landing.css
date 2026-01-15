@@ -110,7 +110,7 @@
     margin-bottom: 0.5em;
     line-height: 1.2;
     /* ---- DEĞİŞİKLİKLER ---- */
-    color: #2F2E41;      /* Rengi koyu tema rengiyle güncelledik */
+    color: #f9f9f9;      /* Rengi koyu tema rengiyle güncelledik */
     text-shadow: none;   /* Gölgeyi kaldırdık, daha net bir görünüm için */
     position: relative;  /* Çizgi için konumlandırma referansı */
     padding-bottom: 20px; /* Çizgi için boşluk */
@@ -132,7 +132,7 @@
     font-size: 1.3rem;
     margin-bottom: 2em;
     /* ---- DEĞİŞİKLİKLER ---- */
-    color: #2F2E41;      /* Rengi koyu tema rengiyle güncelledik */
+    color: #f2f1f5;      /* Rengi koyu tema rengiyle güncelledik */
     text-shadow: none;   /* Gölgeyi kaldırdık */
 }
 
