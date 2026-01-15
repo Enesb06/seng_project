@@ -91,9 +91,8 @@
   content: "📚";
   font-size: 1.2rem;
 }
-.stats-grid > .card:nth-child(1) h4::after {
-  content: "Keep reading ✨";
-}
+.stats-grid > .card:nth-child(1) h4::after
+
 .stats-grid > .card:nth-child(1)::after {
   width: 70%;
   background: rgba(16, 185, 129, 0.95);
@@ -107,8 +106,7 @@
   content: "🧠";
   font-size: 1.2rem;
 }
-.stats-grid > .card:nth-child(2) h4::after {
-  content: "Vocabulary power ⚡";
+.stats-grid > .card:nth-child(2) h4::after
 }
 .stats-grid > .card:nth-child(2)::after {
   width: 25%;
@@ -124,9 +122,8 @@
   content: "🏆";
   font-size: 1.15rem;
 }
-.stats-grid > .card:nth-child(3) h4::after {
-  content: "You’re on fire 🔥";
-}
+.stats-grid > .card:nth-child(3) h4::after 
+
 .stats-grid > .card:nth-child(3)::after {
   width: 94%;
   background: rgba(168, 85, 247, 0.95);
