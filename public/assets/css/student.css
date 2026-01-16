@@ -88,9 +88,17 @@
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.18), rgba(255, 255, 255, 0.8));
 }
 .stats-grid > .card:nth-child(1) h4::before {
-  content: "📚";
-  font-size: 1.2rem;
+  content: "";
+  background-image: url("https://cdn-icons-png.flaticon.com/512/3227/3227053.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
 }
+
 .stats-grid > .card:nth-child(1) h4::after
 
 .stats-grid > .card:nth-child(1)::after {
@@ -103,11 +111,19 @@
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(255, 255, 255, 0.85));
 }
 .stats-grid > .card:nth-child(2) h4::before {
-  content: "🧠";
-  font-size: 1.2rem;
+  content: "";
+  background-image: url("https://cdn-icons-png.flaticon.com/512/3576/3576226.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
 }
+
 .stats-grid > .card:nth-child(2) h4::after
-}
+
 .stats-grid > .card:nth-child(2)::after {
   width: 25%;
   background: rgba(59, 130, 246, 0.95);
@@ -119,9 +135,17 @@
   background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 255, 255, 0.85));
 }
 .stats-grid > .card:nth-child(3) h4::before {
-  content: "🏆";
-  font-size: 1.15rem;
+  content: "";
+  background-image: url("https://cdn-icons-png.flaticon.com/512/16026/16026194.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 6px;
+  vertical-align: middle;
 }
+
 .stats-grid > .card:nth-child(3) h4::after 
 
 .stats-grid > .card:nth-child(3)::after {
