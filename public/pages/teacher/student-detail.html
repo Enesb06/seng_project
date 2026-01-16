@@ -45,7 +45,10 @@
       <section class="card">
 
 
-        <h3 id="studentName">Student</h3>
+        <h3 id="studentName" class="section-title-with-icon">
+          <img src="/assets/icons/students.png" alt="Student" class="section-icon">
+          <span>Student</span>
+        </h3>
         <p><strong>Email:</strong> <span id="email">-</span></p>
         <p><strong>Registration Date:</strong> <span id="registerDate">-</span></p>
         <p><strong>Class:</strong> <span id="className">-</span></p>
@@ -54,29 +57,68 @@
       <!-- Genel Performans -->
       <section class="card">
         <h3>Overall Performance</h3>
+
         <div class="stats-grid stats-grid--chips">
-          <div class="stat-box">📘 Total Readings: <b id="readCount">0</b></div>
-          <div class="stat-box">🧠 Word Count: <b id="wordCount">0</b></div>
-          <div class="stat-box">📝 Quiz Count: <b id="quizCount">0</b></div>
-          <div class="stat-box">⭐ Average Success: <b id="avgScore">0</b>%</div>
+
+          <div class="stat-box">
+            <div class="stat-left">
+              <img src="/assets/icons/readings.png" alt="Readings" class="stat-chip-icon">
+              <span>Total Readings</span>
+            </div>
+            <b id="readCount">0</b>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-left">
+              <img src="/assets/icons/words.png" alt="Words" class="stat-chip-icon">
+              <span>Word Count</span>
+            </div>
+            <b id="wordCount">0</b>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-left">
+              <img src="/assets/icons/quiz.png" alt="Quiz" class="stat-chip-icon">
+              <span>Quiz Count</span>
+            </div>
+            <b id="quizCount">0</b>
+          </div>
+
+          <div class="stat-box">
+            <div class="stat-left">
+              <img src="/assets/icons/success.png" alt="Success" class="stat-chip-icon">
+              <span>Average Success</span>
+            </div>
+            <b><span id="avgScore">0</span>%</b>
+          </div>
+
         </div>
       </section>
 
       <!-- Okuma Geçmişi -->
       <section class="card">
-        <h3>Reading History</h3>
+        <h3 class="section-title-with-icon">
+          <img src="/assets/icons/readings.png" alt="Reading History" class="section-icon">
+          <span>Reading History</span>
+        </h3>
         <div id="readingArea" class="detail-list">Loading...</div>
       </section>
 
       <!-- Kelime Gelişimi -->
       <section class="card">
-        <h3>Word Development</h3>
+        <h3 class="section-title-with-icon">
+          <img src="/assets/icons/words.png" alt="Word Development" class="section-icon">
+          <span>Word Development</span>
+        </h3>
         <div id="wordsArea" class="detail-list">Loading...</div>
       </section>
 
       <!-- Quiz -->
       <section class="card">
-        <h3>Quiz / Test Performance</h3>
+        <h3 class="section-title-with-icon">
+          <img src="/assets/icons/quiz.png" alt="Quiz Performance" class="section-icon">
+          <span>Quiz / Test Performance</span>
+        </h3>
         <div id="quizArea" class="detail-list">Yükleniyor...</div>
       </section>
 

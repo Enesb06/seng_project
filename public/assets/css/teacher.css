@@ -336,11 +336,11 @@ input[type="date"] {
 }
 .student-reports-page .card{
     margin-bottom: 32px;
-  }
-  
-  .student-reports-page .card-spaced{
+}
+
+.student-reports-page .card-spaced{
     margin-bottom: 40px;
-  }
+}
 
 /* Attribution (Flaticon) */
 .icon-credit{
@@ -356,59 +356,113 @@ input[type="date"] {
 .icon-credit a:hover{
     text-decoration: underline;
 }
+
 /* =========================
-   Student Detail – refined spacing
+   Student Detail (clean & stable)
    ========================= */
 
 .student-detail-page .card{
-  margin-bottom: 28px;        /* aralar biraz daha az */
-  padding: 20px 22px;         /* kart yüksekliğini kısalt */
-  border-radius: 20px;
+  margin-bottom: 32px;
+  padding: 22px 24px;
+  border-radius: 18px;
   background: #fff;
-  box-shadow:
-    0 14px 32px rgba(0,0,0,0.07),
-    0 3px 8px rgba(0,0,0,0.04);
-  transition: box-shadow .2s ease, transform .2s ease;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.07);
 }
 
-.student-detail-page .card:hover{
-  transform: translateY(-2px);
-  box-shadow:
-    0 20px 40px rgba(0,0,0,0.10),
-    0 6px 14px rgba(0,0,0,0.06);
-}
-
-/* Başlıklar daha kompakt */
 .student-detail-page .card h3{
   font-size: 1.15rem;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
-/* Satır aralığını kısalt */
 .student-detail-page .card p{
   font-size: 0.95rem;
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 6px 0;
 }
 
-/* Overall Performance chipleri */
+/* Overall Performance */
 .student-detail-page .stats-grid--chips{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 14px;
 }
 
 .student-detail-page .stats-grid--chips .stat-box{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 12px 14px;
-  border-radius: 16px;
-  font-size: 0.95rem;
-}
-
-/* Reading / Word / Quiz listeleri */
-.student-detail-page .detail-list > div{
-  padding: 0px;
   border-radius: 14px;
   font-size: 0.95rem;
+  background: rgba(128, 90, 213, 0.08);
+  border: 1px solid rgba(128, 90, 213, 0.14);
+}
+
+.student-detail-page .stats-grid--chips .stat-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.student-detail-page .stats-grid--chips .stat-chip-icon{
+  width: 26px;
+  height: 26px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(128, 90, 213, 0.12);
+  object-fit: contain;
+}
+
+/* Reading / Word / Quiz lists */
+.student-detail-page .detail-list > div{
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.08);
 }
 
 .student-detail-page .detail-list > div + div{
   margin-top: 10px;
+}
+
+/* =========================
+   Icon titles (shared)
+   ========================= */
+
+/* Used in Student Reports (My Classes / Student List) and Student Detail section headers */
+.section-title-with-icon{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0; /* allow text ellipsis */
+}
+
+.section-title-with-icon .section-icon{
+  width: 26px;
+  height: 26px;
+  padding: 6px;
+  border-radius: 12px;
+  background: rgba(128, 90, 213, 0.12);
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+/* Make sure the title text doesn't drop to next line weirdly */
+.section-title-with-icon span{
+  line-height: 1.2;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Student Detail: keep spacing consistent when h3 becomes flex */
+.student-detail-page .section-title-with-icon{
+  margin: 0 0 16px 0;
+}
+
+/* Student name (icon + dynamic name) */
+.student-detail-page #studentName.section-title-with-icon span{
+  font-size: inherit;
+  font-weight: inherit;
 }
