@@ -21,6 +21,37 @@
     pointer-events: none;
 }
 
+/* Stat card header with icon */
+.stats-grid .card.stat-card .stat-head{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.stats-grid .card.stat-card .stat-head h4{
+    margin: 0;
+}
+
+.stats-grid .card.stat-card .stat-icon{
+    width: 38px;
+    height: 38px;
+    padding: 6px;
+    border-radius: 12px;
+    background: rgba(128, 90, 213, 0.12);
+    object-fit: contain;
+    flex: 0 0 auto;
+}
+
+/* Remove any hover underline/stripe effect */
+.stats-grid .card.stat-card:hover::after{
+    background: none !important;
+}
+
+.stats-grid .card.stat-card:hover{
+    transform: none !important;
+}
+
 /* Mint background + border */
 .stats-grid .card.stat-card.mint{
     border-color: rgba(16, 185, 129, 0.25);
@@ -43,7 +74,7 @@
 .stats-grid .card h4 {
     color: var(--muted);
     font-size: 1rem;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .stats-grid .card .stat-value {
@@ -309,4 +340,70 @@ input[type="date"] {
   
   .student-reports-page .card-spaced{
     margin-bottom: 40px;
+  }
+
+/* Attribution (Flaticon) */
+.icon-credit{
+    font-size: 12px;
+    opacity: 0.65;
+    line-height: 1.35;
+}
+
+.icon-credit a{
+    text-decoration: none;
+}
+
+.icon-credit a:hover{
+    text-decoration: underline;
+}
+.student-detail-page .card{
+    margin-bottom: 40px;           /* kartlar arası NET boşluk */
+    padding: 28px 30px;            /* kart içi ferahlık */
+    border-radius: 24px;
+    background: #fff;
+    box-shadow:
+      0 20px 45px rgba(0,0,0,0.08),
+      0 4px 10px rgba(0,0,0,0.05);
+    transition: all .25s ease;
+  }
+  
+  .student-detail-page .card:hover{
+    transform: translateY(-3px);
+    box-shadow:
+      0 28px 60px rgba(0,0,0,0.12),
+      0 8px 18px rgba(0,0,0,0.07);
+  }
+  
+  /* Başlıklar */
+  .student-detail-page .card h3{
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Öğrenci info satırları */
+  .student-detail-page .card p{
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+  
+  /* Overall Performance chipleri */
+  .student-detail-page .stats-grid--chips{
+    gap: 22px;
+  }
+  
+  .student-detail-page .stats-grid--chips .stat-box{
+    padding: 18px 20px;
+    border-radius: 20px;
+    font-size: 1.05rem;
+  }
+  
+  /* Reading / Word / Quiz listeleri */
+  .student-detail-page .detail-list > div{
+    padding: 18px 20px;
+    border-radius: 18px;
+    font-size: 1rem;
+  }
+  
+  .student-detail-page .detail-list > div + div{
+    margin-top: 14px;
   }

@@ -2,16 +2,15 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <title>Student Report - LearnENG.com</title>
+  <title>Student Details - LearnENG.com</title>
 
   <!-- Ortak stiller -->
-  <link rel="stylesheet" href="../../assets/css/main.css">
-  <link rel="stylesheet" href="../../assets/css/dashboard.css">
-  <link rel="stylesheet" href="../../assets/css/teacher.css">
+  <link rel="stylesheet" href="../../assets/css/main.css" />
+  <link rel="stylesheet" href="../../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../../assets/css/teacher.css" />
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
 </head>
 
 <body>
@@ -19,30 +18,33 @@
 
     <!-- SIDEBAR -->
     <aside class="sidebar">
-        <div class="logo">
-          <a href="../../teacher.html">LearnENG</a>
-        </div>
+      <div class="logo">
+        <a href="../../teacher.html">LearnENG</a>
+      </div>
 
-        <nav>
-          <ul>
-            <li><a href="../../teacher.html">Home</a></li>
-            <li><a href="class-management.html">Class & Homework Management</a></li>
-            <li class="active"><a href="student-report.html">Student Reports</a></li>
-            <li><a href="support.html"> Support</a></li>
-            <li><a href="../common/settings.html"> Settings</a></li>
-          </ul>
-        </nav>
+      <nav>
+        <ul>
+          <li><a href="../../teacher.html">Home</a></li>
+          <li><a href="class-management.html">Class & Homework Management</a></li>
+          <li class="active"><a href="student-report.html">Student Reports</a></li>
+          <li><a href="support.html"> Support</a></li>
+          <li><a href="../common/settings.html"> Settings</a></li>
+        </ul>
+      </nav>
     </aside>
 
     <!-- ANA İÇERİK -->
-    <main class="main-content">
+    <main class="main-content student-detail-page">
 
-      <header class="dashboard-header">
-            <h2>Student Details</h2>
-        </header>
+      <header class="dashboard-header student-detail-header">
+        <h2>Student Details</h2>
+        <a class="back-link" href="student-report.html">← Back to Student Reports</a>
+      </header>
 
       <!-- Öğrenci Bilgileri -->
       <section class="card">
+
+        
         <h3 id="studentName">Student</h3>
         <p><strong>Email:</strong> <span id="email">-</span></p>
         <p><strong>Registration Date:</strong> <span id="registerDate">-</span></p>
@@ -52,7 +54,7 @@
       <!-- Genel Performans -->
       <section class="card">
         <h3>Overall Performance</h3>
-        <div class="stats-grid">
+        <div class="stats-grid stats-grid--chips">
           <div class="stat-box">📘 Total Readings: <b id="readCount">0</b></div>
           <div class="stat-box">🧠 Word Count: <b id="wordCount">0</b></div>
           <div class="stat-box">📝 Quiz Count: <b id="quizCount">0</b></div>
@@ -63,21 +65,19 @@
       <!-- Okuma Geçmişi -->
       <section class="card">
         <h3>Reading History</h3>
-        <div id="readingArea">Loading...</div>
+        <div id="readingArea" class="detail-list">Loading...</div>
       </section>
 
       <!-- Kelime Gelişimi -->
       <section class="card">
         <h3>Word Development</h3>
-        <div id="wordsArea">Loading...</div>
+        <div id="wordsArea" class="detail-list">Loading...</div>
       </section>
-      
-
 
       <!-- Quiz -->
       <section class="card">
         <h3>Quiz / Test Performansı</h3>
-        <div id="quizArea">Yükleniyor...</div>
+        <div id="quizArea" class="detail-list">Yükleniyor...</div>
       </section>
 
     </main>
@@ -86,7 +86,5 @@
   <!-- JS -->
   <script src="../../assets/js/supabaseClient.js"></script>
   <script type="module" src="../../assets/js/teacher/student-detail.js"></script>
-  
-
 </body>
 </html>
