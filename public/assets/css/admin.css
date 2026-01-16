@@ -1,27 +1,19 @@
-/* admin.css - Final Versiyon */
+/* admin.css */
 
-/* 1. Sidebar Overrides (Koyu Tema & Harf Fix) */
+/* 1. Sidebar Koyu Tema ve Harf Fix */
 .sidebar { background-color: #1F1B2E !important; }
-.sidebar .logo, .sidebar nav ul li a { 
-    text-transform: none !important; 
-    color: #A0A0B0 !important; 
-}
-.sidebar nav ul li.active a { 
-    background-color: #6D28D9 !important; 
-    color: #ffffff !important; 
-    box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3); 
-}
+.sidebar .logo, .sidebar nav ul li a { text-transform: none !important; color: #A0A0B0 !important; }
+.sidebar nav ul li.active a { background-color: #6D28D9 !important; color: #ffffff !important; box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3); }
 
-/* 2. İstatistik Kartları (Gradientli & Çizgisiz) */
+/* 2. İstatistik Kartları (Gradientli ve İkonlu) */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 18px;
     margin-bottom: 25px;
 }
+
 .stat-card {
-    position: relative;
-    overflow: hidden;
     border-radius: 16px;
     border: 1px solid rgba(15, 23, 42, 0.08);
     padding: 22px 18px;
@@ -30,14 +22,24 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    transition: transform 0.2s ease;
 }
+
 .stat-card h4 {
-    margin: 0; font-size: 1rem; font-weight: 800; color: rgba(15, 23, 42, 0.85);
-    display: flex; align-items: center; gap: 10px; text-transform: none !important;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 800;
+    color: rgba(15, 23, 42, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: none !important;
 }
+
 .stat-value {
-    margin: 8px 0 0; font-size: 2.3rem; font-weight: 900; color: rgba(15, 23, 42, 0.85);
+    margin: 8px 0 0;
+    font-size: 2.3rem;
+    font-weight: 900;
+    color: rgba(15, 23, 42, 0.85);
 }
 
 /* Kart Renk Geçişleri */
@@ -45,41 +47,37 @@
 .stat-card.teachers { background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(255, 255, 255, 0.85)); }
 .stat-card.contents { background: linear-gradient(135deg, rgba(168, 85, 247, 0.18), rgba(255, 255, 255, 0.85)); }
 
-/* 3. Tablo Tasarımı (Ortalanmış ACTIONS) */
+/* 3. Tablo Tasarımı ve ACTIONS Ortalaması */
 .admin-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; }
 .admin-table th {
     background-color: #DDE2FF !important;
     color: #4A55A2 !important;
     padding: 12px 15px;
-    text-align: center; /* Tüm başlıklar ortalı */
+    text-align: center;
     font-size: 0.75rem;
     font-weight: 800;
     text-transform: none !important;
-    letter-spacing: 0.05em;
 }
 .admin-table th:first-child { border-radius: 8px 0 0 8px; text-align: left; }
 .admin-table th:last-child { border-radius: 0 8px 8px 0; }
 
-.admin-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #F1F5F9;
-    vertical-align: middle;
-    text-align: center; /* Tüm veriler ortalı */
-}
-.admin-table td:first-child { text-align: left; } /* Sadece isim sütunu solda */
+.admin-table td { padding: 12px 15px; border-bottom: 1px solid #F1F5F9; vertical-align: middle; text-align: center; }
+.admin-table td:first-child { text-align: left; }
 
-/* 4. Aksiyon Butonları */
+/* 4. Aksiyon Butonları (İkonlu) */
 .action-btn {
     width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center;
-    border-radius: 6px; border: 1px solid #E2E8F0; cursor: pointer; background: #fff; transition: 0.2s;
+    border-radius: 6px; border: 1px solid #E2E8F0; cursor: pointer; background: #fff;
 }
 .action-btn.edit { color: #EAB308; border-color: #FEF08A; background-color: #FEFCE8; }
 .action-btn.delete { color: #94A3B8; border-color: #E2E8F0; background-color: #F8FAFC; }
-.action-btn.verify { background: #16A34A; color: white; width: auto; padding: 0 12px; font-weight: 600; font-size: 0.8rem; border: none; }
+.action-btn.verify { background: #16A34A; color: white; width: auto; padding: 0 12px; font-weight: 600; border: none; }
 
 /* Filtre Butonları */
-.filter-btn {
-    padding: 8px 16px; border-radius: 8px; border: 1px solid #E5E7EB;
-    background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: 0.2s;
-}
+.filter-btn { padding: 8px 16px; border-radius: 8px; border: 1px solid #E5E7EB; background: #fff; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
 .filter-btn.active { background: #6D28D9; color: #fff; border-color: #6D28D9; }
+
+.role-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+.role-badge.admin { background: #ede9fe; color: #6d28d9; }
+.role-badge.teacher { background: #dbeafe; color: #1e40af; }
+.role-badge.student { background: #fef9c3; color: #854d0e; }

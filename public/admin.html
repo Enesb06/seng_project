@@ -4,86 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - LearnENG</title>
-    
-    <!-- CSS Linkleri (dashboard.css'e dokunmuyoruz, admin.css override ediyor) -->
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/admin.css">
-    
-    <!-- Supabase Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- SIDEBAR - Koyu tema, Harf Fix uygulanmış hali -->
+        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="logo">Admin Dashboard</div>
             <nav>
                 <ul>
-                    <li id="li-users" class="active">
-                        <a href="#users">User Management</a>
-                    </li>
-                    <li id="li-verification">
-                        <a href="#verification">
-                            Teacher Approvals
-                            <span id="pending-count" class="badge hidden">0</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="admin_support.html">Support Messages</a>
-                    </li>
+                    <li id="li-users" class="active"><a href="#users">User Management</a></li>
+                    <li id="li-verification"><a href="#verification">Teacher Approvals <span id="pending-count" class="badge hidden">0</span></a></li>
+                    <li><a href="admin_support.html">Support Messages</a></li>
                 </ul>
             </nav>
         </aside>
 
-        <!-- ANA İÇERİK -->
+        <!-- MAIN CONTENT -->
         <div class="main-content">
-            <!-- HEADER - Admin adı ve Logout butonu -->
             <header class="dashboard-header">
                 <h2 id="page-title">User Management</h2>
-                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-                    <span id="admin-display-name" style="font-weight: 600; color: #1f2937;">Admin</span>
-                    <button id="logout-button" style="background: #dc2626; color: white; border: none; padding: 8px 18px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 0.9rem;">Logout</button>
+                <div class="user-info" style="display:flex; align-items:center;">
+                    <span id="admin-display-name" style="font-weight:600; margin-right:15px;">Admin</span>
+                    <button id="logout-button" style="background:#dc2626; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">Logout</button>
                 </div>
             </header>
 
             <main class="content-area">
-                <!-- İSTATİSTİK KARTLARI - Gradientli ve Çizgisiz -->
+                <!-- STATS CARDS WITH ICONS -->
                 <div class="stats-grid">
                     <div class="stat-card students">
-                        <h4>Total Students</h4>
+                        <h4><span>🎓</span> Total Students</h4>
                         <span id="total-students" class="stat-value">0</span>
                     </div>
 
                     <div class="stat-card teachers">
-                        <h4>Total Teachers</h4>
+                        <h4><span>🧠</span> Total Teachers</h4>
                         <span id="total-teachers" class="stat-value">0</span>
                     </div>
 
                     <div class="stat-card contents">
-                        <h4>Active Content</h4>
+                        <h4><span>🏅</span> Active Content</h4>
                         <span id="total-contents" class="stat-value">0</span>
                     </div>
                 </div>
 
-                <!-- USER MANAGEMENT BÖLÜMÜ -->
+                <!-- USERS SECTION -->
                 <div id="users-section" class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap; gap:15px;">
                         <div>
-                            <h3 style="margin: 0; font-weight: 800; color: #111827;">SYSTEM USERS</h3>
-                            <!-- Filtreleme Butonları -->
-                            <div class="filter-group" style="display: flex; gap: 10px; margin-top: 15px;">
+                            <h3 style="margin:0; font-weight:800;">SYSTEM USERS</h3>
+                            <div style="display:flex; gap:10px; margin-top:15px;">
                                 <button class="filter-btn active" data-role="all">All Users</button>
                                 <button class="filter-btn" data-role="student">Students</button>
                                 <button class="filter-btn" data-role="teacher">Teachers</button>
                             </div>
                         </div>
-                        <!-- Arama Kutusu -->
-                        <div style="position: relative;">
-                            <input type="text" id="user-search" placeholder="Search by name or email..." style="padding: 12px 15px; border-radius: 12px; border: 1px solid #e2e8f0; width: 300px; outline: none; background: #f8fafc;">
-                        </div>
+                        <input type="text" id="user-search" placeholder="Search by name or email..." style="padding:11px; border-radius:10px; border:1px solid #ddd; width:280px; outline:none;">
                     </div>
-
                     <div style="overflow-x: auto;">
                         <table class="admin-table">
                             <thead>
@@ -91,19 +72,17 @@
                                     <th>USER NAME</th>
                                     <th>EMAIL</th>
                                     <th>ROLE</th>
-                                    <th>ACTIONS</th> <!-- Ortalanmış başlık -->
+                                    <th>ACTIONS</th>
                                 </tr>
                             </thead>
-                            <tbody id="user-list-body">
-                                <!-- JavaScript ile dolacak -->
-                            </tbody>
+                            <tbody id="user-list-body"></tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- TEACHER APPLICATIONS BÖLÜMÜ -->
+                <!-- VERIFICATION SECTION -->
                 <div id="verification-section" class="card hidden">
-                    <h3 style="margin-bottom: 20px; font-weight: 800; color: #111827;">TEACHER APPLICATIONS</h3>
+                    <h3 style="margin-bottom:20px; font-weight:800;">TEACHER APPLICATIONS</h3>
                     <div style="overflow-x: auto;">
                         <table class="admin-table">
                             <thead>
@@ -111,12 +90,10 @@
                                     <th>TEACHER NAME</th>
                                     <th>EMAIL</th>
                                     <th>JOIN DATE</th>
-                                    <th>ACTIONS</th> <!-- Ortalanmış başlık -->
+                                    <th>ACTIONS</th>
                                 </tr>
                             </thead>
-                            <tbody id="verification-list-body">
-                                <!-- JavaScript ile dolacak -->
-                            </tbody>
+                            <tbody id="verification-list-body"></tbody>
                         </table>
                     </div>
                 </div>
@@ -124,36 +101,28 @@
         </div>
     </div>
 
-    <!-- USER ROLE EDIT MODAL -->
-    <div id="edit-user-modal" class="modal-overlay hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: flex; justify-content: center; align-items: center;">
-        <div class="card" style="width: 420px; border-radius: 24px; background: white; padding: 35px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-            <h3 style="margin-bottom: 25px; font-weight: 800; font-size: 1.4rem; color: #111827;">Update Account</h3>
+    <!-- MODAL -->
+    <div id="edit-user-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:flex; justify-content:center; align-items:center;">
+        <div class="card" style="width:400px; border-radius:20px; background:#fff; padding:30px;">
+            <h3 style="margin-bottom:20px;">Edit User Role</h3>
             <form id="edit-user-form">
                 <input type="hidden" id="edit-user-id">
-                
-                <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #4b5563; font-size: 0.9rem;">Full Name</label>
-                    <input type="text" id="edit-full-name" disabled style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #f3f4f6; background: #f9fafb; color: #9ca3af; font-weight: 600;">
-                </div>
-
-                <div style="margin-bottom: 30px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: 700; color: #4b5563; font-size: 0.9rem;">Change Role</label>
-                    <select id="edit-user-role" style="width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; outline: none; background: white; font-weight: 600; cursor: pointer;">
-                        <option value="student">Student</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-
-                <div style="display: flex; gap: 12px;">
-                    <button type="submit" style="flex: 1; background: #6D28D9; color: white; border: none; padding: 14px; border-radius: 14px; cursor: pointer; font-weight: 800; transition: background 0.2s;">Save Changes</button>
-                    <button type="button" onclick="document.getElementById('edit-user-modal').classList.add('hidden')" style="flex: 1; background: #f3f4f6; color: #4b5563; border: none; padding: 14px; border-radius: 14px; cursor: pointer; font-weight: 800; transition: background 0.2s;">Cancel</button>
+                <label style="display:block; margin-bottom:5px; font-weight:600;">Full Name</label>
+                <input type="text" id="edit-full-name" disabled style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd; background:#f9fafb;">
+                <label style="display:block; margin-bottom:5px; font-weight:600;">Role</label>
+                <select id="edit-user-role" style="width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd;">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div style="display:flex; gap:10px;">
+                    <button type="submit" class="cta-button" style="flex:1;">Save Changes</button>
+                    <button type="button" onclick="document.getElementById('edit-user-modal').classList.add('hidden')" style="flex:1; background:#f3f4f6; border:none; padding:12px; border-radius:8px; cursor:pointer;">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- JS Dosyası -->
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>
