@@ -12,7 +12,6 @@ const verifySection = document.getElementById('verification-section');
 const loadAdminData = async () => {
     const { data: users } = await _supabase.from('profiles').select('*');
     const { count: cCount } = await _supabase.from('contents').select('*', { count: 'exact', head: true });
-
     usersCache = users || [];
     
     document.getElementById('total-students').textContent = usersCache.filter(u => u.role === 'student').length;
@@ -32,36 +31,26 @@ const applyFilters = () => {
     renderUserTable(filtered);
 };
 
-// --- GÜNCEL TABLO ÇİZME (İkonlu Butonlar) ---
 const renderUserTable = (list) => {
     userListBody.innerHTML = '';
     list.forEach(u => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="width:32px; height:32px; border-radius:50%; background:#EDE9FE; color:#6D28D9; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">
-                        ${u.full_name.charAt(0).toLowerCase()}
-                    </div>
-                    <strong>${u.full_name}</strong>
-                </div>
-            </td>
+            <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:32px; height:32px; border-radius:50%; background:#EDE9FE; color:#6D28D9; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">${u.full_name.charAt(0).toLowerCase()}</div><strong>${u.full_name}</strong></div></td>
             <td style="color:#64748b; font-size:0.9rem;">${u.email}</td>
             <td><span class="role-badge ${u.role}">${u.role}</span></td>
-            <td style="text-align:right;">
-                <!-- Yazı yerine İkonlu Butonlar -->
-                <button class="action-btn edit" onclick="window.openEdit('${u.id}','${u.full_name}','${u.role}')" title="Edit">✏️</button>
-                <button class="action-btn delete" onclick="window.delUser('${u.id}')" title="Delete">🗑️</button>
+            <td>
+                <button class="action-btn edit" onclick="window.openEdit('${u.id}','${u.full_name}','${u.role}')">✏️</button>
+                <button class="action-btn delete" onclick="window.delUser('${u.id}')">🗑️</button>
             </td>
         `;
         userListBody.appendChild(row);
     });
 };
 
-// Filtre Olayları
-document.querySelectorAll('.filter-btn').forEach(btn => {
+document.querySelectorAll('[data-role]').forEach(btn => {
     btn.onclick = () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('[data-role]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.role;
         applyFilters();
@@ -70,7 +59,6 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
 
 userSearch.oninput = applyFilters;
 
-// Router
 const handleHash = () => {
     const hash = window.location.hash || "#users";
     if (hash === "#verification") {
@@ -97,8 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.getElementById('logout-button').onclick = () => {
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
+    localStorage.removeItem('user'); window.location.href = 'index.html';
 };
 
 window.openEdit = (id, name, role) => {
