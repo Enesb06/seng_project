@@ -124,7 +124,7 @@
                         <div id="materials-list" style="flex: 1; overflow-y: auto; padding: 10px;"></div>
                         
                         <div style="padding: 10px 15px; background: #f1f5f9; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd;">
-                            <h3 style="margin:0; font-size: 0.9rem;">📜 Note History</h3>
+                            <h3 style="margin:0; font-size: 0.9rem;">Note History</h3>
                         </div>
                         <div id="note-history-list" style="flex: 1; overflow-y: auto; padding: 10px;">
                         </div>
@@ -137,12 +137,15 @@
                             <div id="reading-body" style="font-size: 1.1rem; line-height: 1.8;"></div>
                             <div id="loader" class="hidden">AI is writing...</div>
  
-                            <button id="favorite-btn" class="favorite-btn" type="button">♡</button>
+                            <button id="favorite-btn" class="favorite-btn" type="button">
+                                <img id="favorite-icon" src="https://cdn-icons-png.flaticon.com/512/812/812327.png" class="fav-icon">
+                            </button>
+
                         </div>
  
                         <div id="note-editor-area" style="flex-shrink: 0; background: #fafafa; border-top: 3px solid #7314c6; padding: 20px;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                <h4 style="margin:0;">📝 My Notes for This Article</h4>
+                                <h4 style="margin:0;">My Notes for This Article</h4>
                                 <span id="save-indicator" style="color: green; font-weight: bold; display: none;">Saved!</span>
                             </div>
                             <textarea id="note-textarea" rows="4" style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; resize: none; font-family: inherit;" placeholder="Write your notes for this article..."></textarea>

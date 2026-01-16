@@ -85,25 +85,19 @@ const saveFavorites = (favorites) => {
 };
 
 const updateFavoriteIcon = () => {
-  if (!favoriteBtn) return;
-  if (!currentEssayId) {
-    favoriteBtn.classList.remove('active');
-    favoriteBtn.innerHTML = '♡';
-    favoriteBtn.title = 'Favorilere ekle';
-    return;
-  }
+  const icon = document.getElementById('favorite-icon');
   const favorites = getFavorites();
   const isFav = favorites.includes(String(currentEssayId));
+
   if (isFav) {
+    icon.src = "https://cdn-icons-png.flaticon.com/512/833/833472.png"; // filled
     favoriteBtn.classList.add('active');
-    favoriteBtn.innerHTML = '♥';
-    favoriteBtn.title = 'Favorilerimden kaldır';
   } else {
+    icon.src = "https://cdn-icons-png.flaticon.com/512/812/812327.png"; // outline
     favoriteBtn.classList.remove('active');
-    favoriteBtn.innerHTML = '♡';
-    favoriteBtn.title = 'Favorilere ekle';
   }
 };
+
 
 window.getReadingFavorites = getFavorites;
 
