@@ -356,54 +356,59 @@ input[type="date"] {
 .icon-credit a:hover{
     text-decoration: underline;
 }
+/* =========================
+   Student Detail – refined spacing
+   ========================= */
+
 .student-detail-page .card{
-    margin-bottom: 40px;           /* kartlar arası NET boşluk */
-    padding: 28px 30px;            /* kart içi ferahlık */
-    border-radius: 24px;
-    background: #fff;
-    box-shadow:
-      0 20px 45px rgba(0,0,0,0.08),
-      0 4px 10px rgba(0,0,0,0.05);
-    transition: all .25s ease;
-  }
-  
-  .student-detail-page .card:hover{
-    transform: translateY(-3px);
-    box-shadow:
-      0 28px 60px rgba(0,0,0,0.12),
-      0 8px 18px rgba(0,0,0,0.07);
-  }
-  
-  /* Başlıklar */
-  .student-detail-page .card h3{
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-  }
-  
-  /* Öğrenci info satırları */
-  .student-detail-page .card p{
-    font-size: 1rem;
-    line-height: 1.8;
-  }
-  
-  /* Overall Performance chipleri */
-  .student-detail-page .stats-grid--chips{
-    gap: 22px;
-  }
-  
-  .student-detail-page .stats-grid--chips .stat-box{
-    padding: 18px 20px;
-    border-radius: 20px;
-    font-size: 1.05rem;
-  }
-  
-  /* Reading / Word / Quiz listeleri */
-  .student-detail-page .detail-list > div{
-    padding: 18px 20px;
-    border-radius: 18px;
-    font-size: 1rem;
-  }
-  
-  .student-detail-page .detail-list > div + div{
-    margin-top: 14px;
-  }
+  margin-bottom: 28px;        /* aralar biraz daha az */
+  padding: 20px 22px;         /* kart yüksekliğini kısalt */
+  border-radius: 20px;
+  background: #fff;
+  box-shadow:
+    0 14px 32px rgba(0,0,0,0.07),
+    0 3px 8px rgba(0,0,0,0.04);
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.student-detail-page .card:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,0.10),
+    0 6px 14px rgba(0,0,0,0.06);
+}
+
+/* Başlıklar daha kompakt */
+.student-detail-page .card h3{
+  font-size: 1.15rem;
+  margin-bottom: 14px;
+}
+
+/* Satır aralığını kısalt */
+.student-detail-page .card p{
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 6px 0;
+}
+
+/* Overall Performance chipleri */
+.student-detail-page .stats-grid--chips{
+  gap: 14px;
+}
+
+.student-detail-page .stats-grid--chips .stat-box{
+  padding: 12px 14px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+}
+
+/* Reading / Word / Quiz listeleri */
+.student-detail-page .detail-list > div{
+  padding: 0px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+}
+
+.student-detail-page .detail-list > div + div{
+  margin-top: 10px;
+}
