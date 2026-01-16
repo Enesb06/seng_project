@@ -12,9 +12,10 @@
     .thread-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; cursor: pointer; margin-bottom: 15px; }
     .thread-card:hover { transform: translateX(5px); border-color: var(--primary-border); box-shadow: 0 10px 25px rgba(109, 40, 217, 0.08); }
     .thread-info { display: flex; align-items: center; gap: 15px; }
-    .role-icon { width: 45px; height: 45px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .role-icon.student { background: #fef9c3; color: #854d0e; }
-    .role-icon.teacher { background: #dbeafe; color: #1e40af; }
+    .role-icon {width: 45px;height: 45px;border-radius: 12px;display: flex;align-items: center;justify-content: center;overflow: hidden;}
+    .role-icon.student {background: #fef9c3;}
+    .role-icon.teacher {background: #dbeafe;}
+    .role-img {width: 65%;height: 65%;object-fit: contain;}
     .subject-text { font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: 4px; }
     .meta-text { font-size: 0.85rem; color: var(--muted); }
     .status-badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }

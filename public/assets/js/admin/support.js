@@ -23,7 +23,11 @@ const renderThreads = (threads) => {
   listEl.innerHTML = threads.map((t) => {
     const isClosed = t.status === "closed";
     const roleClass = t.created_by_role === "teacher" ? "teacher" : "student";
-    const roleIcon = t.created_by_role === "teacher" ? "👨‍🏫" : "🎓";
+    const roleIcon = t.created_by_role === "teacher"
+  ? `<img src="https://cdn-icons-png.flaticon.com/512/1995/1995539.png" class="role-img">`
+  : `<img src="https://cdn-icons-png.flaticon.com/512/8289/8289414.png" class="role-img">`;
+
+
     
     return `
       <div class="thread-card" onclick="window.location.href='admin_support_thread.html?id=${t.id}'">
