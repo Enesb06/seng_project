@@ -94,13 +94,17 @@ document.getElementById('create-class-form').addEventListener('submit', async (e
 document.getElementById('assign-homework-form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const due = document.getElementById('hw-due-date').value; // "2026-01-10"
+    const dueDate = `${due}T23:59:59`;
+
     await _supabase.from('assignments').insert([{
         teacher_id: user.id,
         class_id: classSelect.value,
         title: document.getElementById('hw-title').value,
         description: document.getElementById('hw-description').value,
-        due_date: document.getElementById('hw-due-date').value
+        due_date: dueDate
     }]);
+
 
     alert("Assignment successfully assigned!");
     e.target.reset();
@@ -152,32 +156,41 @@ async function loadMyAssignments(classId) {
     const totalStudents = a.classes?.class_members?.length || 0;
     const completedCount = a.assignment_completions?.length || 0;
 
+
+
     return `
-      <div class="teacher-hw-item" data-id="${a.id}">
+<div class="teacher-hw-item" data-id="${a.id}">
+  <strong>Assignment ${i + 1} — ${a.title}</strong>
+  <div class="hw-date">📅 Due Date: ${new Date(a.due_date).toLocaleDateString('tr-TR')}</div>
 
-        <strong>Assignment ${i + 1} — ${a.title}</strong>
+  ${a.description ? `<div class="hw-desc">${a.description}</div>` : ``}
 
-        <div class="hw-date">
-          📅 Due Date: ${new Date(a.due_date).toLocaleDateString('tr-TR')}
-        </div>
+  <div style="margin-top:10px;font-size:0.85rem;color:#555;">
+    👥 ${completedCount} / ${totalStudents} completed
+  </div>
 
-        ${a.description ? `
-          <div class="hw-desc" style="margin-top:10px;">
-            ${a.description}
-          </div>
-        ` : ``}
+  <div class="hw-actions">
+    <button class="edit-hw-btn" title="Edit">✏️</button>
+    <button class="delete-hw-btn" title="Delete">🗑️</button>
+  </div>
 
-        <div style="margin-top:10px;font-size:0.85rem;color:#555;">
-          👥 ${completedCount} / ${totalStudents} completed
-        </div>
+  <!-- 🔵 HIDDEN EDIT FORM -->
+  <div class="edit-area" style="display:none;">
+    <input type="text" class="edit-title" value="${a.title}" placeholder="Title"/>
+    <input type="date" class="edit-date" value="${a.due_date.split('T')[0]}"/>
 
-        <div class="hw-actions">
-          <button class="edit-hw-btn" title="Edit">✏️</button>
-          <button class="delete-hw-btn" title="Delete">🗑️</button>
-        </div>
 
-      </div>
-    `;
+    <textarea class="edit-desc">${a.description || ''}</textarea>
+
+    <div class="edit-actions">
+        <button class="save-hw-btn">Save</button>
+        <button class="cancel-hw-btn">Cancel</button>
+    </div>
+</div>
+
+</div>
+`;
+
   }).join('');
 }
 
@@ -307,14 +320,17 @@ document.addEventListener('click', async (e) => {
     if (e.target.classList.contains('save-hw-btn')) {
         const title = card.querySelector('.edit-title').value;
         const description = card.querySelector('.edit-desc').value;
-        const due_date = card.querySelector('.edit-date').value;
+        
+        const due = card.querySelector('.edit-date').value; // YYYY-MM-DD
+        const dueDate = `${due}T23:59:59`; // gün bitişi
 
         await _supabase
             .from('assignments')
-            .update({ title, description, due_date })
+            .update({ title, description, due_date: dueDate })
             .eq('id', assignmentId);
 
         alert("Assignment updated ✅");
         loadMyAssignments(myAssignmentsClassSelect.value);
     }
+
 });
