@@ -2,7 +2,7 @@ import { _supabase } from './supabaseClient.js';
 
 // Güvenlik Soruları Listesi (En başa 'Set Later' eklendi)
 const SECURITY_QUESTIONS = [
-    { value: "none", text: "Set Later (Optional)" },
+    { value: "none", text: "Select Security Question" },
     { value: "pet", text: "What was your first pet's name?" },
     { value: "city", text: "Which city were you born in?" },
     { value: "mother", text: "Your favourite movie?" },
