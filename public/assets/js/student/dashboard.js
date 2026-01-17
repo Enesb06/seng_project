@@ -19,26 +19,22 @@ const streakHeaderEl    = document.getElementById('streak-header');
 /* ========= GÜVENLİ ÇIKIŞ (PATH FIX) ========= */
 const goHome = () => {
   localStorage.removeItem('user');
-
-  // bulunduğun sayfanın klasörüne göre index.html'e gider
-  // student.html /pages/... fark etmez
   window.location.href = new URL('index.html', window.location.href).href;
 };
 
 /* ========= BADGE TANIMLARI relaxed ========= */
 const BADGES = [
-  { key: 'read_1',   name: 'First Text',   image: 'https://cdn-icons-png.flaticon.com/512/8750/8750754.png',  rule: (s) => s.reads >= 1 },
+  { key: 'read_1',   name: 'First Text',   image: 'https://cdn-icons-png.flaticon.com/512/8750/8750754.png',   rule: (s) => s.reads >= 1 },
   { key: 'quiz_1',   name: 'First Quiz',   image: 'https://cdn-icons-png.flaticon.com/512/10292/10292284.png', rule: (s) => s.quizzes >= 1 },
   { key: 'read_10',  name: '10th Text',    image: 'https://cdn-icons-png.flaticon.com/512/16175/16175033.png', rule: (s) => s.reads >= 10 },
   { key: 'read_50',  name: '50th Text',    image: 'https://cdn-icons-png.flaticon.com/512/10552/10552976.png', rule: (s) => s.reads >= 50 },
-  { key: 'read_100', name: '100th Text',   image: 'https://cdn-icons-png.flaticon.com/512/3113/3113049.png',  rule: (s) => s.reads >= 100 },
-  { key: 'read_200', name: '200th Text',   image: 'https://cdn-icons-png.flaticon.com/512/4959/4959279.png',  rule: (s) => s.reads >= 200 },
+  { key: 'read_100', name: '100th Text',   image: 'https://cdn-icons-png.flaticon.com/512/3113/3113049.png',   rule: (s) => s.reads >= 100 },
+  { key: 'read_200', name: '200th Text',   image: 'https://cdn-icons-png.flaticon.com/512/4959/4959279.png',   rule: (s) => s.reads >= 200 },
 
   { key: 'medal_gold',   name: 'Gold Medal',   image: 'https://cdn-icons-png.flaticon.com/512/2583/2583381.png', rule: (s) => s.quizAvg >= 90 },
   { key: 'medal_silver', name: 'Silver Medal', image: 'https://cdn-icons-png.flaticon.com/512/2583/2583350.png', rule: (s) => s.quizAvg >= 80 && s.quizAvg < 90 },
   { key: 'medal_bronze', name: 'Bronze Medal', image: 'https://cdn-icons-png.flaticon.com/512/2583/2583448.png', rule: (s) => s.quizAvg >= 70 && s.quizAvg < 80 },
 ];
-
 
 const pickMedalKey = (avg) => {
   if (avg >= 90) return 'medal_gold';
@@ -95,9 +91,7 @@ const loadStudentDashboard = async () => {
   subscribeAssignmentsRealtime(user.id);
 };
 
-/* ========= STATİKLER =========
-   Okuma = "oluşturulan metin" (contents)
-*/
+/* ========= STATİKLER ========= */
 const loadStats = async (userId) => {
   try {
     const { count: readCount, error: readErr } = await _supabase
@@ -226,37 +220,72 @@ const loadStreak = async (userId) => {
   }
 };
 
-/* ========= SINIF & ÖDEVLER ========= */
+/* ========= SINIF & ÖDEVLER (MULTI-CLASS FIX) ========= */
 const loadMyClassAndHomework = async (studentId) => {
   const classInfoArea = document.getElementById('class-info-area');
   const hwList = document.getElementById('homework-list');
+  const classSelect = document.getElementById('class-select');
 
   try {
-    const { data: membership, error: memErr } = await _supabase
+    // ✅ Multi row: maybeSingle kaldırıldı
+    const { data: memberships, error: memErr } = await _supabase
       .from('class_members')
-      .select('class_id, classes(class_name, class_code)')
-      .eq('student_id', studentId)
-      .maybeSingle();
+      .select('class_id, classes(id, class_name, class_code)')
+      .eq('student_id', studentId);
 
-    if (memErr) console.error('membership error:', memErr);
+    if (memErr) console.error('memberships error:', memErr);
 
-    if (!membership) {
+    if (!memberships || memberships.length === 0) {
       if (classInfoArea) classInfoArea.innerHTML = "<p>You haven't joined a class yet.</p>";
       if (hwList) hwList.innerHTML = "";
+      if (classSelect) classSelect.innerHTML = "";
       return;
     }
 
+    // ✅ aktif sınıf (localStorage)
+    const savedActive = localStorage.getItem('active_class_id');
+    let activeClassId =
+      savedActive && memberships.some(m => String(m.class_id) === String(savedActive))
+        ? savedActive
+        : memberships[0].class_id;
+
+    localStorage.setItem('active_class_id', String(activeClassId));
+
+    // ✅ dropdown doldur
+    if (classSelect) {
+      classSelect.innerHTML = memberships.map(m => {
+        const c = m.classes;
+        return `<option value="${m.class_id}">${c?.class_name || 'Class'} (${c?.class_code || '-'})</option>`;
+      }).join('');
+
+      classSelect.value = String(activeClassId);
+
+      classSelect.onchange = async () => {
+        localStorage.setItem('active_class_id', classSelect.value);
+        await loadMyClassAndHomework(studentId);
+      };
+    }
+
+    // ✅ aktif sınıf info
+    const activeMembership = memberships.find(m => String(m.class_id) === String(activeClassId));
+    const activeClass = activeMembership?.classes;
+
     if (classInfoArea) {
       classInfoArea.innerHTML = `
-        <strong>Class:</strong> ${membership.classes.class_name}
-        <small>(Code: ${membership.classes.class_code})</small>
+        <strong>Class:</strong> ${activeClass?.class_name || '-'}
+        <small>(Code: ${activeClass?.class_code || '-'})</small>
       `;
     }
 
+    // ✅ assignments + completion sadece bu öğrenci
     const { data: assignments, error: asgErr } = await _supabase
       .from('assignments')
-      .select('id, title, description, due_date, assignment_completions(completed_at)')
-      .eq('class_id', membership.class_id);
+      .select(`
+        id, title, description, due_date,
+        assignment_completions!left(completed_at, student_id)
+      `)
+      .eq('class_id', activeClassId)
+      .eq('assignment_completions.student_id', studentId);
 
     if (asgErr) console.error('assignments error:', asgErr);
 
@@ -302,7 +331,6 @@ const loadMyClassAndHomework = async (studentId) => {
           </span>
         `;
       }
-
 
       return `
         <li class="hw-item"
@@ -398,11 +426,13 @@ const handleJoinClass = async () => {
   });
 
   if (insErr) {
-    // aynı sınıfa tekrar katılma vs
     console.error('join insert error:', insErr);
     showMessage("Could not save participation (you may have already joined).", "red");
     return;
   }
+
+  // ✅ Yeni katıldığı sınıfı aktif yap
+  localStorage.setItem('active_class_id', String(classData.id));
 
   showMessage(`You joined class "${classData.class_name}"`, "green");
   setTimeout(() => window.location.reload(), 900);
@@ -417,7 +447,6 @@ const showMessage = (msg, color) => {
 
 /* ========= EVENTLER ========= */
 if (joinClassBtn) joinClassBtn.addEventListener('click', handleJoinClass);
-
 if (logoutButton) logoutButton.addEventListener('click', goHome);
 
 /* ========= REALTIME – ÖDEV GÜNCELLEMELERİ ========= */
