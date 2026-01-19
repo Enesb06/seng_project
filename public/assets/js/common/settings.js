@@ -90,15 +90,22 @@ const initSettings = async () => {
         }
 
         // 4. AVATAR SEÇİMİ
-        const options = document.querySelectorAll('.avatar-option');
-        options.forEach(opt => {
-            if (opt.dataset.url === user.avatar_url) opt.classList.add('selected');
-            opt.onclick = () => {
-                options.forEach(o => o.classList.remove('selected'));
-                opt.classList.add('selected');
-                selectedAvatarUrl = opt.dataset.url;
-            }
-        });
+        // 4. AVATAR SEÇİMİ (tek seçili garanti)
+const options = document.querySelectorAll('.avatar-option');
+
+const applySelection = (url) => {
+  options.forEach(o => o.classList.remove('selected'));
+  const target = Array.from(options).find(o => o.dataset.url === url);
+  (target || options[0])?.classList.add('selected'); // url bulunamazsa ilkini seç
+  selectedAvatarUrl = target?.dataset.url || options[0]?.dataset.url || DEFAULT_AVATAR_URL;
+};
+
+options.forEach(opt => {
+  opt.addEventListener('click', () => applySelection(opt.dataset.url));
+});
+
+// Sayfa açılışında seçim:
+applySelection(user.avatar_url || DEFAULT_AVATAR_URL);
 
     } catch (e) { console.error("Hata:", e); }
 };
