@@ -15,17 +15,18 @@
 
 /* Card */
 .support-card {
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(0,0,0,0.07);
-    border-radius: 16px;
-    padding: 24px 26px;
-    box-shadow:
-        0 2px 4px rgba(0,0,0,0.05),
-        0 10px 28px rgba(0,0,0,0.04);
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid rgba(255,255,255,0.30);
+    border-radius: 22px;
+    padding: 26px 28px;
+    box-shadow: 0 22px 55px rgba(0,0,0,0.30);
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
+    overflow: hidden;
 }
 
 /* Card Title */
@@ -103,8 +104,9 @@
 .support-history-box {
     border: 1px solid rgba(0,0,0,.08);
     border-radius: 14px;
-    background: rgba(255,255,255,.95);
-    backdrop-filter: blur(4px);
+    background: rgba(255,255,255,0.14);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
     padding: 12px;
     display: flex;
     flex-direction: column;
@@ -124,16 +126,19 @@
     align-items: center;
     padding: 14px 16px;
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,.08);
-    background: #fff;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     cursor: pointer;
-    transition: border-color .2s, background .2s, transform .2s;
+    transition: background .25s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
 .support-thread-item:hover {
-    border-color: var(--primary);
-    background: rgba(115,20,198,.06);
-    transform: translateY(-1px);
+    border-color: rgba(255,255,255,0.30);
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.22);
 }
 
 /* Status Badge */
@@ -197,24 +202,6 @@
     filter: brightness(1.08);
 }
 
-.support-thread-item::after {
-    content: "›";
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--primary);
-    opacity: .7;
-    transition: .2s;
-}
-.support-thread-item:hover::after {
-    opacity: 1;
-    transform: translateX(4px);
-}
-
-.support-thread-item:hover {
-    background: rgba(115,20,198,.06);
-    box-shadow: inset 0 0 0 1px rgba(115,20,198,.3);
-}
-
 body {
     background: radial-gradient(1200px at center,
         rgba(115,20,198,.05),
@@ -223,25 +210,71 @@ body {
 
 
 .u-thread {
-    border-radius: 10px;
-    transition: all .22s ease;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: background .25s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
 }
 
 
 .u-thread:hover {
-    background: rgba(115,20,198,.07) !important;
-    border-color: rgba(115,20,198,.25) !important;
+    background: rgba(255,255,255,0.18) !important;
+    border-color: rgba(255,255,255,0.30) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(115,20,198,.18);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+}
+
+/* Thread title visible even without hover */
+.u-thread > div:first-child > div:first-child {
+    color: #0f172a !important;
+    font-weight: 800;
 }
 
 
 .u-thread:hover > div:first-child > div:first-child {
-    color: var(--primary) !important;
-    font-weight: 700;
-}
-.u-thread:hover span {
-    transform: translateX(4px);
-    transition: .22s;
+    color: #0f172a !important; /* keep title dark on hover */
+    font-weight: 800;
 }
 
+/* Glass text contrast fix */
+.support-card h3,
+.support-card label{
+    color: rgba(255,255,255,0.92) !important;
+}
+
+.support-history-empty,
+.support-card p{
+    color: rgba(255,255,255,0.70) !important;
+}
+
+.support-input,
+.support-textarea{
+    background: rgba(255,255,255,0.92) !important;
+    color: #0f172a !important;
+}
+
+.support-input::placeholder,
+.support-textarea::placeholder{
+    color: rgba(15,23,42,0.45);
+}
+
+/* Thread title / subject visibility on glass */
+.support-thread-item strong,
+.support-thread-item .title,
+.support-thread-item .subject,
+.support-thread-item .thread-title,
+.support-thread-item .ticket-title,
+.support-thread-item h4,
+.support-thread-item h5{
+    color: #0f172a !important; /* dark text instead of purple/white */
+    font-weight: 800;
+}
+
+.support-thread-item small,
+.support-thread-item time,
+.support-thread-item .date,
+.support-thread-item .meta{
+    color: rgba(255,255,255,0.70) !important;
+}
