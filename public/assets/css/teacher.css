@@ -466,3 +466,100 @@ input[type="date"] {
   font-size: inherit;
   font-weight: inherit;
 }
+
+/* =========================
+   Teacher Overview - Glassy Summary Cards (override .card)
+   ========================= */
+
+/* Make sure page containers don't paint an opaque layer over the background */
+.main-content,
+.content-area{
+  background: transparent !important;
+}
+
+.summary-grid{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 22px;
+  margin-bottom: 40px;
+}
+
+.summary-card.glass-card{
+  /* override any global .card background */
+  background: rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 255, 255, 0.30) !important;
+  border-radius: 22px;
+
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.30) !important;
+
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+
+  padding: 22px 26px;
+  overflow: hidden;
+}
+
+.summary-card.glass-card::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 10%, rgba(255,255,255,0.22), transparent 45%),
+              radial-gradient(circle at 80% 30%, rgba(255,255,255,0.14), transparent 55%);
+}
+
+.summary-card.glass-card{
+  position: relative;
+}
+
+.summary-head{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  position: relative;
+}
+
+.summary-icon{
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.summary-head h4{
+  margin: 0;
+  font-weight: 800;
+  color: rgba(255,255,255,0.92);
+}
+
+.summary-value{
+  font-size: 3.1rem;
+  font-weight: 900;
+  margin: 10px 0 12px;
+  color: #ffffff;
+  position: relative;
+}
+
+.summary-bar{
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.22);
+  overflow: hidden;
+  position: relative;
+}
+
+.summary-bar .fill{
+  display: block;
+  height: 100%;
+  width: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34d399, #22c55e);
+}
+
+@media (max-width: 900px){
+  .summary-grid{ grid-template-columns: 1fr; }
+}

@@ -8,31 +8,30 @@
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="../../assets/css/dashboard.css">
   <link rel="stylesheet" href="../../assets/css/support-thread.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
+  <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
 <div class="dashboard-container">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo"><a href="../../student.html">LearnENG</a></div>
-    <nav>
-      <ul>
-        <li><a href="../../student.html"> Home</a></li>
-        <li><a href="reading.html"> Reading Materials</a></li>
-        <li><a href="favorites.html"> Favorites</a></li>
-        <li><a href="wordlist.html"> Word List</a></li>
-        <li><a href="quiz.html"> Quizzes</a></li>
-        <li><a href="ai-chat.html"> AI Assistant</a></li>
-        <li class="active"><a href="support.html"> Support</a></li>
-        <li><a href="profile.html"> My Profile & Statistics</a></li>
-        <li><a href="../common/settings.html"> Settings</a></li>
-      </ul>
-    </nav>
-  </aside>
+  <header class="topbar">
+    <a class="brand" id="logo-link" href="#">LearnENG</a>
+    <div class="user-info">
+        <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+        <span id="welcome-message"></span>
+        <button id="logout-button">Logout</button>
+    </div>
+</header>
 
+<nav class="pill-nav">
+    <div class="nav-shell">
+        <ul id="nav-links"></ul>
+    </div>
+</nav>
   <div class="main-content">
     <header class="dashboard-header">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
@@ -66,5 +65,9 @@
 </div>
 
 <script type="module" src="../../assets/js/student/support-thread.js"></script>
+<script type="module">
+  import { initNavbar } from "../../assets/js/common/navbar.js";
+  initNavbar({ active: "support" });
+</script>
 </body>
 </html>

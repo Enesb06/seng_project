@@ -7,43 +7,34 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/teacher.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-
+    <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
 <div class="dashboard-container">
 
-    <!-- SOL MENÜ (Tüm sayfalarla eşitlendi) -->
-    <aside class="sidebar">
-        <div class="logo">
-            <a href="../../teacher.html">LearnENG</a>
-        </div>
-
-        <nav>
-            <ul>
-                <li><a href="../../teacher.html">Home</a></li>
-                <li><a href="class-management.html">Class & Homework Management</a></li>
-                <li class="active"><a href="student-report.html">Student Reports</a></li>
-                <li><a href="support.html"> Support</a></li>
-                <li><a href="../common/settings.html"> Settings</a></li>
-            </ul>
-        </nav>
-    </aside>
-
-    <!-- ANA İÇERİK -->
-    <div class="main-content student-reports-page">
-
-        <header class="dashboard-header">
-            <h2>Student Reports</h2>
+    <div class="dashboard-container">
+        <header class="topbar">
+            <a class="brand" id="logo-link" href="#">LearnENG</a>
             <div class="user-info">
-                <!-- Avatar -->
-                <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #7314c6; object-fit: cover;">
+                <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
                 <span id="welcome-message"></span>
                 <button id="logout-button">Logout</button>
             </div>
         </header>
+
+        <nav class="pill-nav">
+            <div class="nav-shell">
+                <ul id="nav-links"></ul>
+            </div>
+        </nav>
+
+
+    <!-- ANA İÇERİK -->
+    <div class="main-content student-reports-page">
 
         <main class="content-area">
 
@@ -88,6 +79,10 @@
 
 <!-- JavaScript Bağlantısı -->
 <script type="module" src="../../assets/js/teacher/student-report.js"></script>
+<script type="module">
+    import { initNavbar } from "../../assets/js/common/navbar.js";
+    initNavbar({ active: "reports" });
+</script>
 
 </body>
 </html>

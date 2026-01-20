@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../../assets/css/main.css" />
   <link rel="stylesheet" href="../../assets/css/dashboard.css" />
   <link rel="stylesheet" href="../../assets/css/teacher.css" />
+  <link rel="stylesheet" href="../../assets/css/style.css" />
 
   <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -15,31 +16,29 @@
 
 <body>
   <div class="dashboard-container">
-
+    <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
     <!-- SIDEBAR -->
-    <aside class="sidebar">
-      <div class="logo">
-        <a href="../../teacher.html">LearnENG</a>
+    <header class="topbar">
+      <a class="brand" id="logo-link" href="#">LearnENG</a>
+      <div class="user-info">
+          <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+          <span id="welcome-message"></span>
+          <button id="logout-button">Logout</button>
       </div>
+  </header>
 
-      <nav>
-        <ul>
-          <li><a href="../../teacher.html">Home</a></li>
-          <li><a href="class-management.html">Class & Homework Management</a></li>
-          <li class="active"><a href="student-report.html">Student Reports</a></li>
-          <li><a href="support.html"> Support</a></li>
-          <li><a href="../common/settings.html"> Settings</a></li>
-        </ul>
-      </nav>
-    </aside>
+  <nav class="pill-nav">
+      <div class="nav-shell">
+          <ul id="nav-links"></ul>
+      </div>
+  </nav>
 
     <!-- ANA İÇERİK -->
     <main class="main-content student-detail-page">
 
-      <header class="dashboard-header student-detail-header">
-        <h2>Student Details</h2>
+      
         <a class="back-link" href="student-report.html">← Back to Student Reports</a>
-      </header>
+      
 
       <!-- Öğrenci Bilgileri -->
       <section class="card">
@@ -128,5 +127,9 @@
   <!-- JS -->
   <script src="../../assets/js/supabaseClient.js"></script>
   <script type="module" src="../../assets/js/teacher/student-detail.js"></script>
+  <script type="module">
+    import { initNavbar } from "../../assets/js/common/navbar.js";
+    initNavbar({ active: "reports" });
+</script>
 </body>
 </html>

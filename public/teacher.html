@@ -8,57 +8,53 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/teacher.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
     <div class="dashboard-container">
-        <!-- SOL MENÜ -->
-        <aside class="sidebar">
-            <div class="logo"><a href="/teacher.html">LearnENG</a></div>
-            <nav>
-                <ul>
-                    <li class="active"><a href="/teacher.html">Home</a></li>
-                    <li><a href="pages/teacher/class-management.html">Class & Homework Management</a></li>
-                    <li><a href="pages/teacher/student-report.html">Student Reports</a></li>
+     
+        <header class="topbar">
+            <a class="brand" id="logo-link" href="#">LearnENG</a>
+            <div class="user-info">
+                <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+                <span id="welcome-message"></span>
+                <button id="logout-button">Logout</button>
+            </div>
+        </header>
 
-                    <!-- ✅ DESTEK EKLENDİ -->
-                    <li><a href="pages/teacher/support.html"> Support</a></li>
+        <nav class="pill-nav">
+            <div class="nav-shell">
+                <ul id="nav-links"></ul>
+            </div>
+        </nav>
 
-                    <li><a href="pages/common/settings.html"> Settings</a></li>
-                </ul>
-            </nav>
-        </aside>
 
         <!-- ANA İÇERİK -->
         <div class="main-content">
-            <header class="dashboard-header">
-                <h2>Teacher Summary</h2>
-                <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-                    <img id="header-avatar"
-                         src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
-                         style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #7314c6; object-fit: cover;">
-                    <span id="welcome-message">Loading...</span>
-                    <button id="logout-button">Logout</button>
-                </div>
-            </header>
+            
 
             <main class="content-area">
                 <h3>Overview</h3>
-                <div class="stats-grid">
-                    <div class="card stat-card mint">
-                        <div class="stat-head">
-                            <img src="assets/icons/classroom.png" alt="Classroom" class="stat-icon" />
+                <div class="summary-grid">
+                    <div class="summary-card glass-card">
+                        <div class="summary-head">
+                            <img src="assets/icons/classroom.png" alt="Classroom" class="summary-icon" />
                             <h4>Active Classes</h4>
                         </div>
-                        <p id="total-classes" class="stat-value">0</p>
+                        <p id="total-classes" class="summary-value">0</p>
+                        <div class="summary-bar"><span class="fill" style="width: 100%;"></span></div>
                     </div>
-                    <div class="card stat-card mint">
-                        <div class="stat-head">
-                            <img src="assets/icons/students.png" alt="Students" class="stat-icon" />
+
+                    <div class="summary-card glass-card">
+                        <div class="summary-head">
+                            <img src="assets/icons/students.png" alt="Students" class="summary-icon" />
                             <h4>Total Students</h4>
                         </div>
-                        <p id="total-students" class="stat-value">0</p>
+                        <p id="total-students" class="summary-value">0</p>
+                        <div class="summary-bar"><span class="fill" style="width: 100%;"></span></div>
                     </div>
                 </div>
 
@@ -93,5 +89,9 @@
 
     <!-- JavaScript Dosyası -->
     <script type="module" src="assets/js/teacher/dashboard.js"></script>
+    <script type="module">
+        import { initNavbar } from "./assets/js/common/navbar.js";
+        initNavbar({ active: "home" });
+    </script>
 </body>
 </html>

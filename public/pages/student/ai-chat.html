@@ -7,41 +7,31 @@
     <link rel="stylesheet" href="../../assets/css/main.css">
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/ai-chat.css">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
 <div class="dashboard-container">
-    <!-- SIDEBAR (Sol Menü) -->
-    <aside class="sidebar">
-        <div class="logo">
-            <a href="../../student.html">LearnENG</a>
+    
+    <header class="topbar">
+        <a class="brand" id="logo-link" href="#">LearnENG</a>
+        <div class="user-info">
+            <span id="streak-header" class="hidden"></span>
+            <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+            <span id="welcome-message"></span>
+            <button id="logout-button">Logout</button>
         </div>
-        <nav>
-            <ul>
-                     <li><a href="../../student.html"> Home</a></li>
-                 <li><a href="reading.html"> Reading Materials</a></li>
-<li><a href="favorites.html"> Favorites</a></li>
-<li><a href="wordlist.html"> Word List</a></li>
-<li><a href="quiz.html"> Quizzes</a></li>
-<li class="active"><a href="ai-chat.html"> AI Assistant</a></li>
-<li><a href="support.html"> Support</a></li>
-<li><a href="profile.html"> My Profile & Statistics</a></li>
-<li><a href="../common/settings.html"> Settings</a></li>
-            </ul>
-        </nav>
-    </aside>
+    </header>
+
+    <nav class="pill-nav">
+        <div class="nav-shell">
+            <ul id="nav-links"></ul>
+        </div>
+    </nav>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
-        <header class="dashboard-header">
-            <h2> Chat with AI Assistant</h2>
-            <div class="user-info" style="display: flex; align-items: center; gap: 15px;">
-                <img id="header-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" style="width: 35px; height: 35px; border-radius: 50%; border: 2px solid #7314c6; object-fit: cover;">
-                <span id="welcome-message"></span>
-                <button id="logout-button">Logout</button>
-            </div>
-        </header>
-
         <main class="content-area">
             <div class="chat-layout">
                 <!-- Sol Sütun: Sohbet Geçmişi -->
@@ -73,5 +63,10 @@
 </div>
 
 <script type="module" src="../../assets/js/student/ai-chat.js"></script>
+<script type="module">
+    import { initNavbar } from "../../assets/js/common/navbar.js";
+    initNavbar({ active: "ai" });
+</script>
+<script type="module" src="assets/js/student/dashboard.js"></script>
 </body>
 </html>

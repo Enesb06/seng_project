@@ -8,53 +8,35 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/student.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
 <div class="dashboard-container">
 
     <!-- SOL MENÜ -->
-    <aside class="sidebar">
-        <div class="logo">
-            <a href="student.html">LearnENG</a>
+    <header class="topbar">
+        <a class="brand" id="logo-link" href="#">LearnENG</a>
+            <div class="user-info">
+            <span id="streak-header" class="hidden"></span>
+            <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+            <span id="welcome-message"></span>
+            <button id="logout-button">Logout</button>
         </div>
-        <nav>
-            <ul>
-                <li class="active"><a href="student.html"> Home</a></li>
-                <li><a href="pages/student/reading.html"> Reading Materials</a></li>
-                <li><a href="pages/student/favorites.html"> Favorites</a></li>
-                <li><a href="pages/student/wordlist.html"> Word List</a></li>
-                <li><a href="pages/student/quiz.html">  Quizzes</a></li>
-                <li><a href="pages/student/ai-chat.html"> AI Assistant</a></li>
-                <li><a href="pages/student/support.html"> Support</a></li>
-                <li><a href="pages/student/profile.html"> My Profile & Statistics</a></li>
-                <li><a href="pages/common/settings.html"> Settings</a></li>
-            </ul>
-        </nav>
-    </aside>
+    </header>
+
+    <nav class="pill-nav">
+        <div class="nav-shell">
+            <ul id="nav-links"></ul>
+        </div>
+    </nav>
 
     <!-- ANA İÇERİK -->
     <div class="main-content">
 
-        <!-- HEADER -->
-        <header class="dashboard-header">
-            <h2>Home Page</h2>
-
-            <div class="user-info" style="display:flex;align-items:center;gap:15px;">
-                <img id="header-avatar"
-                     src="https://api.dicebear.com/7.x/avataaars/svg?seed=base"
-                     style="width:35px;height:35px;border-radius:50%;border:2px solid #6e19a2;object-fit:cover;">
-
-                <span id="welcome-message">Loading...</span>
-
-                <!-- 🔥 STREAK -->
-                <span id="streak-header" class="hidden"></span>
-
-                <button id="logout-button">Logout</button>
-            </div>
-        </header>
-
+        
         <!-- İÇERİK -->
         <main class="content-area">
             <h3>Overview</h3>
@@ -76,19 +58,22 @@
                 </div>
             </div>
 
-            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-  <label for="class-select"><strong>Class:</strong></label>
-  <select id="class-select" style="padding:8px 10px;border:1px solid #ddd;border-radius:8px;"></select>
-</div>
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:18px;">
+                <label for="class-select" style="color:#fff;">
+                  <strong>Class:</strong>
+                </label>
+                <select id="class-select" style="padding:8px 10px;border:1px solid #ddd;border-radius:8px; margin:18px"></select>
+              </div>>
 
-            <div class="card" style="margin-top:20px;">
+            <div class="card" style="margin:20px;">
                 <h3>My Class and Homework</h3>
                 <div id="class-info-area">Loading class information...</div>
                 <ul id="homework-list" class="homework-grid" style="margin-top:15px; list-style:none; padding:0;"></ul>
             </div>
 
-            <h3>Badges</h3>
+            
             <div class="badges-container card">
+                <h3>Badges</h3>
                 <div id="badge-list" class="badge-list">
                     <p>You haven't earned any badges yet.</p>
                 </div>
@@ -112,5 +97,9 @@
 
 <script type="module" src="assets/js/router.js"></script>
 <script type="module" src="assets/js/student/dashboard.js"></script>
+<script type="module">
+    import { initNavbar } from "./assets/js/common/navbar.js";
+    initNavbar({ active: "home" });
+</script>
 </body>
 </html>
