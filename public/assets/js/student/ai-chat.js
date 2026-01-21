@@ -29,7 +29,20 @@ const getUser = () => {
 const renderMessage = (sender, content) => {
     const messageDiv = document.createElement('div');
     messageDiv.classList.add('chat-message', sender);
-    messageDiv.innerText = content;
+
+    // Eğer mesaj AI'dan geliyorsa, Markdown'ı HTML'e çevir
+    if (sender === 'ai') {
+        // 1. Markdown metnini HTML'e dönüştür
+        const rawHtml = marked.parse(content);
+        // 2. Güvenlik için HTML'i temizle (olası zararlı kodları kaldır)
+        const sanitizedHtml = DOMPurify.sanitize(rawHtml);
+        // 3. Temizlenmiş HTML'i ekrana bas
+        messageDiv.innerHTML = sanitizedHtml;
+    } else {
+        // Kullanıcıdan gelen mesajları güvenlik için her zaman text olarak bas
+        messageDiv.innerText = content;
+    }
+
     chatWindow.appendChild(messageDiv);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 };
