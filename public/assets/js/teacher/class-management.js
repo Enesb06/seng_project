@@ -160,7 +160,7 @@ async function loadMyAssignments(classId) {
 
     return `
 <div class="teacher-hw-item" data-id="${a.id}">
-  <strong>Assignment ${i + 1} — ${a.title}</strong>
+  <strong><span class="assignment-label">Assignment ${i + 1} — ${a.title} </span></strong>
   <div class="hw-date">📅 Due Date: ${new Date(a.due_date).toLocaleDateString('tr-TR')}</div>
 
   ${a.description ? `<div class="hw-desc">${a.description}</div>` : ``}

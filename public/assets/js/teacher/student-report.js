@@ -61,6 +61,7 @@ async function loadStudents(classId) {
   if (!classId) return;
 
   tableBody.innerHTML = `<tr><td colspan="3">Loading...</td></tr>`;
+  
 
   const { data: members, error: memErr } = await _supabase
     .from("class_members")

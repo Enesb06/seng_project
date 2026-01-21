@@ -87,7 +87,7 @@ const renderWords = (words) => {
     const streakColor = item.quiz_streak > 0 ? '#f97316' : '#6b7280'; // Turuncu veya Gri
 
     row.innerHTML = `
-      <td>
+      <td style= #584965df>
         <div class="word-container">
           <strong>${item.word}</strong>
           <button class="action-btn speak-btn" onclick="speakWord('${item.word}')">
@@ -96,7 +96,7 @@ const renderWords = (words) => {
         </div>
       </td>
 
-      <td>${item.definition}</td>
+      <td style= color:#584965df >${item.definition}</td>
 
       <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Learning' : 'Learned'}</span></td>
 

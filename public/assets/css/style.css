@@ -878,3 +878,14 @@ button.btn-success:hover {
   .student-detail-page .stats-grid .stat-box * {
     color: inherit !important;
   }
+  .assignment-label {
+    color: #000000;
+}
+#studentTable td,
+#studentTable a {
+    color: #1b1a1a;   /* istediğin renk */
+}
+/* Homework due date text color */
+.hw-item small {
+    color: #1b1a1a;   /* istediğin renk */
+}

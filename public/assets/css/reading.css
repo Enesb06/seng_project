@@ -40,7 +40,7 @@
 }
 
 #materials-list .material-item:hover {
-    background-color: #f8f9fa;
+    background-color: #f8f9fa46;
 }
 
 #materials-list .material-item.active {
