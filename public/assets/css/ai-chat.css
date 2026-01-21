@@ -152,3 +152,47 @@
     text-transform: uppercase; /* BÜYÜK HARF */
     letter-spacing: 0.05em; /* Harf aralığı */
 }
+/* --- YENİ EKLENEN MİKROFON BUTONU STİLLERİ --- */
+
+#mic-btn {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    border-radius: 50%; /* Yuvarlak yapmak için */
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    margin-right: 8px; /* Gönder butonu ile arasına boşluk */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem; /* Emoji boyutunu ayarlar */
+    transition: all 0.2s ease;
+}
+
+#mic-btn:hover {
+    background-color: #f0f0f0;
+    border-color: #aaa;
+}
+
+/* Dinleme aktif olduğunda butona uygulanacak stil */
+#mic-btn.listening {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 8px rgba(255, 77, 77, 0.7);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
