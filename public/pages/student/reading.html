@@ -9,8 +9,6 @@
     <link rel="stylesheet" href="../../assets/css/dashboard.css">
     <link rel="stylesheet" href="../../assets/css/reading.css">
     <link rel="stylesheet" href="../../assets/css/style.css">
-
-    
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -24,7 +22,6 @@
             <p>Let's create a personalized reading material for you.</p>
             <form id="preferences-form">
                 <label for="interest-category">What Topic Interests You?</label>
-                <!-- ======================= BU LİSTE GÜNCELLENDİ ======================= -->
                 <select id="interest-category" required>
                     <option value="" disabled selected>-- Select a category --</option>
                     <option value="technology">Technology</option>
@@ -39,7 +36,6 @@
                     <option value="entertainment">Entertainment</option>
                     <option value="food and cooking">Food and Cooking</option>
                 </select>
-                <!-- ======================= GÜNCELLEME SONU ======================= -->
 
                 <label for="text-type">What Type of Text Do You Want to Read?</label>
                 <select id="text-type" required>
@@ -82,7 +78,6 @@
     </div>
  
     <div class="dashboard-container">
-        <!-- SOL MENÜ (SIDEBAR) -->
         <header class="topbar">
             <a class="brand" id="logo-link" href="#">LearnENG</a>
             <div class="user-info">
@@ -99,14 +94,10 @@
             </div>
         </nav>
  
-        <!-- ANA İÇERİK BÖLÜMÜ -->
         <div class="main-content" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden;">
-            
-               <!-- Ana Çalışma Alanı -->
             <main class="content-area" style="flex: 1; overflow: hidden; padding: 20px;">
                 <div class="reading-layout" style="display: grid; grid-template-columns: 300px 1fr; gap: 20px; height: 100%;">
                     
-                    <!-- SOL SÜTUN: Liste ve Geçmiş -->
                     <div class="sidebar-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
                         <div style="padding: 15px; border-bottom: 1px solid #eee;">
                             <h3 style="margin:0; font-size: 1rem;">My Materials</h3>
@@ -122,17 +113,26 @@
                         </div>
                     </div>
  
-                    <!-- SAĞ SÜTUN: Metin ve Not Kutusu -->
                     <div class="reader-column card" style="display: flex; flex-direction: column; height: 100%; overflow: hidden; padding: 0;">
                         <div id="reading-container" class="reading-container" style="flex: 1; overflow-y: auto; padding: 30px;">
                             <h1 id="reading-title">Please select an article</h1>
+                            
+                            <!-- === YENİ EKLENEN SES KONTROL BÖLÜMÜ === -->
+                            <div id="audio-controls" class="audio-player">
+                                <button id="play-text-btn" class="play-button" title="Play Full Text">
+                                    <img id="play-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play">
+                                </button>
+                                <div id="audio-loader" class="loader-small hidden"></div>
+                                <span class="audio-status">Listen to this material</span>
+                            </div>
+                            <!-- ======================================= -->
+
                             <div id="reading-body" style="font-size: 1.1rem; line-height: 1.8;"></div>
                             <div id="loader" class="hidden">AI is writing...</div>
  
                             <button id="favorite-btn" class="favorite-btn" type="button">
                                 <img id="favorite-icon" src="https://cdn-icons-png.flaticon.com/512/812/812327.png" class="fav-icon">
                             </button>
-
                         </div>
  
                         <div id="note-editor-area" style="flex-shrink: 0; background: #fafafa; border-top: 3px solid #7314c6; padding: 20px;">
@@ -155,17 +155,14 @@
       <span id="tooltip-meaning" class="meaning">Loading meaning...</span>
     
       <div class="tooltip-actions">
-    <button id="add-to-wordlist-btn" class="add-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/4543/4543063.png" class="btn-icon">
-        Add to Word List
-    </button>
+        <button id="add-to-wordlist-btn" class="add-btn">
+            <img src="https://cdn-icons-png.flaticon.com/512/4543/4543063.png" class="btn-icon">
+            Add to Word List
+        </button>
 
-    <button id="play-pronunciation-btn" class="speak-btn" title="Listen to Pronunciation">
-        <img src="https://cdn-icons-png.flaticon.com/512/4349/4349708.png" class="btn-icon">
-    </button>
-</div>
-
-
+        <button id="play-pronunciation-btn" class="speak-btn" title="Listen to Pronunciation">
+            <img src="https://cdn-icons-png.flaticon.com/512/4349/4349708.png" class="btn-icon">
+        </button>
       </div>
     </div>
  

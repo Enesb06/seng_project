@@ -724,4 +724,59 @@
 #translation-tooltip .speak-btn:hover {
     background: rgba(91,33,182,0.22) !important;
 }
+/* reading.css veya main.css dosyanıza ekleyin */
 
+.audio-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #f7f3ff;
+    border: 1px solid #e9d5ff;
+    padding: 8px 15px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+}
+
+.play-button {
+    background: #8b5cf6;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 0;
+}
+
+.play-button:hover {
+    background: #7c3aed;
+}
+
+.play-button img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+}
+
+.audio-status {
+    font-weight: 500;
+    color: #581c87;
+}
+
+.loader-small {
+    width: 20px;
+    height: 20px;
+    border: 3px solid #ddd;
+    border-top-color: #8b5cf6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+.loader-small.hidden {
+    display: none;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
