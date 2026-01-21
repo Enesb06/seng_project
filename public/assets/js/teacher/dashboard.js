@@ -75,15 +75,15 @@ async function showStudentsInModal(classId, className) {
         <table style="width:100%; border-collapse: collapse;">
             <thead>
                 <tr>
-                    <th style="text-align:left; padding:8px 0; border-bottom:1px solid #eee;">Full Name</th>
-                    <th style="text-align:left; padding:8px 0; border-bottom:1px solid #eee;">Email</th>
+                    <th style="text-align:left; padding:8px 0; border-bottom:1px solid #eee; color:#fff">Full Name</th>
+                    <th style="text-align:left; padding:8px 0; border-bottom:1px solid #eee; color:#fff">Email</th>
                 </tr>
             </thead>
             <tbody>
                 ${members.map(member => `
                     <tr>
                         <td style="padding:4px 0;">${member.profiles.full_name}</td>
-                        <td style="padding:4px 0; font-size: 0.9em; color: #555;">${member.profiles.email}</td>
+                        <td style="padding:4px 0; font-size: 0.9em; color: #fff;">${member.profiles.email}</td>
                     </tr>
                 `).join('')}
             </tbody>

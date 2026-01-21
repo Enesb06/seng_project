@@ -606,7 +606,7 @@ button.btn-success:hover {
             border-color: var(--primary-border);
         }
         .btn-red { background-color: #e74c3c; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 15px; font-weight: bold; }
-        .security-box { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px; }
+        .security-box { background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 10px; color:#0f172a }
         #display-security-question { color: #1e293b; font-weight: bold; font-size: 1.1rem; margin-bottom: 12px; display: block; }
         #settings-message { text-align: center; font-weight: bold; margin-top: 20px; min-height: 24px; }
         .hidden { display: none; }
