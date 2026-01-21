@@ -48,6 +48,7 @@ export function initNavbar({ active = "" } = {}) {
     { key: "reading", label: "Reading Materials", href: "/pages/student/reading.html" },
     { key: "favorites", label: "Favorites", href: "/pages/student/favorites.html" },
     { key: "wordlist", label: "Word List", href: "/pages/student/wordlist.html" },
+    { key: "speaking", label: "Speaking Practice", href: "/pages/student/speaking.html" },
     { key: "quiz", label: "Quizzes", href: "/pages/student/quiz.html" },
     { key: "ai", label: "AI Assistant", href: "/pages/student/ai-chat.html" },
     { key: "support", label: "Support", href: "/pages/student/support.html" },
