@@ -1,5 +1,7 @@
+// quiz.js dosyasının güncellenmiş ve tam hali
+
 import { _supabase } from '../supabaseClient.js';
- 
+
 // --- ELEMENT SEÇİMİ ---
 const startBtn = document.getElementById('start-quiz-btn');
 const quizIntro = document.getElementById('quiz-intro');
@@ -10,22 +12,17 @@ const loader = document.getElementById('loader');
 const resultArea = document.getElementById('result-area');
 const scoreText = document.getElementById('score-text');
 const progressText = document.getElementById('quiz-progress');
- 
-// 🚨 YENİ EKLENEN ELEMENTLER (HTML'den gelmeli)
 const welcomeMessage = document.getElementById('welcome-message');
 const logoutButton = document.getElementById('logout-button');
-// 🚨 YENİ EKLENEN ELEMENTLER SONU
- 
+
 // --- DEĞİŞKENLER ---
 let currentQuestions = [];
 let currentIndex = 0;
 let score = 0;
- 
-// Bu URL'yi Supabase Dashboard -> Edge Functions kısmından teyit et
+
 const QUIZ_API_URL = 'https://infmglbngspopnxrjnfv.supabase.co/functions/v1/generate-quiz';
- 
 const getUser = () => JSON.parse(localStorage.getItem('user'));
- 
+
 // --- YARDIMCI: JSON TEMİZLEME ---
 const parseQuizJSON = (text) => {
     try {
@@ -36,34 +33,38 @@ const parseQuizJSON = (text) => {
         throw new Error("AI could not create a valid quiz format.");
     }
 };
- 
-// --- YENİ: GİRİŞ METNİNİ DİNAMİK GÜNCELLEME ---
+
+// --- GİRİŞ METNİNİ DİNAMİK GÜNCELLEME ---
 const updateIntroText = async () => {
     const user = getUser();
     if (!user) return;
- 
+
     const infoText = document.getElementById('quiz-info-text');
     if (!infoText) return;
- 
+
     try {
-        // 'learning' durumundaki kelimelerin sayısını alıyoruz
+        // Yeni mantığa göre tekrarı gelen kelimeleri say
+        const today = new Date().toISOString();
         const { count, error } = await _supabase
             .from('word_list')
             .select('*', { count: 'exact', head: true })
             .eq('student_id', user.id)
-            .eq('learning_status', 'learning');
- 
+            .eq('learning_status', 'learning')
+            .or(`next_quiz_date.is.null,next_quiz_date.lte.${today}`);
+
         if (error) throw error;
- 
+
         const wordCount = count || 0;
-        const quizCount = Math.min(wordCount, 20); // Max 20 kuralı
- 
+        
+        // Quiz için uygun kelime sayısını da yeni mantıkla hesaplayabiliriz.
+        const quizCount = Math.min(wordCount, 10); // Quiz'i 10 soruyla sınırlayalım.
+
         if (wordCount < 3) {
-            infoText.innerHTML = `<span style="color: #dc2626;">Your list has only ${wordCount} words. At least 3 words are needed for quiz.</span>`;
+            infoText.innerHTML = `<span style="color: #dc2626;">Your list needs at least 3 words due for review. You have ${wordCount}.</span>`;
             startBtn.disabled = true;
             startBtn.style.opacity = "0.5";
         } else {
-            infoText.textContent = `A test with ${quizCount} questions will be created from words with "Learning" status in your list.`;
+            infoText.textContent = `A test with up to ${quizCount} questions will be created from your words due for review.`;
             startBtn.disabled = false;
             startBtn.style.opacity = "1";
         }
@@ -71,58 +72,69 @@ const updateIntroText = async () => {
         console.error("Word count could not be retrieved:", err);
     }
 };
- 
-// --- 1. KELİMELERİ ÇEK VE AI'YE GÖNDER ---
+
+// --- 1. AKILLI KELİME SEÇİMİ VE QUIZ BAŞLATMA (handleStartQuiz) ---
 const handleStartQuiz = async () => {
     const user = getUser();
     if (!user) return;
- 
+
     quizIntro.classList.add('hidden');
     quizContainer.classList.remove('hidden');
     loader.classList.remove('hidden');
     document.getElementById('question-area').classList.add('hidden');
     resultArea.classList.add('hidden');
- 
+
     try {
+        // YENİ MANTIK:
+        // 1. "learning" durumunda olan VE
+        // 2. 'next_quiz_date' bugünden önce olan VEYA hiç quiz'e girmemiş (NULL) kelimeleri çek.
+        const today = new Date().toISOString();
         const { data: words, error: dbError } = await _supabase
             .from('word_list')
-            .select('word, definition')
+            .select('id, word, definition, quiz_streak') // ID ve streak'i de alıyoruz!
             .eq('student_id', user.id)
             .eq('learning_status', 'learning')
-            .limit(20);
- 
+            .or(`next_quiz_date.is.null,next_quiz_date.lte.${today}`) // Burası sihirli kısım!
+            .limit(10); // Her quiz'de en fazla 10 kelime soralım
+
         if (dbError) throw dbError;
- 
+
         if (!words || words.length < 3) {
-            throw new Error("At least 3 words are needed for quiz. Your current word count: " + (words ? words.length : 0));
+            // Eğer yeterli kelime yoksa kullanıcıyı bilgilendir
+            alert("There are not enough words to review right now. Please add new words or wait for the review time.");
+            location.reload();
+            return;
         }
- 
+
         loader.textContent = `Preparing quiz with ${words.length} words...`;
- 
+
+        // AI'ye gönderilecek veri formatı (sadece kelime ve anlam)
+        const wordsForAI = words.map(w => ({ word: w.word, definition: w.definition }));
+
         const response = await fetch(QUIZ_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ words })
+            body: JSON.stringify({ words: wordsForAI })
         });
- 
+
         const responseData = await response.json();
- 
         if (!response.ok) throw new Error(responseData.error || "Server error.");
- 
-        if (!responseData.candidates || !responseData.candidates[0].content?.parts[0]?.text) {
-            throw new Error("No valid content received from API.");
-        }
- 
+
         const rawText = responseData.candidates[0].content.parts[0].text;
         const quizData = parseQuizJSON(rawText);
- 
+
         if (quizData.quiz && Array.isArray(quizData.quiz)) {
-            currentQuestions = quizData.quiz;
+            // Gelen quiz sorularını orjinal kelime verileriyle (id, streak vb.) eşleştiriyoruz.
+            currentQuestions = quizData.quiz.map((q, index) => ({
+                ...q,
+                wordData: words[index] // Her soruya ilgili kelimenin tüm bilgisini ekle
+            }));
+            
             currentIndex = 0;
             score = 0;
             showQuestion();
         }
- 
+
     } catch (error) {
         console.error("Error:", error);
         alert(error.message);
@@ -132,8 +144,8 @@ const handleStartQuiz = async () => {
         document.getElementById('question-area').classList.remove('hidden');
     }
 };
- 
-// --- 2. SORUYU EKRANA BAS ---
+
+// --- 2. SORUYU GÖSTERME (showQuestion) ---
 const showQuestion = () => {
     if (currentIndex >= currentQuestions.length) {
         showResults();
@@ -154,51 +166,109 @@ const showQuestion = () => {
         optionsContainer.appendChild(btn);
     });
 };
- 
-// --- 3. CEVAP KONTROLÜ ---
-// --- 3. CEVAP KONTROLÜ (MODAL VERSION) ---
+
+
+// --- YARDIMCI: SONRAKİ QUIZ TARİHİNİ HESAPLAMA ---
+const calculateNextQuizDate = (streak) => {
+    const date = new Date();
+    let daysToAdd = 0;
+    switch (streak) {
+        case 1: daysToAdd = 1; break;  // 1 gün sonra
+        case 2: daysToAdd = 3; break;  // 3 gün sonra
+        case 3: daysToAdd = 7; break;  // 1 hafta sonra
+        default: daysToAdd = 1; break; // Yanlış bilinirse veya ilk doğruysa ertesi gün
+    }
+    date.setDate(date.getDate() + daysToAdd);
+    return date.toISOString();
+};
+
+
+// --- 3. CEVAP KONTROLÜ VE VERİTABANI GÜNCELLEME (handleAnswerClick) ---
 const handleAnswerClick = (selectedIndex) => {
+    const currentQuestion = currentQuestions[currentIndex];
+    const correctIdx = currentQuestion.correctIndex;
+    const wordInfo = currentQuestion.wordData; // Kelimenin tüm veritabanı bilgisi
+    
+    const isCorrect = selectedIndex === correctIdx;
+
+    if (isCorrect) {
+        score++;
+    }
+
+    // Kelime durumunu veritabanında ASENKRON olarak güncelle
+    updateWordQuizStats(wordInfo, isCorrect);
+
+    // Modal'ı göster
+    showFeedbackModal(isCorrect);
+};
+
+// --- YENİ FONKSİYON: KELİME İSTATİSTİKLERİNİ GÜNCELLEME ---
+const updateWordQuizStats = async (word, isCorrect) => {
+    let newStreak = word.quiz_streak;
+    let newStatus = 'learning';
+
+    if (isCorrect) {
+        newStreak++;
+    } else {
+        newStreak = 0; // Yanlış cevap seriyi sıfırlar
+    }
+
+    // 4 veya daha fazla seri yaparsa "öğrenildi" olsun
+    if (newStreak >= 4) {
+        newStatus = 'learned';
+    }
+
+    const nextDate = newStatus === 'learned' ? null : calculateNextQuizDate(newStreak);
+
+    const { error } = await _supabase
+        .from('word_list')
+        .update({
+            quiz_streak: newStreak,
+            learning_status: newStatus,
+            next_quiz_date: nextDate
+        })
+        .eq('id', word.id);
+
+    if (error) {
+        console.error("Kelime durumu güncellenemedi:", error);
+        // Burada kullanıcıya bir bildirim gösterebilirsiniz.
+    }
+};
+
+// --- YENİ FONKSİYON: GERİBİLDİRİM MODAL'INI GÖSTERME ---
+const showFeedbackModal = (isCorrect) => {
     const correctIdx = currentQuestions[currentIndex].correctIndex;
     const correctText = currentQuestions[currentIndex].options[correctIdx];
 
     const modal = document.getElementById('quiz-feedback-modal');
-    const modalIcon = document.getElementById('quiz-modal-icon');
     const modalTitle = document.getElementById('quiz-modal-title');
     const modalWord = document.getElementById('quiz-modal-word');
-    const modalExpl = document.getElementById('quiz-modal-explanation');
     const nextBtn = document.getElementById('quiz-modal-next-btn');
 
-    // doğru
-    if (selectedIndex === correctIdx) {
-    score++;
+    if (isCorrect) {
+        modal.classList.remove('hidden', 'wrong');
+        modal.classList.add('correct');
+        modalTitle.textContent = 'Correct!';
+        modalWord.textContent = `“${correctText}”`;
+    } else {
+        modal.classList.remove('hidden', 'correct');
+        modal.classList.add('wrong');
+        modalTitle.textContent = 'Wrong!';
+        modalWord.textContent = `Correct: “${correctText}”`;
+    }
 
-    modal.classList.remove('hidden', 'wrong');
-    modal.classList.add('correct');
+    // Modal'daki butona tıklandığında sonraki soruya geç
+    nextBtn.onclick = () => {
+        modal.classList.add('hidden');
+        currentIndex++;
+        showQuestion();
+    };
 
-    modalTitle.textContent = 'Correct!';
-    modalWord.textContent = `“${correctText}” `;
-    modalExpl.style.display = 'none';
-} 
-else {
-    modal.classList.remove('hidden', 'correct');
-    modal.classList.add('wrong');
-
-    modalTitle.textContent = 'Wrong!';
-    modalWord.textContent = `Correct: “${correctText}”`;
-    modalExpl.style.display = 'none';
-}
-
-nextBtn.onclick = () => {
-    modal.classList.add('hidden');
-    currentIndex++;
-    showQuestion();
-};
-
+    modal.classList.remove('hidden');
 };
 
 
- 
-// --- 4. SONUCU GÖSTER VE VERİTABANINA KAYDET ---
+// --- 4. SONUCU GÖSTERME (showResults) ---
 const showResults = async () => {
     const user = getUser();
     if (!user) return;
@@ -207,7 +277,7 @@ const showResults = async () => {
     resultArea.classList.remove('hidden');
     
     const total = currentQuestions.length;
-    const percentage = Math.round((score / total) * 100);
+    const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
     
     scoreText.innerHTML = `
         <div style="font-size: 2rem; margin-bottom: 10px;">${score} / ${total}</div>
@@ -236,44 +306,43 @@ const showResults = async () => {
         document.getElementById('save-status').style.color = "#dc2626";
     }
 };
- 
-// --- EVENT LISTENERS ---
+
+// --- EVENT LISTENERS & INIT ---
 startBtn.addEventListener('click', handleStartQuiz);
  
-// 🚨 UPDATED LOGOUT FUNCTION (This runs when button is clicked)
 if (logoutButton) {
     logoutButton.addEventListener('click', () => {
         localStorage.removeItem('user');
-        // To go from quiz.html to index.html in root directory
         window.location.href = '../../index.html';
     });
 }
  
-// Welcome message and Dynamic Text Initialization (UPDATED)
 document.addEventListener('DOMContentLoaded', () => {
     const user = getUser();
  
-    // 🚨 USER CHECK AND REDIRECT (Security)
     if (!user) {
         window.location.href = '../../index.html';
         return;
     }
  
     if (user && welcomeMessage) {
-        // 🚨 Set welcome message
         welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
-        
-        // Update dynamic text
+        // Sayfa yüklendiğinde quiz'e uygun kelime sayısını göster
         updateIntroText();
+        // Geçmiş quiz sonuçlarını yükle
         loadQuizHistory(); 
     }
+
+    // Avatarı header'a yükle
+    const userAvatar = JSON.parse(localStorage.getItem('user'));
+    if (userAvatar && userAvatar.avatar_url) {
+        const imgEl = document.getElementById('header-avatar');
+        if(imgEl) imgEl.src = userAvatar.avatar_url;
+    }
 });
-const userAvatar = JSON.parse(localStorage.getItem('user'));
-if (userAvatar && userAvatar.avatar_url) {
-    const imgEl = document.getElementById('header-avatar');
-    if(imgEl) imgEl.src = userAvatar.avatar_url;
-}
-// 🆕 QUIZ HISTORY
+
+
+// --- QUIZ GEÇMİŞİNİ YÜKLEME ---
 const loadQuizHistory = async () => {
   const user = getUser();
   if (!user) return;
@@ -310,7 +379,7 @@ const loadQuizHistory = async () => {
     <tbody>
       ${data.map(r => `
         <tr style="border-bottom:1px solid #f1f5f9;">
-          <td style="padding:8px;">${new Date(r.created_at).toLocaleDateString('tr-TR')}</td>
+          <td style="padding:8px;">${new Date(r.created_at).toLocaleDateString('en-US')}</td>
           <td style="padding:8px; text-align:center;">
             ${r.score} / ${r.total_questions}
           </td>
@@ -322,5 +391,4 @@ const loadQuizHistory = async () => {
     </tbody>
   </table>
 `;
-
 };

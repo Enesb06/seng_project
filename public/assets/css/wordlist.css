@@ -425,3 +425,27 @@
   border-color: rgba(109,40,217,0.35);
   box-shadow: 0 0 0 4px rgba(109,40,217,0.12), 0 10px 22px rgba(17,24,39,0.06);
 }
+
+
+/* wordlist.css dosyanıza ekleyin */
+
+.word-table {
+    /* Bu kural, tablonun tüm genişliği kaplamasını sağlar */
+    width: 100%; 
+
+    /* BU SİHİRLİ KURALDIR: Tarayıcıyı, sütun genişliklerini içeriğe göre değil,
+       eşit olarak dağıtmaya zorlar. */
+    table-layout: fixed; 
+}
+
+/* Sütunlardaki içeriğin dikey olarak ortalanmasını sağlayarak
+   daha temiz bir görünüm elde edelim. */
+.word-table td {
+    vertical-align: middle;
+}
+
+/* Özellikle "Actions" sütunundaki butonların yan yana düzgün durmasını
+   garanti altına alalım. */
+.word-table td:last-child {
+    text-align: center; /* Butonları ortalar */
+}

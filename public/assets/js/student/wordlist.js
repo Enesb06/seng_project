@@ -69,7 +69,7 @@ const loadWords = async () => {
 
 
 
-// ========= RENDER =========
+// ========= RENDER (GÜNCELLENMİŞ FONKSİYON) =========
 const renderWords = (words) => {
   wordListBody.innerHTML = '';
   if (words.length === 0) {
@@ -82,37 +82,46 @@ const renderWords = (words) => {
     const row = document.createElement('tr');
     const date = new Date(item.added_at).toLocaleDateString('tr-TR');
 
+    // YENİ: Streak'in aktif olup olmamasına göre renk belirliyoruz.
+    // 0 ise gri, 0'dan büyükse turuncu olacak.
+    const streakColor = item.quiz_streak > 0 ? '#f97316' : '#6b7280'; // Turuncu veya Gri
+
     row.innerHTML = `
-  <td>
-    <div class="word-container">
-      <strong>${item.word}</strong>
-      <button class="action-btn speak-btn" onclick="speakWord('${item.word}')">
-        <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/4349/4349708.png">
-      </button>
-    </div>
-  </td>
+      <td>
+        <div class="word-container">
+          <strong>${item.word}</strong>
+          <button class="action-btn speak-btn" onclick="speakWord('${item.word}')">
+            <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/4349/4349708.png">
+          </button>
+        </div>
+      </td>
 
-  <td>${item.definition}</td>
+      <td>${item.definition}</td>
 
-  <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Learning' : 'Learned'}</span></td>
+      <td><span class="status-badge status-${item.learning_status}">${item.learning_status === 'learning' ? 'Learning' : 'Learned'}</span></td>
 
-  <td>${date}</td>
+      <td>${date}</td>
 
-  <td>
-    ${
-      item.learning_status === 'learning'
-      ? `<button class="action-btn mark-btn mark-learned" onclick="updateStatus(${item.id}, 'learning')">
-           <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/709/709510.png"> Learned
-         </button>`
-      : `<button class="action-btn mark-btn mark-revert" onclick="updateStatus(${item.id}, 'learned')">
-           <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/10405/10405763.png"> Move Back
-         </button>`
-    }
-    <button class="action-btn delete-btn" onclick="deleteWord(${item.id})">
-      <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/10065/10065140.png">
-    </button>
-  </td>
-`;
+      <!-- GÜNCELLENMİŞ STREAK SÜTUNU -->
+      <td style="text-align: center; font-weight: bold; font-size: 1.1em; color: ${streakColor};">
+        ${item.quiz_streak} 🔥
+      </td>
+      
+      <td>
+        ${
+          item.learning_status === 'learning'
+          ? `<button class="action-btn mark-btn mark-learned" onclick="updateStatus(${item.id}, 'learning')">
+               <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/709/709510.png"> Learned
+             </button>`
+          : `<button class="action-btn mark-btn mark-revert" onclick="updateStatus(${item.id}, 'learned')">
+               <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/10405/10405763.png"> Move Back
+             </button>`
+        }
+        <button class="action-btn delete-btn" onclick="deleteWord(${item.id})">
+          <img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/10065/10065140.png">
+        </button>
+      </td>
+    `;
 
     if (item.learning_status === 'learned') {
       row.classList.add('tr-learned');
@@ -121,7 +130,6 @@ const renderWords = (words) => {
     wordListBody.appendChild(row);
   });
 };
-
 
 
 // ========= FILTER =========
