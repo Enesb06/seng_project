@@ -6,6 +6,8 @@ const newTopicBtn = document.getElementById('new-topic-btn');
 const micBtn = document.getElementById('mic-btn');
 const statusMsg = document.getElementById('status-message');
 const feedbackContainer = document.getElementById('feedback-container');
+const feedbackPlaceholder = document.getElementById('feedback-placeholder');
+const feedbackContent = document.getElementById('feedback-content');
 
 // Web Speech API
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -78,8 +80,6 @@ async function analyzeSpeech(transcript) {
         return;
     }
 
-    feedbackContainer.style.display = 'none'; // Önceki feedbacki gizle
-
     try {
         const { data: feedback, error } = await _supabase.functions.invoke('analyze-speaking', {
             body: { topic: currentTopic, transcript: transcript },
@@ -112,7 +112,8 @@ function renderFeedback(feedback, transcript) {
     const vocabList = document.getElementById('vocabulary-suggestions-list');
     vocabList.innerHTML = feedback.vocabulary_suggestions.map(item => `<li>${item}</li>`).join('');
 
-    feedbackContainer.style.display = 'block';
+    feedbackPlaceholder.style.display = 'none';
+    feedbackContent.style.display = 'block';
 }
 
 // Pratiği veritabanına kaydet
@@ -147,6 +148,13 @@ function getNewTopic() {
     const randomIndex = Math.floor(Math.random() * topics.length);
     currentTopic = topics[randomIndex];
     topicEl.textContent = currentTopic;
+
+    // Feedback alanını başlangıç durumuna getir
+    if (feedbackPlaceholder && feedbackContent) {
+        feedbackPlaceholder.style.display = 'block'; 
+        feedbackContent.style.display = 'none';    
+    }
+    statusMsg.textContent = "Press the microphone to start speaking";
 }
 
 // Sayfa yüklendiğinde

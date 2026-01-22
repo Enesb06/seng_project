@@ -61,33 +61,46 @@
                     <p id="status-message">Press the microphone to start speaking</p>
                 </div>
 
-                <div id="feedback-container" class="card feedback-card" style="display: none;">
-                    <h3>Your Feedback</h3>
-                    <div class="scores-grid">
-                        <div class="score-item">
-                            <h4>Fluency</h4>
-                            <p id="fluency-score">--/10</p>
-                        </div>
-                        <div class="score-item">
-                            <h4>Grammar</h4>
-                            <p id="grammar-score">--/10</p>
-                        </div>
-                        <div class="score-item">
-                            <h4>Pronunciation</h4>
-                            <p id="pronunciation-score">--/10</p>
-                        </div>
+                <div id="feedback-container" class="card feedback-card">
+                    <!-- Başlangıç Mesajı (Placeholder) -->
+                    <div id="feedback-placeholder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-chat-quote" viewBox="0 0 16 16">
+                          <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.504 7-5.5S11.996 3 8 3 1 5.504 1 8.5c0 1.578.529 3.01 1.419 4.144.39.423.636.958.658 1.549z"/>
+                          <path d="M7.438 7.344a.5.5 0 0 0 .144.397l.533.453a.5.5 0 0 0 .642.024.5.5 0 0 0 .024-.642l-.453-.533a.5.5 0 0 0-.397-.144h-.006a.5.5 0 0 0-.416.586zM6 9.5a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5zm-1.5-2a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 0-1h-3a.5.5 0 0 0-.5.5z"/>
+                        </svg>
+                        <h3>Your Feedback Will Appear Here</h3>
+                        <p>Once you finish your speaking practice, a detailed analysis will be shown.</p>
                     </div>
-                    <h4>Summary</h4>
-                    <p id="feedback-summary">...</p>
-                    
-                    <h4>Your Transcript</h4>
-                    <p id="transcript-text" class="transcript-box">...</p>
 
-                    <h4>Grammar Points</h4>
-                    <ul id="grammar-points-list"></ul>
-                    
-                    <h4>Vocabulary Suggestions</h4>
-                    <ul id="vocabulary-suggestions-list"></ul>
+                    <!-- Gerçek Geri Bildirim İçeriği (Başlangıçta gizli) -->
+                    <div id="feedback-content" style="display: none;">
+                        <h3>Your Feedback</h3>
+                        <div class="scores-grid">
+                            <div class="score-item">
+                                <h4>Fluency</h4>
+                                <p id="fluency-score">--/10</p>
+                            </div>
+                            <div class="score-item">
+                                <h4>Grammar</h4>
+                                <p id="grammar-score">--/10</p>
+                            </div>
+                            <div class="score-item">
+                                <h4>Pronunciation</h4>
+                                <p id="pronunciation-score">--/10</p>
+                            </div>
+                        </div>
+                        <h4>Summary</h4>
+                        <p id="feedback-summary">...</p>
+                        
+                        <h4>Your Transcript</h4>
+                        <p id="transcript-text" class="transcript-box">...</p>
+
+                        <h4>Grammar Points</h4>
+                        <ul id="grammar-points-list"></ul>
+                        
+                        <h4>Vocabulary Suggestions</h4>
+                        <ul id="vocabulary-suggestions-list"></ul>
+                    </div>
                 </div>
             </main>
         </div>
