@@ -1,4 +1,4 @@
-// assets/js/student/support.js
+// assets/js/teacher/support.js
 import { _supabase } from "../supabaseClient.js";
 
 /* ========= ELEMENTS ========= */
@@ -21,8 +21,10 @@ const sendBtn         = document.getElementById("chat-send");
 const logoutBtn       = document.getElementById("logout-button");
 const welcomeMessage  = document.getElementById("welcome-message");
 const userAvatar      = document.getElementById("user-avatar");
+
 const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=base";
 
+/* ========= USER ========= */
 const getUser = () => {
   try { return JSON.parse(localStorage.getItem("user") || "null"); }
   catch { return null; }
@@ -56,12 +58,12 @@ const formatStatusText = (status) => (status === "closed" ? "Closed" : "Open");
 
 const applyStatusPill = (status) => {
   if (!statusEl) return;
+
   statusEl.textContent = formatStatusText(status);
 
   statusEl.classList.remove("closed");
   if (status === "closed") statusEl.classList.add("closed");
 
-  // disable composer on closed
   const isClosed = status === "closed";
   if (inputEl) inputEl.disabled = isClosed;
   if (sendBtn) sendBtn.disabled = isClosed;
@@ -141,14 +143,12 @@ const ensureAtLeastOneThread = async () => {
   const user = getUser();
   if (!user) return null;
 
-  // if exists, choose last active from localStorage or latest
   const saved = localStorage.getItem("active_support_thread_id");
   if (saved && threadsCache.some(t => String(t.id) === String(saved))) {
     return saved;
   }
   if (threadsCache.length > 0) return threadsCache[0].id;
 
-  // create first one automatically
   const created = await createNewThread("New Support Chat");
   return created?.id || null;
 };
@@ -161,7 +161,7 @@ const createNewThread = async (subject = "New Support Chat") => {
     .from("support_threads")
     .insert({
       created_by_user_id: user.id,
-      created_by_role: user.role || "student",
+      created_by_role: user.role || "teacher",
       subject,
       status: "open",
     })
@@ -174,7 +174,6 @@ const createNewThread = async (subject = "New Support Chat") => {
     return null;
   }
 
-  // refresh list
   await loadMyThreads();
   return thread;
 };
@@ -191,16 +190,13 @@ const loadThreadInfo = async (threadId) => {
     return null;
   }
 
-  // Title
   if (titleInput) {
     titleInput.value = data.subject || "New Support Chat";
     titleInput.setAttribute("readonly", "readonly");
     titleEditMode = false;
   }
 
-  // Status pill
   applyStatusPill(data.status);
-
   return data;
 };
 
@@ -243,7 +239,7 @@ const loadMessages = async (threadId) => {
   messagesEl.innerHTML = "";
 
   const user = getUser();
-  const myRole = user?.role || "student";
+  const myRole = user?.role || "teacher";
 
   if (!data || data.length === 0) {
     setChatEmpty("Send a message to start the conversation.");
@@ -258,10 +254,8 @@ const selectThread = async (threadId) => {
   activeThreadId = threadId;
   localStorage.setItem("active_support_thread_id", String(threadId));
 
-  // refresh drawer to show active
   renderThreads(threadsCache);
 
-  // load info + messages
   const info = await loadThreadInfo(threadId);
   if (!info) {
     setChatEmpty("Chat not found.");
@@ -276,7 +270,6 @@ const toggleTitleEdit = async () => {
   if (!titleInput || !activeThreadId) return;
 
   if (!titleEditMode) {
-    // enable edit
     titleEditMode = true;
     titleInput.removeAttribute("readonly");
     titleInput.focus();
@@ -284,7 +277,6 @@ const toggleTitleEdit = async () => {
     return;
   }
 
-  // save
   const newTitle = (titleInput.value || "").trim() || "New Support Chat";
   titleInput.value = newTitle;
 
@@ -298,11 +290,9 @@ const toggleTitleEdit = async () => {
     alert("Could not update title.");
   }
 
-  // lock again
   titleEditMode = false;
   titleInput.setAttribute("readonly", "readonly");
 
-  // refresh list titles
   await loadMyThreads();
 };
 
@@ -324,7 +314,7 @@ const sendMessage = async () => {
     .insert({
       thread_id: activeThreadId,
       sender_user_id: user.id,
-      sender_role: user.role || "student",
+      sender_role: user.role || "teacher",
       message: msg,
     });
 
@@ -355,7 +345,7 @@ editTitleBtn?.addEventListener("click", toggleTitleEdit);
 titleInput?.addEventListener("keydown", async (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
-    await toggleTitleEdit(); // saves if in edit mode
+    await toggleTitleEdit();
   }
 });
 titleInput?.addEventListener("blur", async () => {
@@ -364,7 +354,6 @@ titleInput?.addEventListener("blur", async () => {
 
 sendBtn?.addEventListener("click", sendMessage);
 inputEl?.addEventListener("keydown", (e) => {
-  // Enter -> send, Shift+Enter -> newline
   if (e.key === "Enter" && !e.shiftKey) {
     e.preventDefault();
     sendMessage();
@@ -382,18 +371,14 @@ if (logoutBtn) {
 document.addEventListener("DOMContentLoaded", async () => {
   const user = getUser();
 
-  if (!user) {
+  // Teacher sayfasında teacher olmayan giremesin
+  if (!user || user.role !== "teacher") {
     window.location.href = "../../index.html";
     return;
   }
 
-  if (welcomeMessage) {
-    welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
-  }
-
-  if (userAvatar) {
-    userAvatar.src = user.avatar_url ? user.avatar_url : DEFAULT_AVATAR_URL;
-  }
+  if (welcomeMessage) welcomeMessage.innerText = `Welcome, ${user.full_name}!`;
+  if (userAvatar) userAvatar.src = user.avatar_url ? user.avatar_url : DEFAULT_AVATAR_URL;
 
   await loadMyThreads();
 
@@ -404,4 +389,4 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   await selectThread(first);
-}); 
+});

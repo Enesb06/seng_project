@@ -1,48 +1,117 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <title>Support Inbox - Admin</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/admin.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Support - Admin - LearnENG.com</title>
+
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+  <link rel="stylesheet" href="assets/css/support.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body>
-    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
-    <div class="dashboard-container">
-        <header class="topbar">
-            <a class="brand" href="admin.html">LearnENG Admin</a>
-            <div class="user-info"><button id="logout-button" style="background:#dc2626;">Logout</button></div>
-        </header>
 
-        <nav class="pill-nav">
-            <div class="nav-shell">
-                <ul id="nav-links">
-                    <li><a href="admin.html#users">Users</a></li>
-                    <li><a href="admin.html#verification">Approvals</a></li>
-                    <li class="active"><a href="admin_support.html">Support</a></li>
-                </ul>
-            </div>
-        </nav>
+<body class="is-admin-support">
 
-        <main class="content-area" style="max-width: 750px; margin: 0 auto; padding-top: 15px;">
-            <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                    <h3 style="margin:0; font-size:1.1rem;">Support Requests</h3>
-                    <div style="display:flex; gap:6px;">
-                        <button class="filter-btn active" data-role="all">All</button>
-                        <button class="filter-btn" data-role="student">Students</button>
-                        <button class="filter-btn" data-role="teacher">Teachers</button>
-                    </div>
-                </div>
-                <div id="support-threads-list">
-                    <p style="text-align:center; opacity:0.4;">Loading messages...</p>
-                </div>
+  <img class="global-bg" src="assets/css/images/background.jpg" alt="">
+
+  <div class="dashboard-container">
+
+    <!-- TOPBAR (admin.html ile aynı) -->
+    <header class="topbar">
+      <a class="brand" href="admin.html">LearnENG Admin</a>
+
+      <div class="user-info">
+        <img id="user-avatar"
+             src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin"
+             alt="Avatar"
+             class="admin-topbar-avatar">
+        <span id="admin-display-name">Admin</span>
+        <button id="logout-button" style="background:#dc2626;">Logout</button>
+      </div>
+    </header>
+
+    <!-- PILL NAV -->
+    <nav class="pill-nav">
+      <div class="nav-shell">
+        <ul id="admin-nav-links">
+          <li><a href="admin.html#users">Users</a></li>
+          <li><a href="admin.html#verification">Approvals</a></li>
+          <li class="active"><a href="admin_support.html">Support</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main-content">
+      <main class="content-area support-chat-page admin-support-page">
+
+        <!-- Left floating rail -->
+        <div class="support-rail" aria-label="Support Tools">
+          <button id="history-toggle" class="rail-btn" title="History">☰</button>
+        </div>
+
+        <!-- Drawer backdrop -->
+        <div id="drawer-backdrop" class="drawer-backdrop" style="display:none;"></div>
+
+        <!-- History Drawer -->
+        <aside id="history-drawer" class="support-drawer" aria-label="Support History">
+          <div class="drawer-head">
+            <div class="drawer-title">Support Requests</div>
+            <button id="drawer-close" class="drawer-close" title="Close">✕</button>
+          </div>
+
+          <div id="my-threads-list" class="drawer-list"></div>
+        </aside>
+
+        <!-- Main chat shell -->
+        <section class="support-shell">
+
+          <div class="chat-header">
+            <div class="chat-title-wrap">
+              <input
+                id="thread-title"
+                class="thread-title-input"
+                type="text"
+                value="Select a request"
+                aria-label="Chat title"
+                readonly
+              />
             </div>
-        </main>
+
+            <!-- admin status tools -->
+            <div class="admin-status-tools">
+              <label class="admin-status-label" for="thread-status-select">Status</label>
+
+              <select id="thread-status-select" class="admin-status-select">
+                <option value="open">Open</option>
+                <option value="closed">Closed</option>
+              </select>
+
+              <button id="update-status-btn" class="cta-button">Update</button>
+
+              <span id="thread-status" class="status-pill">Open</span>
+            </div>
+          </div>
+
+          <div id="chat-messages" class="chat-messages">
+            <div class="chat-empty">Select a request from History.</div>
+          </div>
+
+          <div class="chat-inputbar">
+            <textarea id="chat-input" rows="2" placeholder="Write a reply..."></textarea>
+            <button id="chat-send" class="cta-button">Send</button>
+          </div>
+
+        </section>
+
+      </main>
     </div>
-    <script type="module" src="assets/js/admin/support.js"></script>
+  </div>
+
+  <script type="module" src="assets/js/admin/support.js"></script>
 </body>
 </html>

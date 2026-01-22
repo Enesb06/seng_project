@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support Center - LearnENG.com</title>
+  <title>Support - Teacher - LearnENG.com</title>
 
   <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="../../assets/css/dashboard.css">
@@ -13,71 +13,91 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body class="teacher-support-page">
+<body>
   <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
-<div class="dashboard-container">
 
-   
-  <header class="topbar">
-    <a class="brand" id="logo-link" href="#">LearnENG</a>
-    <div class="user-info">
+  <div class="dashboard-container">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <a class="brand" id="logo-link" href="#">LearnENG</a>
+      <div class="user-info">
         <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
         <span id="welcome-message"></span>
         <button id="logout-button">Logout</button>
-    </div>
-  </header>
+      </div>
+    </header>
 
-<nav class="pill-nav">
-    <div class="nav-shell">
+    <!-- PILL NAV -->
+    <nav class="pill-nav">
+      <div class="nav-shell">
         <ul id="nav-links"></ul>
-    </div>
-</nav>
-
-
-  <!-- MAIN -->
-  <div class="main-content">
-
-   
-    
-    <!-- SUPPORT PAGE CONTENT -->
-    <main class="content-area support-layout">
-
-      <!-- CREATE TICKET -->
-      <div class="support-card glass-card">
-        <h3>Create New Support Request</h3>
-
-        <div class="support-field">
-          <label for="support-subject">Subject</label>
-          <input id="support-subject" type="text" placeholder="E.g: Class not loading, error on homework page..." class="support-input">
-        </div>
-
-        <div class="support-field">
-          <label for="support-message">Your Message</label>
-          <textarea id="support-message" rows="4" placeholder="Write your issue or feedback in detail..." class="support-textarea"></textarea>
-        </div>
-
-        <button id="create-thread" class="support-send">Send</button>
       </div>
+    </nav>
 
-      <!-- HISTORY -->
-      <div class="support-card glass-card">
-        <h3>My Support Request History</h3>
+    <!-- MAIN -->
+    <div class="main-content">
+      <main class="content-area support-chat-page">
 
-        <div class="support-history-box">
-          <div id="my-threads-list" class="support-history-empty">
-            You don't have any support requests yet.
+        <!-- Left floating rail -->
+        <div class="support-rail" aria-label="Support Tools">
+          <button id="history-toggle" class="rail-btn" title="History">☰</button>
+          <button id="new-chat-btn" class="rail-btn primary" title="New Chat">＋</button>
+        </div>
+
+        <!-- Drawer backdrop -->
+        <div id="drawer-backdrop" class="drawer-backdrop" style="display:none;"></div>
+
+        <!-- History Drawer -->
+        <aside id="history-drawer" class="support-drawer" aria-label="Support History">
+          <div class="drawer-head">
+            <div class="drawer-title">History</div>
+            <button id="drawer-close" class="drawer-close" title="Close">✕</button>
           </div>
-        </div>
-      </div>
 
-    </main>
+          <div id="my-threads-list" class="drawer-list"></div>
+        </aside>
+
+        <!-- Main chat shell -->
+        <section class="support-shell">
+
+          <div class="chat-header">
+            <div class="chat-title-wrap">
+              <input
+                id="thread-title"
+                class="thread-title-input"
+                type="text"
+                value="New Support Chat"
+                aria-label="Chat title"
+                readonly
+              />
+              <button id="edit-title-btn" class="icon-btn" title="Edit title">✎</button>
+            </div>
+
+            <span id="thread-status" class="status-pill">Open</span>
+          </div>
+
+          <div id="chat-messages" class="chat-messages">
+            <div class="chat-empty">Send a message to start the conversation.</div>
+          </div>
+
+          <div class="chat-inputbar">
+            <textarea id="chat-input" rows="2" placeholder="Type a message..."></textarea>
+            <button id="chat-send" class="cta-button">Send</button>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
   </div>
-</div>
 
-<script type="module" src="../../assets/js/student/support.js"></script>
-<script type="module">
-  import { initNavbar } from "../../assets/js/common/navbar.js";
-  initNavbar({ active: "support" });
-</script>
+  <!-- ÖNEMLİ: teacher js yolu -->
+  <script type="module" src="../../assets/js/teacher/support.js"></script>
+
+  <script type="module">
+    import { initNavbar } from "../../assets/js/common/navbar.js";
+    initNavbar({ active: "support" });
+  </script>
 </body>
 </html>

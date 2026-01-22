@@ -1,90 +1,113 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Support Center - LearnENG.com</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support - LearnENG.com</title>
 
-    <link rel="stylesheet" href="../../assets/css/main.css">
-    <link rel="stylesheet" href="../../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../../assets/css/support.css">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="../../assets/css/dashboard.css">
+  <link rel="stylesheet" href="../../assets/css/support.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-    <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
+  <img class="global-bg" src="../../assets/css/images/background.jpg" alt="">
 
-<div class="dashboard-container">
+  <div class="dashboard-container">
 
-    <!-- SIDEBAR -->
+    <!-- TOPBAR -->
     <header class="topbar">
-        <a class="brand" id="logo-link" href="#">LearnENG</a>
-        <div class="user-info">
-            <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
-            <span id="welcome-message"></span>
-            <button id="logout-button">Logout</button>
-        </div>
+      <a class="brand" id="logo-link" href="#">LearnENG</a>
+      <div class="user-info">
+        <img id="user-avatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=base" alt="Avatar">
+        <span id="welcome-message"></span>
+        <button id="logout-button">Logout</button>
+      </div>
     </header>
 
+    <!-- PILL NAV -->
     <nav class="pill-nav">
-        <div class="nav-shell">
-            <ul id="nav-links"></ul>
-        </div>
+      <div class="nav-shell">
+        <ul id="nav-links"></ul>
+      </div>
     </nav>
-
 
     <!-- MAIN -->
     <div class="main-content">
+      <main class="content-area support-chat-page">
 
-        
-        
-        <!-- PAGE CONTENT -->
-        <main class="content-area support-layout">
+        <!-- Left floating rail (does NOT take space) -->
+        <div class="support-rail" aria-label="Support Tools">
+          <button id="history-toggle" class="rail-btn" title="History">
+            ☰
+          </button>
+          <button id="new-chat-btn" class="rail-btn primary" title="New Chat">
+            ＋
+          </button>
+        </div>
 
-            <!-- NEW REQUEST -->
-            <div class="card support-card">
-                <h3 style="color:#584965df">Create New Support Request</h3>
+        <!-- Drawer backdrop -->
+        <div id="drawer-backdrop" class="drawer-backdrop" style="display:none;"></div>
 
-                <div class="support-field">
-                    <label for="support-subject">Subject</label>
-                    <input id="support-subject"
-                           type="text"
-                           placeholder="E.g: Quiz not opening, reading text not visible..."
-                           class="support-input">
-                </div>
+        <!-- History Drawer (overlay) -->
+        <aside id="history-drawer" class="support-drawer" aria-label="Support History">
+          <div class="drawer-head">
+            <div class="drawer-title">History</div>
+            <button id="drawer-close" class="drawer-close" title="Close">✕</button>
+          </div>
 
-                <div class="support-field">
-                    <label for="support-message">Your Message</label>
-                    <textarea id="support-message"
-                              rows="4"
-                              placeholder="Write your issue or feedback in detail..."
-                              class="support-textarea"></textarea>
-                </div>
+          <div id="my-threads-list" class="drawer-list">
+            <!-- threads injected -->
+          </div>
+        </aside>
 
-                <button id="create-thread" class="cta-button support-send">Send</button>
+        <!-- Main chat shell (FULL, no empty margins) -->
+        <section class="support-shell">
+
+          <!-- Chat Header (subject + edit + status) -->
+          <div class="chat-header">
+            <div class="chat-title-wrap">
+              <input
+                id="thread-title"
+                class="thread-title-input"
+                type="text"
+                value="New Support Chat"
+                aria-label="Chat title"
+              />
+              <button id="edit-title-btn" class="icon-btn" title="Edit title">
+                ✎
+              </button>
             </div>
 
-            <!-- HISTORY -->
-            <div class="card support-card">
-                <h3>My Support Request History</h3>
+            <span id="thread-status" class="status-pill">Open</span>
+          </div>
 
-                <div class="support-history-box">
-                    <div id="my-threads-list" class="support-history-empty">
-                        You don't have any support requests yet.
-                    </div>
-                </div>
+          <!-- Messages -->
+          <div id="chat-messages" class="chat-messages">
+            <div class="chat-empty">
+              Send a message to start the conversation.
             </div>
+          </div>
 
-        </main>
+          <!-- Composer -->
+          <div class="chat-inputbar">
+            <textarea id="chat-input" rows="2" placeholder="Type a message..."></textarea>
+            <button id="chat-send" class="cta-button">Send</button>
+          </div>
+
+        </section>
+
+      </main>
     </div>
-</div>
+  </div>
 
-<script type="module" src="../../assets/js/student/support.js"></script>
-<script type="module">
+  <script type="module" src="../../assets/js/student/support.js"></script>
+  <script type="module">
     import { initNavbar } from "../../assets/js/common/navbar.js";
     initNavbar({ active: "support" });
-</script>
+  </script>
 </body>
-</html>
+</html> 

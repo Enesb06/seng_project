@@ -1,280 +1,471 @@
-/**************************************
- * Student Support Page (Premium UI)
- **************************************/
+/* assets/css/support.css */
 
-/* Layout */
-.support-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    max-width: 850px;
-    margin: 0 auto;
-    width: 100%;
-    padding-bottom: 40px;
+/* ====== PAGE WRAP ====== */
+.support-chat-page{
+  position: relative;
+  width: 100%;
 }
 
-/* Card */
-.support-card {
-    background: rgba(255,255,255,0.14);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    border: 1px solid rgba(255,255,255,0.30);
-    border-radius: 22px;
-    padding: 26px 28px;
-    box-shadow: 0 22px 55px rgba(0,0,0,0.30);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    position: relative;
-    overflow: hidden;
+/* Admin topbar avatar: admin.html ile aynı */
+.admin-topbar-avatar{
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #6D28D9;
+  object-fit: cover;
 }
 
-/* Card Title */
-.support-card h3 {
-    margin: 0;
-    font-size: 1.18rem;
-    font-weight: 700;
-    letter-spacing: -0.2px;
-    color: var(--text);
+/* ====== LEFT RAIL ====== */
+.support-rail{
+  position: fixed;
+  left: 18px;
+  top: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 20;
+  padding: 10px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(10px);
 }
 
-/* Field Group */
-.support-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+.rail-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.22);
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform .15s ease, background .15s ease;
+}
+.rail-btn:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.30); }
+
+.rail-btn.primary{
+  background: rgba(109, 40, 217, 0.85);
+  border-color: rgba(109, 40, 217, 0.55);
+}
+.rail-btn.primary:hover{ background: rgba(109, 40, 217, 0.92); }
+
+/* ====== DRAWER ====== */
+.drawer-backdrop{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.20);
+  z-index: 30;
 }
 
-/* Labels */
-.support-field label {
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: .85;
-    color: var(--text);
+.support-drawer{
+  position: fixed;
+  top: 170px;
+  left: 20px;
+  width: 340px;
+  max-width: calc(100vw - 40px);
+  height: calc(100vh - 220px);
+  transform: translateX(-120%);
+  transition: transform .18s ease;
+  z-index: 40;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(14px);
 }
 
-/* Inputs */
-.support-input,
-.support-textarea {
-    border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.14);
-    background: #fff;
-    padding: 12px 14px;
-    font-size: .95rem;
-    line-height: 1.45;
-    color: var(--text);
-    resize: vertical;
-    box-sizing: border-box;
-    transition: border-color .2s, box-shadow .2s;
+.support-drawer.open{ transform: translateX(0); }
+
+.drawer-head{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  padding: 14px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.22);
+}
+.drawer-title{
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: .2px;
+}
+.drawer-close{
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.30);
+  background: rgba(255,255,255,0.18);
+  color: #ffffff;
+  cursor:pointer;
+}
+.drawer-list{
+  padding: 12px;
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+.drawer-empty{
+  color: rgba(255,255,255,0.85);
+  padding: 16px 14px;
 }
 
-.support-input::placeholder,
-.support-textarea::placeholder {
-    opacity: .55;
+/* history item */
+.thread-item{
+  text-align: left;
+  width: 100%;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.14);
+  border-radius: 16px;
+  padding: 12px 12px;
+  cursor: pointer;
+  color: #fff;
+  transition: transform .12s ease, background .12s ease;
+}
+.thread-item:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.18); }
+.thread-item.active{
+  border-color: rgba(109,40,217,0.55);
+  background: rgba(109,40,217,0.18);
 }
 
-/* Focus Enhancement */
-.support-input:focus,
-.support-textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(115,20,198,.18);
+.thread-row{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.thread-name{
+  font-weight: 800;
+  font-size: .95rem;
+  line-height: 1.2;
+}
+.thread-sub{
+  margin-top: 6px;
+  font-size: .78rem;
+  opacity: .88;
 }
 
-/* Send Button */
-.support-send {
-    padding: 12px 22px;
-    border-radius: 12px;
-    font-size: .95rem;
-    font-weight: 600;
-    width: auto !important;
-    align-self: flex-end;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(115,20,198,.28);
-    transition: .2s ease;
+.mini-pill{
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  border: 1px solid rgba(255,255,255,0.25);
+}
+.mini-pill.open{
+  background: rgba(16,185,129,0.20);
+  color: #d1fae5;
+  border-color: rgba(16,185,129,0.35);
+}
+.mini-pill.closed{
+  background: rgba(148,163,184,0.18);
+  color: #e2e8f0;
+  border-color: rgba(148,163,184,0.30);
 }
 
-.support-send:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.07);
+/* ====== MAIN SHELL ====== */
+.support-shell{
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  border-radius: 26px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.12);
 }
 
-/* History Container */
-.support-history-box {
-    border: 1px solid rgba(0,0,0,.08);
-    border-radius: 14px;
-    background: rgba(255,255,255,0.14);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* header */
+.chat-header{
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.18);
 }
 
-/* Empty Message */
-.support-history-empty {
-    font-size: .9rem;
-    opacity: .7;
+.chat-title-wrap{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  min-width: 280px;
 }
 
-/* Ticket Row */
-.support-thread-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.22);
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    cursor: pointer;
-    transition: background .25s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+.thread-title-input{
+  width: min(420px, 42vw);
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.14);
+  color: #ffffff;
+  font-weight: 800;
+  outline: none;
 }
 
-.support-thread-item:hover {
-    border-color: rgba(255,255,255,0.30);
-    background: rgba(255,255,255,0.18);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+.icon-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  cursor: pointer;
 }
 
-/* Status Badge */
-.support-thread-status {
-    font-size: .8rem;
-    font-weight: 600;
-    padding: 4px 12px;
-    border-radius: 100px;
+.status-pill{
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: .85rem;
+  background: rgba(16,185,129,0.20);
+  color: #d1fae5;
+  border: 1px solid rgba(16,185,129,0.35);
+}
+.status-pill.closed{
+  background: rgba(148,163,184,0.18);
+  color: #e2e8f0;
+  border-color: rgba(148,163,184,0.30);
 }
 
-/* Status Colors */
-.support-thread-status.open {
-    background: rgba(34,197,94,.12);
-    color: #15803d;
+/* admin status tools (sağ üst) */
+.admin-status-tools{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.admin-status-label{
+  color: rgba(255,255,255,0.92);
+  font-weight: 800;
+}
+.admin-status-select{
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.14);
+  color: #fff;
+  outline: none;
 }
 
-.support-thread-status.closed {
-    background: rgba(220,38,38,.12);
-    color: #b91c1c;
+/* ====== MESSAGES ====== */
+.chat-messages{
+  height: calc(100vh - 420px);
+  min-height: 340px;
+  overflow-y: auto;
+  padding: 18px 16px;
 }
 
-.support-card {
-    position: relative;
-    overflow: hidden;
-}
-.support-card::before {
-    content:"";
-    position:absolute;
-    inset:-1px;
-    z-index:-1;
-    background: radial-gradient(800px circle at var(--mx,50%) var(--my,50%),
-        rgba(115,20,198,.08),
-        transparent 60%);
+.chat-empty,
+.chat-loading{
+  color: rgba(255,255,255,0.88);
+  font-weight: 700;
+  opacity: .9;
 }
 
-.support-card {
-    transition: transform .25s ease, box-shadow .25s ease;
-}
-.support-card:hover {
-    transform: translateY(-3px);
-    box-shadow:
-        0 4px 12px rgba(0,0,0,.06),
-        0 12px 32px rgba(115,20,198,.08);
+/* message row */
+.msg{
+  display:flex;
+  margin: 12px 0;
 }
 
-.support-input:focus,
-.support-textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(115,20,198,.18);
+/* IMPORTANT: Admin’deki “arka koyu mor balon”u yapan pseudo layerları KAPATIYORUZ */
+.msg::before,
+.msg::after,
+.msg .bubble::before,
+.msg .bubble::after{
+  content: none !important;
+  display: none !important;
 }
 
-.support-send {
-    background: linear-gradient(135deg, #6d28d9, #9333ea);
-    box-shadow: 0 6px 18px rgba(109,40,217,.28);
-    transform: translateY(0);
-    transition: .22s cubic-bezier(.22,1,.36,1);
-}
-.support-send:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(109,40,217,.34);
-    filter: brightness(1.08);
-}
+/* alignment */
+.msg.me{ justify-content: flex-end; }
+.msg.other{ justify-content: flex-start; }
 
-body {
-    background: radial-gradient(1200px at center,
-        rgba(115,20,198,.05),
-        transparent 65%);
+.msg .bubble{
+  max-width: min(560px, 74%);
+  border-radius: 18px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.18);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
 }
 
-
-.u-thread {
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.22);
-    background: rgba(255,255,255,0.10);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transition: background .25s ease, transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+/* same style, just slightly different tint */
+.msg.me .bubble{
+  background: rgba(255,255,255,0.20);
+  border-color: rgba(109,40,217,0.35);
 }
 
-
-.u-thread:hover {
-    background: rgba(255,255,255,0.18) !important;
-    border-color: rgba(255,255,255,0.30) !important;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.22);
+.msg.other .bubble{
+  background: rgba(255,255,255,0.16);
+  border-color: rgba(255,255,255,0.22);
 }
 
-/* Thread title visible even without hover */
-.u-thread > div:first-child > div:first-child {
-    color: #0f172a !important;
-    font-weight: 800;
+.msg .meta{
+  font-size: .82rem;
+  color: rgba(255,255,255,0.85);
+  margin-bottom: 6px;
+}
+.msg.me .meta{ text-align: right; }
+
+.msg .text{
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: rgba(15,23,42,0.90);
 }
 
-
-.u-thread:hover > div:first-child > div:first-child {
-    color: #0f172a !important; /* keep title dark on hover */
-    font-weight: 800;
+/* ====== INPUT BAR ====== */
+.chat-inputbar{
+  display:flex;
+  gap: 14px;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.10);
 }
 
-/* Glass text contrast fix */
-.support-card h3,
-.support-card label{
-    color: rgba(255,255,255,0.92) !important;
+/* textarea grows, button fixed (Send’in full width bar olmasını engeller) */
+.chat-inputbar textarea{
+  flex: 1 1 auto;
+  min-height: 64px;
+  border-radius: 18px;
+  padding: 16px 16px;
+  border: 1px solid rgba(255,255,255,0.22);
+  background: rgba(255,255,255,0.14);
+  color: #ffffff;
+  outline: none;
+  resize: none;
 }
 
-.support-history-empty,
-.support-card p{
-    color: rgba(255,255,255,0.70) !important;
+.chat-inputbar .cta-button{
+  flex: 0 0 140px;
+  height: 56px;
+  border-radius: 18px;
+  font-weight: 900;
+  background: rgba(109,40,217,0.90);
+  border: 1px solid rgba(109,40,217,0.55);
+  color: #fff;
+  cursor: pointer;
+}
+.chat-inputbar .cta-button:hover{
+  background: rgba(109,40,217,0.98);
+}
+.chat-inputbar .cta-button:disabled{
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-.support-input,
-.support-textarea{
-    background: rgba(255,255,255,0.92) !important;
-    color: #0f172a !important;
+/* small screens */
+@media (max-width: 720px){
+  .support-rail{ top: 180px; }
+  .chat-title-wrap{ min-width: 160px; }
+  .thread-title-input{ width: 56vw; }
+  .chat-inputbar{ flex-direction: column; }
+  .chat-inputbar .cta-button{ width: 100%; flex-basis: auto; }
+}
+/* =======================================================================
+   ADMIN HARD FIX (mor arka blok + üst üste binme kesin çözüm)
+   Sadece admin sayfasında çalışır: body.is-admin-support ile scope ettik
+======================================================================= */
+
+body.is-admin-support #chat-messages{
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
 }
 
-.support-input::placeholder,
-.support-textarea::placeholder{
-    color: rgba(15,23,42,0.45);
+body.is-admin-support #chat-messages .msg,
+body.is-admin-support #chat-messages .msg.me,
+body.is-admin-support #chat-messages .msg.other{
+  /* Dıştaki “kocaman mor kart” burada oluşuyor -> sıfırla */
+  background: transparent !important;
+  background-image: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+
+  /* satır düzeni */
+  width: 100% !important;
+  display: flex !important;
+  position: relative !important;
 }
 
-/* Thread title / subject visibility on glass */
-.support-thread-item strong,
-.support-thread-item .title,
-.support-thread-item .subject,
-.support-thread-item .thread-title,
-.support-thread-item .ticket-title,
-.support-thread-item h4,
-.support-thread-item h5{
-    color: #0f172a !important; /* dark text instead of purple/white */
-    font-weight: 800;
+body.is-admin-support #chat-messages .msg.me{ justify-content: flex-end !important; }
+body.is-admin-support #chat-messages .msg.other{ justify-content: flex-start !important; }
+
+/* Bazı temalarda ::before/::after ile mor layer geliyor -> kökten kapat */
+body.is-admin-support #chat-messages .msg::before,
+body.is-admin-support #chat-messages .msg::after,
+body.is-admin-support #chat-messages .msg.me::before,
+body.is-admin-support #chat-messages .msg.me::after,
+body.is-admin-support #chat-messages .msg.other::before,
+body.is-admin-support #chat-messages .msg.other::after{
+  content: none !important;
+  display: none !important;
 }
 
-.support-thread-item small,
-.support-thread-item time,
-.support-thread-item .date,
-.support-thread-item .meta{
-    color: rgba(255,255,255,0.70) !important;
+/* Balonun kendisi */
+body.is-admin-support #chat-messages .msg .bubble{
+  max-width: min(560px, 74%) !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+
+  border: 1px solid rgba(255,255,255,0.22) !important;
+  background: rgba(255,255,255,0.18) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10) !important;
+}
+
+body.is-admin-support #chat-messages .msg.me .bubble{
+  background: rgba(255,255,255,0.20) !important;
+  border-color: rgba(109,40,217,0.35) !important;
+}
+body.is-admin-support #chat-messages .msg.other .bubble{
+  background: rgba(255,255,255,0.16) !important;
+}
+
+/* bubble pseudo layerları da kapat */
+body.is-admin-support #chat-messages .msg .bubble::before,
+body.is-admin-support #chat-messages .msg .bubble::after{
+  content: none !important;
+  display: none !important;
+}
+
+/* =======================================================================
+   ADMIN HEADER FIX (Update dev gibi görünmesin + üst alan kısalsın)
+======================================================================= */
+
+body.is-admin-support .chat-header{
+  padding: 10px 14px !important;
+}
+
+body.is-admin-support #update-status-btn{
+  width: auto !important;
+  flex: 0 0 auto !important;     /* bar gibi uzamasın */
+  height: 40px !important;
+  padding: 0 14px !important;
+  border-radius: 12px !important;
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+}
+
+body.is-admin-support #thread-status-select{
+  height: 40px !important;
+}
+/* =====================================================
+   CHAT TEXT SIZE FIX (meta + message text)
+   ===================================================== */
+
+/* Üstteki "You • tarih" satırı */
+#chat-messages .msg .meta{
+  font-size: 0.72rem !important;   /* küçült */
+  font-weight: 600 !important;
+  opacity: 0.85;
+}
+
+/* Asıl mesaj yazısı */
+#chat-messages .msg .text{
+  font-size: 0.95rem !important;   /* normal chat boyutu */
+  font-weight: 700 !important;
+  line-height: 1.35;
 }
