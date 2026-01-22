@@ -101,46 +101,26 @@ document.addEventListener("DOMContentLoaded", () => {
     return data;
   };
 
-  const loadMessages = async () => {
-    if (!messagesEl) return;
-
-    messagesEl.innerHTML = `<div style="color:#6b7280;">Loading messages...</div>`;
-
-    const { data, error } = await _supabase
+ // assets/js/admin/support-thread.js içindeki loadMessages kısmını bununla güncelle:
+const loadMessages = async () => {
+  const { data } = await _supabase
       .from("support_messages")
       .select("*")
       .eq("thread_id", threadId)
       .order("created_at", { ascending: true });
 
-    if (error) {
-      messagesEl.innerHTML = `<div style="color:red;">Error loading messages: ${escapeHtml(
-        error.message || ""
-      )}</div>`;
-      return;
-    }
+  if (!data) return;
 
-    if (!data || data.length === 0) {
-      messagesEl.innerHTML = `<div style="color:#6b7280;">No messages yet.</div>`;
-      return;
-    }
+  messagesEl.innerHTML = data.map((m) => {
+      const isMe = m.sender_role === "admin"; 
+      return `
+        <div class="msg ${isMe ? "me" : "other"}">
+          <span class="meta">${isMe ? 'Admin' : 'User'} • ${new Date(m.created_at).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})}</span>
+          <div class="text">${m.message}</div>
+        </div>`;
+  }).join("");
+  messagesEl.scrollTop = messagesEl.scrollHeight;
 
-    messagesEl.innerHTML = data
-      .map((m) => {
-        const isMe = m.sender_role === "admin";
-        return `
-          <div class="msg ${isMe ? "me" : "other"}">
-            <div class="meta">
-              <strong>${formatRole(m.sender_role)}</strong> • ${new Date(
-                m.created_at
-              ).toLocaleString("tr-TR")}
-            </div>
-            <div class="text">${escapeHtml(m.message)}</div>
-          </div>
-        `;
-      })
-      .join("");
-
-    messagesEl.scrollTop = messagesEl.scrollHeight;
   };
 
   updateStatusBtn?.addEventListener("click", async () => {

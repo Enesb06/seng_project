@@ -1,66 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Support Requests - Admin - LearnENG.com</title>
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
-  <link rel="stylesheet" href="assets/css/admin.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
-    .support-container { display: grid; grid-template-columns: 1fr; gap: 20px; }
-    .thread-card { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; cursor: pointer; margin-bottom: 15px; }
-    .thread-card:hover { transform: translateX(5px); border-color: var(--primary-border); box-shadow: 0 10px 25px rgba(109, 40, 217, 0.08); }
-    .thread-info { display: flex; align-items: center; gap: 15px; }
-    .role-icon {width: 45px;height: 45px;border-radius: 12px;display: flex;align-items: center;justify-content: center;overflow: hidden;}
-    .role-icon.student {background: #fef9c3;}
-    .role-icon.teacher {background: #dbeafe;}
-    .role-img {width: 65%;height: 65%;object-fit: contain;}
-    .subject-text { font-weight: 700; font-size: 1.05rem; color: var(--text); margin-bottom: 4px; }
-    .meta-text { font-size: 0.85rem; color: var(--muted); }
-    .status-badge-pill { padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-    .status-badge-pill.open { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
-    .status-badge-pill.closed { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
-  </style>
+    <meta charset="UTF-8">
+    <title>Support Inbox - Admin</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
-<div class="dashboard-container">
-  <aside class="sidebar">
-    <div class="logo">Admin Dashboard</div>
-    <nav>
-      <ul>
-        <!-- Yazılar Title Case yapıldı -->
-        <li><a href="admin.html#users">User Management</a></li>
-        <li><a href="admin.html#verification">Teacher Approvals</a></li>
-        <li class="active"><a href="admin_support.html">Support Messages</a></li>
-      </ul>
-    </nav>
-  </aside>
+    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
+    <div class="dashboard-container">
+        <header class="topbar">
+            <a class="brand" href="admin.html">LearnENG Admin</a>
+            <div class="user-info"><button id="logout-button" style="background:#dc2626;">Logout</button></div>
+        </header>
 
-  <div class="main-content">
-    <header class="dashboard-header">
-      <h2>Support Inbox</h2>
-      <div class="user-info">
-        <span id="admin-display-name" style="font-weight: 600;">Admin</span>
-        <button id="logout-button" style="background: var(--error);">Logout</button>
-      </div>
-    </header>
+        <nav class="pill-nav">
+            <div class="nav-shell">
+                <ul id="nav-links">
+                    <li><a href="admin.html#users">Users</a></li>
+                    <li><a href="admin.html#verification">Approvals</a></li>
+                    <li class="active"><a href="admin_support.html">Support</a></li>
+                </ul>
+            </div>
+        </nav>
 
-    <main class="content-area">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-        <h3 style="margin:0;">Active Requests</h3>
-        <div class="card" style="padding: 10px 20px; font-weight: bold; color: var(--primary);">
-            Total: <span id="support-total-count">0</span>
-        </div>
-      </div>
-
-      <div id="support-threads-list" class="support-container">
-        <div style="text-align: center; padding: 50px; color: var(--muted);">Loading messages...</div>
-      </div>
-    </main>
-  </div>
-</div>
-
-<script type="module" src="assets/js/admin/support.js"></script>
+        <main class="content-area" style="max-width: 750px; margin: 0 auto; padding-top: 15px;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3 style="margin:0; font-size:1.1rem;">Support Requests</h3>
+                    <div style="display:flex; gap:6px;">
+                        <button class="filter-btn active" data-role="all">All</button>
+                        <button class="filter-btn" data-role="student">Students</button>
+                        <button class="filter-btn" data-role="teacher">Teachers</button>
+                    </div>
+                </div>
+                <div id="support-threads-list">
+                    <p style="text-align:center; opacity:0.4;">Loading messages...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="assets/js/admin/support.js"></script>
 </body>
 </html>

@@ -1,79 +1,42 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Support Chat - Admin - LearnENG.com</title>
-
-  <link rel="stylesheet" href="assets/css/main.css" />
-  <link rel="stylesheet" href="assets/css/dashboard.css" />
-  <link rel="stylesheet" href="assets/css/admin.css" />
-  <link rel="stylesheet" href="assets/css/support-thread.css" />
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <title>Chat - Admin</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-  <div class="dashboard-container">
-
-    <aside class="sidebar">
-      <div class="logo">Admin Dashboard</div>
-      <nav>
-        <ul>
-          <li><a href="admin.html" id="nav-users">User Management</a></li>
-          <li><a href="admin.html#verification">Teacher Approvals</a></li>
-          <li class="active"><a href="admin_support.html">Support Messages</a></li>
-        </ul>
-      </nav>
-    </aside>
-
-    <div class="main-content">
-      <header class="dashboard-header">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <button id="back-btn" class="cta-button" style="padding:8px 12px;">← History</button>
-            <div>
-              <div id="thread-subject" style="font-weight:800;">Loading...</div>
-              <div id="thread-meta" style="font-size:0.85rem; color:#6b7280;"></div>
+    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
+    <div class="dashboard-container">
+        <main class="content-area" style="max-width: 800px; margin: 20px auto;">
+            
+            <div class="card" style="padding:10px 20px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button id="back-btn" class="action-btn" style="width:35px; height:28px;">←</button>
+                    <b id="thread-subject" style="font-size:0.9rem;">Loading...</b>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <select id="thread-status-select" style="background:rgba(0,0,0,0.3); color:#fff; border:1px solid #555; border-radius:6px; font-size:0.75rem;">
+                        <option value="open">Open</option><option value="closed">Closed</option>
+                    </select>
+                    <button id="update-status-btn" class="filter-btn active" style="font-size:0.7rem;">Update</button>
+                </div>
             </div>
-          </div>
-          <span id="thread-status" class="thread-status-pill">Open</span>
-        </div>
-      </header>
 
-      <main class="content-area" style="padding:0;">
-        <div class="chat-shell">
+            <div class="chat-shell">
+                <div id="chat-messages" class="chat-messages"></div>
+                <div class="chat-inputbar">
+                    <textarea id="chat-input" rows="1" placeholder="Write a reply to this request..."></textarea>
+                    <button id="chat-send">Send</button>
+                </div>
+            </div>
 
-          <div style="padding:12px; background:#ffffff; border-bottom:1px solid #e5e7eb; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <label for="thread-status-select" style="font-size:0.85rem;">Request Status:</label>
-
-            <select id="thread-status-select"
-              style="padding:6px 10px; font-size:0.9rem; border-radius:10px; border:1px solid #d1d5db;">
-              <option value="open">Open</option>
-              <option value="closed">Closed</option>
-            </select>
-
-            <button id="update-status-btn" class="cta-button" style="padding:8px 12px;">
-              Update Status
-            </button>
-          </div>
-
-          <div id="chat-messages" class="chat-messages">
-            <!-- JS burayı dolduracak -->
-          </div>
-
-          <div class="chat-inputbar">
-            <textarea id="chat-input" rows="2" placeholder="Write a reply to this request..."></textarea>
-            <button id="chat-send" class="cta-button">Send</button>
-          </div>
-
-        </div>
-      </main>
+        </main>
     </div>
-
-  </div>
-
-  <!-- ✅ SADECE BÖYLE ÇAĞIR -->
-  <script type="module" src="assets/js/admin/support-thread.js"></script>
+    <script type="module" src="assets/js/admin/support-thread.js"></script>
 </body>
 </html>

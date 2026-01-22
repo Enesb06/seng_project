@@ -1,128 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - LearnENG</title>
+    <title>Admin - LearnENG</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/admin.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
+    <img class="global-bg" src="assets/css/images/background.jpg" alt="">
+    
     <div class="dashboard-container">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="logo">Admin Dashboard</div>
-            <nav>
-                <ul>
-                    <li id="li-users" class="active"><a href="#users">User Management</a></li>
-                    <li id="li-verification"><a href="#verification">Teacher Approvals <span id="pending-count" class="badge hidden">0</span></a></li>
-                    <li><a href="admin_support.html">Support Messages</a></li>
+        <!-- TOPBAR -->
+        <header class="topbar">
+            <a class="brand" href="#">LearnENG Admin</a>
+            <div class="user-info">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" style="width:35px; border-radius:50%; border:2px solid #6D28D9;">
+                <span id="admin-display-name">Admin</span>
+                <button id="logout-button" style="background:#dc2626;">Logout</button>
+            </div>
+        </header>
+
+        <!-- PILL NAV -->
+        <nav class="pill-nav">
+            <div class="nav-shell">
+                <ul id="nav-links">
+                    <li id="li-users" class="active"><a href="#users">Users</a></li>
+                    <li id="li-verification"><a href="#verification">Approvals</a></li>
+                    <li><a href="admin_support.html">Support</a></li>
                 </ul>
-            </nav>
-        </aside>
+            </div>
+        </nav>
 
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
-            <header class="dashboard-header">
-                <h2 id="page-title">User Management</h2>
-                <div class="user-info" style="display:flex; align-items:center;">
-                    <span id="admin-display-name" style="font-weight:600; margin-right:15px;">Admin</span>
-                    <button id="logout-button" style="background:#dc2626; color:white; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold;">Logout</button>
+        <main class="content-area" style="max-width: 1000px; margin: 0 auto;">
+            <!-- STATS -->
+            <div class="stats-grid">
+                <div class="stat-card"><h4>🎓 Students</h4><span id="total-students" class="stat-value">0</span></div>
+                <div class="stat-card"><h4>🧠 Teachers</h4><span id="total-teachers" class="stat-value">0</span></div>
+                <div class="stat-card"><h4>🏅 Content</h4><span id="total-contents" class="stat-value">0</span></div>
+            </div>
+
+            <!-- USERS -->
+            <div id="users-section" class="card">
+                <div style="display:flex; justify-content:space-between; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; gap:8px;">
+                        <button class="filter-btn active" data-role="all">All</button>
+                        <button class="filter-btn" data-role="student">Students</button>
+                        <button class="filter-btn" data-role="teacher">Teachers</button>
+                    </div>
+                    <input type="text" id="user-search" placeholder="Search..." style="padding:6px 12px; border-radius:10px; border:none; width:180px; font-size:0.85rem;">
                 </div>
-            </header>
-
-            <main class="content-area">
-                <!-- STATS CARDS WITH ICONS -->
-                <div class="stats-grid">
-                    <div class="stat-card students">
-                        <h4><span>🎓</span> Total Students</h4>
-                        <span id="total-students" class="stat-value">0</span>
-                    </div>
-
-                    <div class="stat-card teachers">
-                        <h4><span>🧠</span> Total Teachers</h4>
-                        <span id="total-teachers" class="stat-value">0</span>
-                    </div>
-
-                    <div class="stat-card contents">
-                        <h4><span>🏅</span> Active Content</h4>
-                        <span id="total-contents" class="stat-value">0</span>
-                    </div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead><tr><th>User Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+                        <tbody id="user-list-body"></tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- USERS SECTION -->
-                <div id="users-section" class="card">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; flex-wrap:wrap; gap:15px;">
-                        <div>
-                            <h3 style="margin:0; font-weight:800;">SYSTEM USERS</h3>
-                            <div style="display:flex; gap:10px; margin-top:15px;">
-                                <button class="filter-btn active" data-role="all">All Users</button>
-                                <button class="filter-btn" data-role="student">Students</button>
-                                <button class="filter-btn" data-role="teacher">Teachers</button>
-                            </div>
-                        </div>
-                        <input type="text" id="user-search" placeholder="Search by name or email..." style="padding:11px; border-radius:10px; border:1px solid #ddd; width:280px; outline:none;">
-                    </div>
-                    <div style="overflow-x: auto;">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>USER NAME</th>
-                                    <th>EMAIL</th>
-                                    <th>ROLE</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="user-list-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- VERIFICATION SECTION -->
-                <div id="verification-section" class="card hidden">
-                    <h3 style="margin-bottom:20px; font-weight:800;">TEACHER APPLICATIONS</h3>
-                    <div style="overflow-x: auto;">
-                        <table class="admin-table">
-                            <thead>
-                                <tr>
-                                    <th>TEACHER NAME</th>
-                                    <th>EMAIL</th>
-                                    <th>JOIN DATE</th>
-                                    <th>ACTIONS</th>
-                                </tr>
-                            </thead>
-                            <tbody id="verification-list-body"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
+            <!-- VERIFICATION -->
+            <div id="verification-section" class="card hidden">
+                <h3 style="font-size:1rem; margin-bottom:15px;">Pending Teacher Approvals</h3>
+                <table class="admin-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Actions</th></tr></thead>
+                    <tbody id="verification-list-body"></tbody>
+                </table>
+            </div>
+        </main>
     </div>
-
-    <!-- MODAL -->
-    <div id="edit-user-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; display:flex; justify-content:center; align-items:center;">
-        <div class="card" style="width:400px; border-radius:20px; background:#fff; padding:30px;">
-            <h3 style="margin-bottom:20px;">Edit User Role</h3>
-            <form id="edit-user-form">
-                <input type="hidden" id="edit-user-id">
-                <label style="display:block; margin-bottom:5px; font-weight:600;">Full Name</label>
-                <input type="text" id="edit-full-name" disabled style="width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #ddd; background:#f9fafb;">
-                <label style="display:block; margin-bottom:5px; font-weight:600;">Role</label>
-                <select id="edit-user-role" style="width:100%; padding:10px; margin-bottom:20px; border-radius:8px; border:1px solid #ddd;">
-                    <option value="student">Student</option>
-                    <option value="teacher">Teacher</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <div style="display:flex; gap:10px;">
-                    <button type="submit" class="cta-button" style="flex:1;">Save Changes</button>
-                    <button type="button" onclick="document.getElementById('edit-user-modal').classList.add('hidden')" style="flex:1; background:#f3f4f6; border:none; padding:12px; border-radius:8px; cursor:pointer;">Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>

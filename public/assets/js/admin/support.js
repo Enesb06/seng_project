@@ -1,75 +1,55 @@
 import { _supabase } from "../supabaseClient.js";
 
 const listEl = document.getElementById("support-threads-list");
-const counterEl = document.getElementById("support-total-count");
-
-const formatRole = (role) => {
-  if (role === "student") return "Student";
-  if (role === "teacher") return "Teacher";
-  return role;
-};
+let allThreads = [];
+let currentFilter = 'all';
 
 const renderThreads = (threads) => {
   if (!listEl) return;
-
-  if (!threads || threads.length === 0) {
-    listEl.innerHTML = `<div class="card" style="text-align:center; padding:40px; color:var(--muted);">No support requests found.</div>`;
-    counterEl.textContent = "0";
+  const filtered = threads.filter(t => currentFilter === 'all' || t.created_by_role === currentFilter);
+  
+  if (filtered.length === 0) {
+    listEl.innerHTML = `<p style="text-align:center; padding:15px; opacity:0.5;">No requests found.</p>`;
     return;
   }
 
-  counterEl.textContent = threads.length;
-
-  listEl.innerHTML = threads.map((t) => {
+  listEl.innerHTML = filtered.map((t) => {
     const isClosed = t.status === "closed";
-    const roleClass = t.created_by_role === "teacher" ? "teacher" : "student";
-    const roleIcon = t.created_by_role === "teacher"
-  ? `<img src="https://cdn-icons-png.flaticon.com/512/1995/1995539.png" class="role-img">`
-  : `<img src="https://cdn-icons-png.flaticon.com/512/8289/8289414.png" class="role-img">`;
+    const roleIcon = t.created_by_role === "teacher" 
+        ? "https://cdn-icons-png.flaticon.com/512/1995/1995539.png" 
+        : "https://cdn-icons-png.flaticon.com/512/8289/8289414.png";
 
-
-    
     return `
       <div class="thread-card" onclick="window.location.href='admin_support_thread.html?id=${t.id}'">
-        <div class="thread-info">
-          <div class="role-icon ${roleClass}">${roleIcon}</div>
-          <div>
-            <div class="subject-text">${t.subject || "Untitled Request"}</div>
-            <div class="meta-text">
-              ${formatRole(t.created_by_role)} • ${new Date(t.created_at).toLocaleString("tr-TR")}
-            </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div class="role-icon-frame ${t.created_by_role}-bg">
+            <img src="${roleIcon}" class="role-img-small">
+          </div>
+          <div class="thread-info">
+            <b>${t.subject || "Untitled"}</b>
+            <small>${t.created_by_role.toUpperCase()} • ${new Date(t.created_at).toLocaleDateString('tr-TR')}</small>
           </div>
         </div>
-        <div>
-          <span class="status-badge-pill ${isClosed ? 'closed' : 'open'}">
-            ${isClosed ? 'Closed' : 'Open'}
-          </span>
-        </div>
-      </div>
-    `;
+        <span class="status-badge-pill" style="background:${isClosed?'rgba(255,255,255,0.1)':'rgba(109,40,217,0.2)'}; color:${isClosed?'#aaa':'#a78bfa'};">
+          ${isClosed ? 'Closed' : 'Open'}
+        </span>
+      </div>`;
   }).join("");
 };
 
-const loadThreads = async () => {
-  const { data, error } = await _supabase
-    .from("support_threads")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if (!error) renderThreads(data);
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (!user || user.role !== 'admin') {
-        window.location.href = 'index.html';
-        return;
-    }
-    document.getElementById('admin-display-name').textContent = user.full_name;
-    loadThreads();
+// Filtre Butonları Tıklama
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.role;
+        renderThreads(allThreads);
+    });
 });
 
-document.getElementById('logout-button').onclick = () => {
-    localStorage.removeItem('user');
-    window.location.href = 'index.html';
+const loadThreads = async () => {
+  const { data } = await _supabase.from("support_threads").select("*").order("created_at", { ascending: false });
+  allThreads = data || [];
+  renderThreads(allThreads);
 };
+document.addEventListener("DOMContentLoaded", loadThreads);
