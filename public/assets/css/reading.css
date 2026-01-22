@@ -37,6 +37,7 @@
     cursor: pointer;
     border-bottom: 1px solid #e9ecef;
     transition: background-color 0.2s;
+    color:#3c3245e4;
 }
 
 #materials-list .material-item:hover {
@@ -69,6 +70,7 @@
     font-size: 1.1rem;
     line-height: 1.8;
     white-space: pre-wrap;
+    color:#000
 }
 
 /* ⭐ FAVORİ BUTONU — tam istediğin yere yerleşti */
