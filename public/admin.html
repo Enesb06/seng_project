@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Admin - LearnENG</title>
+    <title>Admin Panel - LearnENG</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/admin.css">
@@ -13,17 +13,14 @@
     <img class="global-bg" src="assets/css/images/background.jpg" alt="">
     
     <div class="dashboard-container">
-        <!-- TOPBAR -->
         <header class="topbar">
             <a class="brand" href="#">LearnENG Admin</a>
             <div class="user-info">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Admin" style="width:35px; border-radius:50%; border:2px solid #6D28D9;">
                 <span id="admin-display-name">Admin</span>
                 <button id="logout-button" style="background:#dc2626;">Logout</button>
             </div>
         </header>
 
-        <!-- PILL NAV -->
         <nav class="pill-nav">
             <div class="nav-shell">
                 <ul id="nav-links">
@@ -34,42 +31,79 @@
             </div>
         </nav>
 
-        <main class="content-area" style="max-width: 1000px; margin: 0 auto;">
+        <main class="content-area" style="max-width: 1100px; margin: 0 auto;">
             <!-- STATS -->
             <div class="stats-grid">
-                <div class="stat-card"><h4>🎓 Students</h4><span id="total-students" class="stat-value">0</span></div>
-                <div class="stat-card"><h4>🧠 Teachers</h4><span id="total-teachers" class="stat-value">0</span></div>
-                <div class="stat-card"><h4>🏅 Content</h4><span id="total-contents" class="stat-value">0</span></div>
+                <div class="stat-card"><h4>🎓 Total Students</h4><span id="total-students" class="stat-value">0</span></div>
+                <div class="stat-card"><h4>🧠 Total Teachers</h4><span id="total-teachers" class="stat-value">0</span></div>
+                <div class="stat-card"><h4>🏅 Active Content</h4><span id="total-contents" class="stat-value">0</span></div>
             </div>
 
-            <!-- USERS -->
+            <!-- USERS TABLE -->
             <div id="users-section" class="card">
-                <div style="display:flex; justify-content:space-between; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-                    <div style="display:flex; gap:8px;">
-                        <button class="filter-btn active" data-role="all">All</button>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; gap:6px;">
+                        <button class="filter-btn active" data-role="all">All Users</button>
                         <button class="filter-btn" data-role="student">Students</button>
                         <button class="filter-btn" data-role="teacher">Teachers</button>
                     </div>
-                    <input type="text" id="user-search" placeholder="Search..." style="padding:6px 12px; border-radius:10px; border:none; width:180px; font-size:0.85rem;">
+                    <input type="text" id="user-search" placeholder="Search by name or email..." style="padding:6px 12px; border-radius:10px; width:220px; border:none; font-size:0.8rem; background:rgba(255,255,255,0.95); color:#000;">
                 </div>
                 <div style="overflow-x: auto;">
                     <table class="admin-table">
-                        <thead><tr><th>User Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>USER NAME</th>
+                                <th>EMAIL</th>
+                                <th>ROLE</th>
+                                <th style="text-align:center;">ACTIONS</th>
+                            </tr>
+                        </thead>
                         <tbody id="user-list-body"></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- VERIFICATION -->
+            <!-- VERIFICATION TABLE -->
             <div id="verification-section" class="card hidden">
-                <h3 style="font-size:1rem; margin-bottom:15px;">Pending Teacher Approvals</h3>
+                <h3 style="margin-bottom:12px; font-size:1.1rem;">Pending Approvals</h3>
                 <table class="admin-table">
-                    <thead><tr><th>Name</th><th>Email</th><th>Date</th><th>Actions</th></tr></thead>
+                    <thead>
+                        <tr>
+                            <th>TEACHER NAME</th>
+                            <th>EMAIL</th>
+                            <th>DATE</th>
+                            <th style="text-align:center;">ACTIONS</th>
+                        </tr>
+                    </thead>
                     <tbody id="verification-list-body"></tbody>
                 </table>
             </div>
         </main>
     </div>
+
+    <!-- Edit Modal -->
+    <div id="edit-user-modal" class="modal-overlay hidden" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; display:flex; justify-content:center; align-items:center;">
+        <div class="card" style="width:380px; padding:25px; background:#1e1b2e;">
+            <h3 style="margin-bottom:15px;">Update User Role</h3>
+            <form id="edit-user-form">
+                <input type="hidden" id="edit-user-id">
+                <label style="font-size:0.8rem; opacity:0.7;">Full Name</label>
+                <input type="text" id="edit-full-name" disabled style="width:100%; padding:8px; margin-bottom:15px; border-radius:8px; border:1px solid #444; background:#2a2640; color:#fff;">
+                <label style="font-size:0.8rem; opacity:0.7;">Role</label>
+                <select id="edit-user-role" style="width:100%; padding:8px; margin-bottom:20px; border-radius:8px; background:#fff; color:#000;">
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <div style="display:flex; gap:10px;">
+                    <button type="submit" style="flex:1; background:#6D28D9; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer;">Save</button>
+                    <button type="button" onclick="document.getElementById('edit-user-modal').classList.add('hidden')" style="flex:1; background:#444; color:#fff; border:none; padding:10px; border-radius:8px; cursor:pointer;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script type="module" src="assets/js/admin/dashboard.js"></script>
 </body>
 </html>

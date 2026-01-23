@@ -6,8 +6,6 @@ let currentFilter = 'all';
 
 const userListBody = document.getElementById('user-list-body');
 const userSearch = document.getElementById('user-search');
-const usersSection = document.getElementById('users-section');
-const verifySection = document.getElementById('verification-section');
 
 const loadAdminData = async () => {
     const { data: users } = await _supabase.from('profiles').select('*');
@@ -36,18 +34,26 @@ const renderUserTable = (list) => {
     list.forEach(u => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><div style="display:flex; align-items:center; gap:10px;"><div style="width:32px; height:32px; border-radius:50%; background:#EDE9FE; color:#6D28D9; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.8rem;">${u.full_name.charAt(0).toLowerCase()}</div><strong>${u.full_name}</strong></div></td>
-            <td style="color:#64748b; font-size:0.9rem;">${u.email}</td>
+            <td>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,0.1); color:#DDD6FE; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:0.75rem; border:1px solid rgba(255,255,255,0.1);">
+                        ${u.full_name.charAt(0).toUpperCase()}
+                    </div>
+                    <strong>${u.full_name}</strong>
+                </div>
+            </td>
+            <td style="opacity:0.7;">${u.email}</td>
             <td><span class="role-badge ${u.role}">${u.role}</span></td>
             <td>
-                <button class="action-btn edit" onclick="window.openEdit('${u.id}','${u.full_name}','${u.role}')">✏️</button>
-                <button class="action-btn delete" onclick="window.delUser('${u.id}')">🗑️</button>
+                <button class="action-btn edit" onclick="window.openEdit('${u.id}','${u.full_name}','${u.role}')" title="Edit">✏️</button>
+                <button class="action-btn delete" onclick="window.delUser('${u.id}')" title="Delete">🗑️</button>
             </td>
         `;
         userListBody.appendChild(row);
     });
 };
 
+// ... Filtre ve Diğer Fonksiyonlar ...
 document.querySelectorAll('[data-role]').forEach(btn => {
     btn.onclick = () => {
         document.querySelectorAll('[data-role]').forEach(b => b.classList.remove('active'));
@@ -61,15 +67,18 @@ userSearch.oninput = applyFilters;
 
 const handleHash = () => {
     const hash = window.location.hash || "#users";
+    const uSec = document.getElementById('users-section');
+    const vSec = document.getElementById('verification-section');
+    
     if (hash === "#verification") {
-        usersSection.classList.add('hidden');
-        verifySection.classList.remove('hidden');
+        uSec.classList.add('hidden');
+        vSec.classList.remove('hidden');
         document.getElementById('li-users').classList.remove('active');
         document.getElementById('li-verification').classList.add('active');
         loadPendingTeachers();
     } else {
-        verifySection.classList.add('hidden');
-        usersSection.classList.remove('hidden');
+        vSec.classList.add('hidden');
+        uSec.classList.remove('hidden');
         document.getElementById('li-verification').classList.remove('active');
         document.getElementById('li-users').classList.add('active');
         loadAdminData();
@@ -84,10 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
     handleHash();
 });
 
-document.getElementById('logout-button').onclick = () => {
-    localStorage.removeItem('user'); window.location.href = 'index.html';
-};
-
 window.openEdit = (id, name, role) => {
     document.getElementById('edit-user-id').value = id;
     document.getElementById('edit-full-name').value = name;
@@ -95,9 +100,24 @@ window.openEdit = (id, name, role) => {
     document.getElementById('edit-user-modal').classList.remove('hidden');
 };
 
+document.getElementById('edit-user-form').onsubmit = async (e) => {
+    e.preventDefault();
+    const id = document.getElementById('edit-user-id').value;
+    const role = document.getElementById('edit-user-role').value;
+    const { error } = await _supabase.from('profiles').update({ role }).eq('id', id);
+    if (!error) {
+        document.getElementById('edit-user-modal').classList.add('hidden');
+        loadAdminData();
+    }
+};
+
 window.delUser = async (id) => {
-    if (confirm("Delete this user?")) {
+    if (confirm("Are you sure you want to delete this user?")) {
         const { error } = await _supabase.from('profiles').delete().eq('id', id);
         if(!error) loadAdminData();
     }
+};
+
+document.getElementById('logout-button').onclick = () => {
+    localStorage.removeItem('user'); window.location.href = 'index.html';
 };

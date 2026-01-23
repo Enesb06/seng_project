@@ -1,4 +1,4 @@
-/* admin.css - Premium Glassmorphism & Chat */
+
 :root {
     --admin-glass: rgba(255, 255, 255, 0.1);
     --admin-border: rgba(255, 255, 255, 0.18);
@@ -7,7 +7,7 @@
 
 .main-content { background: transparent !important; }
 
-/* Stat Kartları */
+/* Stat Kartları (Compact Glass) */
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
 .stat-card {
     background: var(--admin-glass) !important;
@@ -16,20 +16,10 @@
     border-radius: 16px; padding: 12px 18px; color: #fff;
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
+.stat-card h4 { font-size: 0.8rem; margin: 0 0 4px; opacity: 0.8; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 .stat-value { font-size: 1.8rem; font-weight: 800; }
 
-/* Filtre Butonları */
-.filter-btn {
-    padding: 6px 14px; border-radius: 999px; border: 1px solid var(--admin-border);
-    background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; font-size: 0.75rem; transition: 0.2s;
-}
-.filter-btn.active { 
-    background: var(--admin-primary); 
-    border-color: var(--admin-primary);
-    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3);
-}
-
-/* Ana Kart */
+/* Ana Kart Yapısı */
 .card {
     background: var(--admin-glass) !important;
     backdrop-filter: blur(14px);
@@ -37,49 +27,61 @@
     border-radius: 20px; padding: 18px; color: #fff;
 }
 
-/* Tablo */
+/* Admin Tablo (Şeffaf Tasarım) */
 .admin-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
 .admin-table th { text-align: left; padding: 8px 15px; font-size: 0.7rem; font-weight: 800; color: #DDD6FE; text-transform: uppercase; }
-.admin-table td { padding: 8px 15px; background: rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.82rem; color:#fff; }
+.admin-table td { padding: 8px 15px; background: rgba(255, 255, 255, 0.05); border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.82rem; color:#fff; vertical-align: middle; }
 .admin-table tr td:first-child { border-radius: 10px 0 0 10px; }
-.admin-table tr td:last-child { border-radius: 0 10px 10px 0; }
+.admin-table tr td:last-child { border-radius: 0 10px 10px 0; text-align: center; }
 
-/* Talepler Listesi (Thread Cards) */
-.thread-card {
-    display: flex !important; justify-content: space-between; align-items: center;
-    background: rgba(255, 255, 255, 0.07) !important;
-    border: 1px solid var(--admin-border) !important;
-    backdrop-filter: blur(10px); border-radius: 12px;
-    padding: 10px 14px; margin-bottom: 8px; cursor: pointer; transition: 0.2s;
+/* FOTOĞRAFA GÖRE DÜZELTİLEN BUTONLAR (ACTIONS) */
+.action-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    margin: 0 2px;
 }
-.thread-card:hover { transform: translateX(5px); background: rgba(255,255,255,0.12) !important; }
 
-.role-icon-frame { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.role-img-small { width: 22px; height: 22px; object-fit: contain; }
-.teacher-bg { background: rgba(219, 234, 254, 0.15); }
-.student-bg { background: rgba(254, 249, 195, 0.15); }
-
-/* --- CHAT ALANI (PREMIUM GLASS) --- */
-.chat-shell {
-    background: rgba(255, 255, 255, 0.05) !important;
-    backdrop-filter: blur(25px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px; height: 60vh;
-    display: flex; flex-direction: column; overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+/* Edit Butonu (Sarımtırak) */
+.action-btn.edit {
+    color: #EAB308;
+    border: 1px solid #FEF08A;
+    background-color: #FEFCE8;
 }
-.chat-messages { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.action-btn.edit:hover { background-color: #fef9c3; }
 
-.msg { max-width: 75%; padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.4; position: relative; color: #fff; }
-.msg.other { align-self: flex-start; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.1); border-bottom-left-radius: 4px; }
-.msg.me { align-self: flex-end; background: linear-gradient(135deg, #6D28D9 0%, #4C1D95 100%); border-bottom-right-radius: 4px; box-shadow: 0 4px 12px rgba(109, 40, 217, 0.2); }
-
-.msg .meta { font-size: 0.65rem; opacity: 0.5; margin-bottom: 4px; display: block; }
-
-.chat-inputbar {
-    margin: 15px; padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 16px; display: flex; gap: 10px; align-items: center;
+/* Delete Butonu (Gri) */
+.action-btn.delete {
+    color: #94A3B8;
+    border: 1px solid #E2E8F0;
+    background-color: #F8FAFC;
 }
-#chat-input { background: transparent !important; border: none !important; color: #fff !important; flex: 1; padding: 8px; outline: none; font-size: 0.85rem; }
+.action-btn.delete:hover { background-color: #f1f5f9; color: #ef4444; }
+
+/* Verify Butonu (Onaylama Listesi İçin) */
+.action-btn.verify {
+    background: #16A34A !important;
+    color: white !important;
+    width: auto;
+    padding: 0 12px;
+    font-weight: 600;
+    border: none;
+}
+
+/* Filtre Butonları */
+.filter-btn {
+    padding: 5px 14px; border-radius: 999px; border: 1px solid var(--admin-border);
+    background: rgba(255,255,255,0.05); color: #fff; cursor: pointer; font-size: 0.75rem; font-weight: 600;
+}
+.filter-btn.active { background: var(--admin-primary); border-color: var(--admin-primary); box-shadow: 0 4px 12px rgba(109, 40, 217, 0.3); }
+
+/* Avatar ve Rol Badge */
+.role-badge { padding: 3px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+.role-badge.teacher { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+.role-badge.student { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
