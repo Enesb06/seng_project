@@ -83,8 +83,7 @@ const loadStudentDashboard = async () => {
   const stats = await loadStats(user.id);
   loadBadges(stats);
 
-  // streak
-  await loadStreak(user.id);
+ 
 
   // sınıf/ödev
   await loadMyClassAndHomework(user.id);
@@ -162,63 +161,6 @@ const loadBadges = (stats) => {
   }).join('');
 };
 
-/* ========= STREAK (contents + quiz) ========= */
-const loadStreak = async (userId) => {
-  try {
-    const { data: contents } = await _supabase
-      .from('contents')
-      .select('created_at')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(500);
-
-    const { data: quizzes } = await _supabase
-      .from('quiz_results')
-      .select('created_at')
-      .eq('student_id', userId)
-      .order('created_at', { ascending: false })
-      .limit(500);
-
-    const daySet = new Set();
-    (contents || []).forEach(r => r.created_at && daySet.add(toDayKey(r.created_at)));
-    (quizzes || []).forEach(r => r.created_at && daySet.add(toDayKey(r.created_at)));
-
-    const todayKey = toDayKey(new Date().toISOString());
-    const yesterdayKey = addDays(todayKey, -1);
-
-    let startKey = null;
-    if (daySet.has(todayKey)) startKey = todayKey;
-    else if (daySet.has(yesterdayKey)) startKey = yesterdayKey;
-
-    let streak = 0;
-    if (startKey) {
-      let cursor = startKey;
-      while (daySet.has(cursor)) {
-        streak += 1;
-        cursor = addDays(cursor, -1);
-      }
-    }
-
-    if (!streakHeaderEl) return;
-
-    if (streak >= 1) {
-      streakHeaderEl.classList.remove('hidden');
-      streakHeaderEl.textContent = `🔥 ${streak} days`;
-      streakHeaderEl.title = `You have been active for ${streak} consecutive days`;
-    } else {
-      streakHeaderEl.classList.add('hidden');
-      streakHeaderEl.textContent = '';
-      streakHeaderEl.title = '';
-    }
-  } catch (e) {
-    console.error('loadStreak error:', e);
-    if (streakHeaderEl) {
-      streakHeaderEl.classList.add('hidden');
-      streakHeaderEl.textContent = '';
-      streakHeaderEl.title = '';
-    }
-  }
-};
 
 /* ========= SINIF & ÖDEVLER (MULTI-CLASS FIX) ========= */
 const loadMyClassAndHomework = async (studentId) => {
