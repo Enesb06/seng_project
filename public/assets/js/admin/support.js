@@ -19,6 +19,7 @@ const inputEl           = document.getElementById("chat-input");
 const sendBtn           = document.getElementById("chat-send");
 
 const adminNameEl       = document.getElementById("admin-display-name");
+const userAvatar        = document.getElementById("admin-avatar"); // EKLENDİ
 
 const logoutBtn         = document.getElementById("logout-button");
 
@@ -68,7 +69,6 @@ const applyStatusPill = (status) => {
 
   if (statusSelect) statusSelect.value = status === "closed" ? "closed" : "open";
 
-  // closed -> input kapat
   const isClosed = status === "closed";
   if (inputEl) inputEl.disabled = isClosed;
   if (sendBtn) sendBtn.disabled = isClosed;
@@ -157,7 +157,8 @@ const loadThreadInfo = async (threadId) => {
 };
 
 const renderMessage = (m) => {
-  // admin ekranında admin -> me, diğerleri -> other
+  if (!messagesEl) return;
+
   const isMine = (m.sender_role === "admin");
   const roleLabel =
     m.sender_role === "admin" ? "Admin"
@@ -167,7 +168,6 @@ const renderMessage = (m) => {
   const wrap = document.createElement("div");
   wrap.className = `msg ${isMine ? "me" : "other"}`;
 
-  // teacher/student ile aynı markup: bubble -> meta + text
   wrap.innerHTML = `
     <div class="bubble">
       <div class="meta">
@@ -241,8 +241,6 @@ const updateStatus = async () => {
   }
 
   applyStatusPill(nextStatus);
-
-  // drawer mini-pill güncellensin
   await loadAllThreads();
   renderThreads(threadsCache);
 };
@@ -311,6 +309,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   if (adminNameEl) adminNameEl.textContent = user.full_name || "Admin";
   if (userAvatar) userAvatar.src = user.avatar_url || DEFAULT_AVATAR_URL;
+
+  if (!messagesEl) {
+    console.error("Chat messages element not found!");
+    return;
+  }
 
   await loadAllThreads();
 
