@@ -19,7 +19,7 @@ const inputEl           = document.getElementById("chat-input");
 const sendBtn           = document.getElementById("chat-send");
 
 const adminNameEl       = document.getElementById("admin-display-name");
-const userAvatar        = document.getElementById("user-avatar");
+
 const logoutBtn         = document.getElementById("logout-button");
 
 const DEFAULT_AVATAR_URL = "https://api.dicebear.com/7.x/avataaars/svg?seed=Admin";
