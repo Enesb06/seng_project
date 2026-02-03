@@ -412,19 +412,26 @@ if (playTextBtn) {
 }
 if (readingBody) {
   readingBody.addEventListener("click", async (e) => {
+    // If a word is clicked, open tooltip and prevent global click handler from closing it
     if (e.target.classList.contains("word")) {
+      e.stopPropagation();
+
       const word = e.target.dataset.word;
       const rect = e.target.getBoundingClientRect();
+
       if (tooltip) {
         tooltip.style.left = `${rect.left + window.scrollX}px`;
         tooltip.style.top = `${rect.top + window.scrollY - 95}px`;
         tooltip.style.display = "flex";
       }
+
       if (tooltipWord) tooltipWord.textContent = word;
+
       if (tooltipMeaning) {
         tooltipMeaning.textContent = "Translating...";
         tooltipMeaning.textContent = await getTranslation(word);
       }
+
       if (addWordBtn) {
         addWordBtn.onclick = async () => {
           const user = getUser();
@@ -441,14 +448,42 @@ if (readingBody) {
           }
         };
       }
+
       if (playPronunciationBtn) {
         playPronunciationBtn.onclick = () => {
           speakWord(word);
         };
       }
-    } else if (tooltip) tooltip.style.display = "none";
+    }
   });
 }
+
+// Tooltip openken tooltip'un içine tıklanınca kapanmasın
+if (tooltip) {
+  tooltip.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
+// Sayfada herhangi bir yere tıklanınca (tooltip/kelime dışında) tooltip kapansın
+document.addEventListener("click", (e) => {
+  if (!tooltip) return;
+  if (tooltip.style.display !== "flex") return;
+
+  const clickedWord = e.target.closest(".word");
+  const clickedInsideTooltip = e.target.closest("#translation-tooltip");
+
+  if (!clickedWord && !clickedInsideTooltip) {
+    tooltip.style.display = "none";
+  }
+});
+
+// ESC ile kapatma (opsiyonel ama kullanışlı)
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && tooltip) {
+    tooltip.style.display = "none";
+  }
+});
 const saveBtn = document.getElementById("save-note-btn");
 if (saveBtn) saveBtn.onclick = saveCurrentNote;
 if (noteTextarea) {
